@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Name</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+
+    <header class="site-header">
+      <nav class="tabs" aria-label="Main sections">
+        <button class="tab is-active" data-tab="projects" type="button">Valentin Vitvinskii © 2026</button>
+        <button class="tab portrait-tab" data-tab="about" type="button">about</button>
+        <button class="tab portrait-tab" data-tab="contact" type="button">contact</button>
+      </nav>
+    </header>
+
+    <main class="tab-panels">
+      <section class="panel is-active" data-panel="projects" aria-labelledby="projects-tab">
+        <div class="head-stage" id="head-stage" aria-label="3D animated head"></div>
+        <div class="head-meta" id="head-meta" aria-live="polite">
+          <span class="head-meta-name" id="head-meta-name"></span>
+          <span class="head-meta-tags" id="head-meta-tags"></span>
+        </div>
+        <div class="tiles-orbit" id="tiles-orbit" aria-label="Project cards in semicircle"></div>
+      </section>
+
+      <section class="panel" data-panel="index">
+        <ul class="projects-list" id="projects-list"></ul>
+      </section>
+
+      <section class="panel" data-panel="about">
+        <div class="content-card">
+          <p class="eyebrow">About</p>
+          <h2>Designer + Creative Developer</h2>
+          <p>
+            I build narrative digital experiences with real-time graphics, motion, and tactile interfaces.
+            My work combines art direction, frontend architecture, and 3D storytelling.
+          </p>
+          <p>
+            Tools and skills: WebGL/Three.js, motion design systems, performance-first frontend, and interaction
+            design across desktop and mobile.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel" data-panel="contact">
+        <div class="content-card">
+          <p class="eyebrow">Contact</p>
+          <h2>Open for collaborations</h2>
+          <ul class="contact-list">
+            <li>Email: <a href="mailto:hello@example.com">hello@example.com</a></li>
+            <li>Instagram: <a href="https://instagram.com" target="_blank" rel="noreferrer">@yourhandle</a></li>
+            <li>LinkedIn: <a href="https://linkedin.com" target="_blank" rel="noreferrer">your-name</a></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <aside class="info-side-panel" aria-label="About and contact info">
+      <section class="side-card">
+        <p class="eyebrow">About</p>
+        <h2>Designer + Creative Developer</h2>
+        <p>
+          I build narrative digital experiences with real-time graphics, motion, and tactile interfaces.
+          My work combines art direction, frontend architecture, and 3D storytelling.
+        </p>
+      </section>
+      <section class="side-card">
+        <p class="eyebrow">Contact</p>
+        <ul class="contact-list">
+          <li>Email: <a href="mailto:hello@example.com">hello@example.com</a></li>
+          <li>Instagram: <a href="https://instagram.com" target="_blank" rel="noreferrer">@yourhandle</a></li>
+          <li>LinkedIn: <a href="https://linkedin.com" target="_blank" rel="noreferrer">your-name</a></li>
+        </ul>
+      </section>
+    </aside>
+
+    <div class="view-switch" role="group" aria-label="Display mode">
+      <button class="view-btn is-active" type="button" data-view="projects">overview</button>
+      <button class="view-btn" type="button" data-view="index">index</button>
+    </div>
+
+    <dialog id="project-dialog" class="project-dialog">
+      <article class="project-detail" id="project-detail">
+        <button class="dialog-close" type="button" id="dialog-close" aria-label="Close project">Close</button>
+        <div class="detail-media" id="detail-media"></div>
+        <div class="detail-meta">
+          <p class="eyebrow" id="detail-index"></p>
+          <h3 id="detail-title"></h3>
+          <p id="detail-description"></p>
+          <div class="detail-actions">
+            <a id="detail-link" class="detail-link" target="_blank" rel="noreferrer">Open project</a>
+          </div>
+          <div class="detail-nav">
+            <button id="prev-project" type="button">Previous</button>
+            <button id="next-project" type="button">Next</button>
+          </div>
+        </div>
+      </article>
+    </dialog>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.168.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.168.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
