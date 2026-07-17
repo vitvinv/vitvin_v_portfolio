@@ -369,8 +369,9 @@ function setupTilesMotion(container, tiles, onFocusChange) {
 
   const computeTileX = (metric, viewportWidth, index, commit = true) => {
     const span = Math.max(state.trackLength, 1);
-    const minX = -metric.width;
-    const maxX = viewportWidth + metric.width;
+    const margin = Math.max(40, metric.width * 0.25);
+    const minX = -metric.width - margin;
+    const maxX = viewportWidth + metric.width + margin;
     const rawX = metric.start + state.offset;
     const base = ((rawX - minX) % span + span) % span + minX;
     const previousX = Number.isFinite(state.renderX[index]) ? state.renderX[index] : viewportWidth * 0.5;
