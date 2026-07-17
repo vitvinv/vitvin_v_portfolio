@@ -4,18 +4,23 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 const PORTFOLIO_CONFIG = {
   head: {
     modelPath: "./models/head.glb",
-    basePosition: { x: 0, y: 0.25, z: 0 },
+    basePosition: { x: 0, y: 0.4, z: 0 },
     baseRotation: { x: 0.05, y: -0.08, z: 0 },
     scale: 1,
     autoFitHeight: 1,
-    bob: { amplitude: 0.07, speed: 1.1 },
+    bob: { amplitude: 0.04, speed: 1.1 },
     lookAt: { lerp: 0.08, rangeX: 0.45, rangeY: 0.3 },
-    targetViewportWidth: 0.5,
+    targetViewportWidth: 0.7,
     cameraMinZ: 2.8,
     cameraMaxZ: 8.5,
     cameraLookAtY: 0,
     diagnostics: true,
     debugMaterial: false,
+    headExposure: 1.3,
+    mobileBaseY: 0.6,
+    mobileScaleBoost: 1.25,
+    mobileMetaBottom: "clamp(320px, 50%, 420px)",
+    mobileMetaFontSize: "10px",
   },
   tiles: {
     mediaScale: 1,
@@ -23,6 +28,7 @@ const PORTFOLIO_CONFIG = {
     minTileHeight: 130,
     maxTileHeight: 280,
     alignmentMode: "middle",
+    randomOffsetY: 40,
     fallbackWidth: 320,
     fallbackHeight: 220,
     gap: 14,
@@ -39,6 +45,7 @@ const PORTFOLIO_CONFIG = {
     wheelScrollFactor: 0.62,
     wheelVelocityFactor: 0.2,
     velocityDamping: 0.9,
+    visibleCount: 0,
   },
 };
 
@@ -80,7 +87,6 @@ const projects = gallerySources.map((source, index) => {
 });
 
 const tabs = Array.from(document.querySelectorAll(".tab"));
-const viewButtons = Array.from(document.querySelectorAll(".view-btn"));
 const panels = Array.from(document.querySelectorAll(".panel"));
 const projectsPanel = panels.find((panel) => panel.dataset.panel === "projects");
 const orientationMedia = window.matchMedia("(orientation: landscape)");
@@ -105,6 +111,61 @@ let tilesMotionController = null;
 let activePanelId = panels.find((panel) => panel.classList.contains("is-active"))?.dataset.panel || "projects";
 let activeMetaIndex = -1;
 
+function applyMobileMetaVars() {
+  const cfg = PORTFOLIO_CONFIG.head;
+  const root = document.documentElement;
+  root.style.setProperty("--meta-bottom-mobile", cfg.mobileMetaBottom);
+  root.style.setProperty("--meta-font-size-mobile", cfg.mobileMetaFontSize);
+}
+
+function syncMobileInfo() {
+  const sidePanel = document.getElementById("info-side-panel");
+  const aboutTarget = document.getElementById("mobile-about-content");
+  const contactTarget = document.getElementById("mobile-contact-content");
+
+  if (!sidePanel) {
+    return;
+  }
+
+  const blocks = sidePanel.querySelectorAll(".side-block");
+  if (!blocks.length) {
+    return;
+  }
+
+  const aboutBlocks = [];
+  const contactBlocks = [];
+
+  blocks.forEach((block) => {
+    if (block.classList.contains("copyright-header")) {
+      return;
+    }
+
+    const h3 = block.querySelector("h3");
+    if (!h3) {
+      return;
+    }
+
+    const heading = h3.textContent.trim().toLowerCase();
+    if (heading === "contact") {
+      contactBlocks.push(block.cloneNode(true));
+    } else if (block.closest(".side-panel-bottom")) {
+      return;
+    } else {
+      aboutBlocks.push(block.cloneNode(true));
+    }
+  });
+
+  if (aboutTarget) {
+    aboutTarget.innerHTML = "";
+    aboutBlocks.forEach((b) => aboutTarget.appendChild(b));
+  }
+
+  if (contactTarget) {
+    contactTarget.innerHTML = "";
+    contactBlocks.forEach((b) => contactTarget.appendChild(b));
+  }
+}
+
 setupTabs();
 setupViewSwitch();
 setupResponsiveLayout();
@@ -112,6 +173,8 @@ setActivePanel(activePanelId);
 renderProjects();
 setupDialog();
 setupHeadScene(document.getElementById("head-stage"));
+applyMobileMetaVars();
+syncMobileInfo();
 
 function isProjectsTabActive() {
   return projectsPanel ? projectsPanel.classList.contains("is-active") : false;
@@ -132,16 +195,30 @@ function setupTabs() {
 }
 
 function setupViewSwitch() {
-  viewButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const targetView = button.dataset.view;
-      if (!targetView) {
-        return;
-      }
+  const toggle = document.getElementById("view-toggle");
+  const options = document.querySelectorAll(".slider-option");
+  if (!toggle) {
+    return;
+  }
 
-      setActivePanel(targetView);
+  toggle.addEventListener("click", () => {
+    if (activePanelId === "projects" || activePanelId === "index") {
+      setActivePanel(activePanelId === "projects" ? "index" : "projects");
+    }
+  });
+
+  options.forEach((opt) => {
+    opt.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const view = opt.dataset.view;
+      if (view === "projects" || view === "index") {
+        setActivePanel(view);
+      }
     });
   });
+
+  // Initial knob position
+  updateSliderKnob("projects");
 }
 
 function setupResponsiveLayout() {
@@ -158,17 +235,40 @@ function setupResponsiveLayout() {
   orientationMedia.addEventListener("change", applyLayoutMode);
 }
 
+function updateSliderKnob(panelId) {
+  const toggle = document.getElementById("view-toggle");
+  const options = document.querySelectorAll(".slider-option");
+  const knob = document.querySelector(".slider-knob");
+  if (!toggle || !knob) {
+    return;
+  }
+
+  let activeOpt = null;
+  options.forEach((opt) => {
+    const isActive = opt.dataset.view === panelId;
+    opt.classList.toggle("is-active", isActive);
+    if (isActive) {
+      activeOpt = opt;
+    }
+  });
+
+  if (activeOpt) {
+    knob.style.left = activeOpt.offsetLeft + "px";
+    knob.style.width = activeOpt.offsetWidth + "px";
+  }
+}
+
 function setActivePanel(id) {
   activePanelId = id;
 
-  tabs.forEach((tab) => tab.classList.toggle("is-active", tab.dataset.tab === id));
+  tabs.forEach((tab) => {
+    const tabId = tab.dataset.tab;
+    const isActive = tabId === id || (tabId === "projects" && (id === "projects" || id === "index"));
+    tab.classList.toggle("is-active", isActive);
+  });
   panels.forEach((panel) => panel.classList.toggle("is-active", panel.dataset.panel === id));
 
-  viewButtons.forEach((button) => {
-    const buttonTarget = button.dataset.view;
-    const activeView = id === "projects" || id === "index" ? id : null;
-    button.classList.toggle("is-active", buttonTarget === activeView);
-  });
+  updateSliderKnob(id);
 
   if (id === "projects") {
     window.requestAnimationFrame(() => {
@@ -203,7 +303,17 @@ function renderProjects() {
     tilesMotionController = null;
   }
 
-  projects.forEach((project, index) => {
+  const cfg = PORTFOLIO_CONFIG.tiles;
+  const viewWidth = window.innerWidth;
+  const avgCardW = 220;
+  const autoCount = Math.max(4, Math.ceil(viewWidth / avgCardW) + 5);
+  const tileCount = cfg.visibleCount > 0 ? cfg.visibleCount : autoCount;
+  const loopedProjects = [];
+  for (let i = 0; i < tileCount; i++) {
+    loopedProjects.push(projects[i % projects.length]);
+  }
+
+  loopedProjects.forEach((project, index) => {
     const tile = document.createElement("button");
     tile.type = "button";
     tile.className = "project-tile";
@@ -239,12 +349,15 @@ function renderProjects() {
         return;
       }
 
-      openProject(index);
+      const originalIndex = parseInt(project.id.replace("project-", ""), 10) - 1;
+      openProject(originalIndex >= 0 ? originalIndex : index % projects.length);
     });
 
     motionTiles.push(tile);
     orbit.appendChild(tile);
+  });
 
+  projects.forEach((project, index) => {
     const listItem = document.createElement("li");
     listItem.className = "projects-list-item";
     listItem.innerHTML = `
@@ -485,6 +598,11 @@ function setupTilesMotion(container, tiles, onFocusChange) {
         baseY = remainingSpace;
       } else if (alignmentMode === "random") {
         baseY = remainingSpace * state.alignRandom[index];
+      }
+
+      if (cfg.randomOffsetY > 0) {
+        const offset = (state.alignRandom[(index + 7) % tiles.length] - 0.5) * cfg.randomOffsetY * 2;
+        baseY += offset;
       }
 
       const cardCenterX = x + metric.width * 0.5;
@@ -806,6 +924,7 @@ function setupHeadScene(stage) {
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
+
   stage.appendChild(renderer.domElement);
 
   const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
@@ -825,13 +944,15 @@ function setupHeadScene(stage) {
     camera.lookAt(0, cfg.cameraLookAtY, 0);
   };
 
-  const keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
+  const exp = PORTFOLIO_CONFIG.head.headExposure;
+
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.1 * exp);
   keyLight.position.set(4, 3, 6);
 
-  const fillLight = new THREE.DirectionalLight(0xffe6cf, 0.7);
+  const fillLight = new THREE.DirectionalLight(0xffe6cf, 0.7 * exp);
   fillLight.position.set(-4, 1, 3);
 
-  const ambient = new THREE.AmbientLight(0xfff3e6, 0.95);
+  const ambient = new THREE.AmbientLight(0xfff3e6, 0.95 * exp);
   scene.add(keyLight, fillLight, ambient);
 
   const group = new THREE.Group();
@@ -867,6 +988,18 @@ function setupHeadScene(stage) {
 
           if (cfg.debugMaterial) {
             child.material = new THREE.MeshNormalMaterial({ flatShading: true });
+          } else {
+            // Force all materials to respond to scene lights
+            const mat = child.material;
+            if (mat && (mat.isMeshBasicMaterial || !mat.isMeshStandardMaterial)) {
+              const newMat = new THREE.MeshStandardMaterial({
+                color: mat.color || 0xddccbb,
+                map: mat.map || null,
+                roughness: 0.7,
+                metalness: 0.05,
+              });
+              child.material = newMat;
+            }
           }
         }
       });
@@ -1010,13 +1143,16 @@ function setupHeadScene(stage) {
       const activePointerX = isProjectsTabActive() ? pointer.x : 0;
       const activePointerY = isProjectsTabActive() ? pointer.y : 0;
 
+      const isMobile = window.innerWidth < 641;
+      const baseY = isMobile ? cfg.mobileBaseY : cfg.basePosition.y;
+
       const targetY = cfg.baseRotation.y + activePointerX * cfg.lookAt.rangeX;
       const targetX = cfg.baseRotation.x + activePointerY * cfg.lookAt.rangeY;
 
       targetModel.rotation.y = THREE.MathUtils.lerp(targetModel.rotation.y, targetY, cfg.lookAt.lerp);
       targetModel.rotation.x = THREE.MathUtils.lerp(targetModel.rotation.x, targetX, cfg.lookAt.lerp);
 
-      targetModel.position.y = cfg.basePosition.y + Math.sin(elapsed * cfg.bob.speed) * cfg.bob.amplitude;
+      targetModel.position.y = baseY + Math.sin(elapsed * cfg.bob.speed) * cfg.bob.amplitude;
 
       renderer.render(scene, camera);
       window.requestAnimationFrame(frame);
@@ -1029,6 +1165,10 @@ function setupHeadScene(stage) {
   animate(group, PORTFOLIO_CONFIG.head);
   window.addEventListener("resize", () => {
     resize("window-resize");
+  });
+
+  window.addEventListener("resize", () => {
+    updateSliderKnob(activePanelId);
   });
 }
 
