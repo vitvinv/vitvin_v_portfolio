@@ -43,9 +43,40 @@
       <section class="panel" data-panel="contact">
         <div class="mobile-info" id="mobile-contact-content"></div>
       </section>
+
+      <section class="panel detail-panel" data-panel="detail">
+        <div class="detail-scroll">
+          <div class="detail-media" id="detail-media"></div>
+          <div class="detail-blocks">
+            <div class="detail-block">
+              <p class="eyebrow" id="detail-index"></p>
+              <h3 id="detail-title"></h3>
+            </div>
+            <div class="detail-block">
+              <h3>Description</h3>
+              <p id="detail-description"></p>
+            </div>
+            <div class="detail-block" id="detail-tags-block">
+              <h3>Tags</h3>
+              <p id="detail-tags"></p>
+            </div>
+            <div class="detail-block">
+              <h3>Link</h3>
+              <p><a id="detail-link" class="detail-link" target="_blank" rel="noreferrer">Open project</a></p>
+            </div>
+          </div>
+        </div>
+        <button class="detail-back" type="button" id="detail-back" aria-label="Back">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span id="detail-back-label">back</span>
+        </button>
+      </section>
     </main>
 
-    <!-- === SINGLE SOURCE OF TRUTH: edit content here for both desktop + mobile === -->
+    <div class="reveal-overlay" id="reveal-overlay">
+      <img class="reveal-image" id="reveal-image" src="" alt="" />
+    </div>
+
     <aside class="info-side-panel" id="info-side-panel" aria-label="Side info panel">
       <div class="side-panel-top">
         <section class="side-block copyright-header">
@@ -81,37 +112,6 @@
         <span class="slider-knob"></span>
       </button>
     </div>
-
-    <dialog id="project-dialog" class="project-dialog">
-      <article class="project-detail" id="project-detail">
-        <button class="dialog-close" type="button" id="dialog-close" aria-label="Close project">Close</button>
-        <div class="detail-scroll">
-          <div class="detail-media" id="detail-media"></div>
-          <div class="detail-blocks">
-            <div class="detail-block">
-              <p class="eyebrow" id="detail-index"></p>
-              <h3 id="detail-title"></h3>
-            </div>
-            <div class="detail-block">
-              <h3>Description</h3>
-              <p id="detail-description"></p>
-            </div>
-            <div class="detail-block" id="detail-tags-block">
-              <h3>Tags</h3>
-              <p id="detail-tags"></p>
-            </div>
-            <div class="detail-block">
-              <h3>Link</h3>
-              <p><a id="detail-link" class="detail-link" target="_blank" rel="noreferrer">Open project</a></p>
-            </div>
-          </div>
-          <div class="detail-nav">
-            <button id="prev-project" type="button">Previous</button>
-            <button id="next-project" type="button">Next</button>
-          </div>
-        </div>
-      </article>
-    </dialog>
 
     <script type="importmap">
       {

@@ -48,6 +48,9 @@ const PORTFOLIO_CONFIG = {
     wheelVelocityFactor: 0.2,
     velocityDamping: 0.9,
     visibleCount: 0,
+    detailReveal: true,
+    detailRevealSpeed: 400,
+    detailRevealDuration: 600,
   },
 };
 
@@ -98,18 +101,18 @@ const projectsList = document.getElementById("projects-list");
 const headMetaName = document.getElementById("head-meta-name");
 const headMetaTags = document.getElementById("head-meta-tags");
 
-const dialog = document.getElementById("project-dialog");
-const closeDialogBtn = document.getElementById("dialog-close");
+const detailPanel = document.querySelector("[data-panel='detail']");
+const detailBackBtn = document.getElementById("detail-back");
+const detailBackLabel = document.getElementById("detail-back-label");
 const detailMedia = document.getElementById("detail-media");
 const detailTitle = document.getElementById("detail-title");
 const detailIndex = document.getElementById("detail-index");
 const detailDescription = document.getElementById("detail-description");
 const detailTags = document.getElementById("detail-tags");
 const detailLink = document.getElementById("detail-link");
-const prevProjectBtn = document.getElementById("prev-project");
-const nextProjectBtn = document.getElementById("next-project");
 
 let selectedProjectIndex = 0;
+let detailSource = null;
 let tilesMotionController = null;
 let activePanelId = panels.find((panel) => panel.classList.contains("is-active"))?.dataset.panel || "projects";
 let activeMetaIndex = -1;
@@ -174,7 +177,7 @@ setupViewSwitch();
 setupResponsiveLayout();
 setActivePanel(activePanelId);
 renderProjects();
-setupDialog();
+setupDetailPanel();
 setupHeadScene(document.getElementById("head-stage"));
 applyMobileMetaVars();
 syncMobileInfo();
@@ -368,7 +371,7 @@ function renderProjects() {
       </button>
     `;
 
-    listItem.firstElementChild.addEventListener("click", () => openProject(index));
+    listItem.firstElementChild.addEventListener("click", () => showDetail(index, "index"));
     projectsList.appendChild(listItem);
   });
 
@@ -569,17 +572,21 @@ function setupTilesMotion(container, tiles, onFocusChange) {
       const size = mediaSizes[index];
       const aspect = size.height > 0 ? size.width / size.height : cfg.fallbackWidth / cfg.fallbackHeight;
       const safeAspect = Number.isFinite(aspect) && aspect > 0.001 ? aspect : 1;
-      const width = Math.max(Math.round(Math.sqrt(targetArea * safeAspect)), 1);
-      const height = Math.max(Math.round(Math.sqrt(targetArea / safeAspect)), 1);
+      const rawWidth = Math.max(Math.round(Math.sqrt(targetArea * safeAspect)), 1);
+      const rawHeight = Math.max(Math.round(Math.sqrt(targetArea / safeAspect)), 1);
+      const viewportWidth = container.getBoundingClientRect().width || window.innerWidth || 1;
+      const maxWidth = Math.round(viewportWidth * 0.4);
+      const cappedWidth = Math.min(rawWidth, maxWidth);
+      const cappedHeight = cappedWidth < rawWidth ? Math.max(Math.round(cappedWidth / safeAspect), 1) : rawHeight;
 
-      state.metrics[index].width = width;
-      state.metrics[index].height = height;
+      state.metrics[index].width = cappedWidth;
+      state.metrics[index].height = cappedHeight;
       state.metrics[index].start = cursor;
 
-      tile.style.width = `${width}px`;
-      tile.style.height = `${height}px`;
+      tile.style.width = `${cappedWidth}px`;
+      tile.style.height = `${cappedHeight}px`;
 
-      const step = Math.max(width - overlapPx - overlapBoost, Math.round(width * 0.34));
+      const step = Math.max(cappedWidth - overlapPx - overlapBoost, Math.round(cappedWidth * 0.34));
       cursor += step;
     });
 
@@ -821,7 +828,7 @@ function setupTilesMotion(container, tiles, onFocusChange) {
       const projectId = tile._projectDataId;
       if (projectId) {
         const originalIndex = parseInt(projectId.replace("project-", ""), 10) - 1;
-        openProject(originalIndex >= 0 ? originalIndex : tileIndex % projects.length);
+        showDetail(originalIndex >= 0 ? originalIndex : tileIndex % projects.length, activePanelId, tile);
       }
     }
   });
@@ -904,66 +911,121 @@ function lazyLoadVideo(video) {
   observer.observe(video);
 }
 
-function setupDialog() {
-  closeDialogBtn.addEventListener("click", () => dialog.close());
+function setupDetailPanel() {
+  if (!detailBackBtn) {
+    return;
+  }
 
-  dialog.addEventListener("click", (event) => {
-    const rect = dialog.getBoundingClientRect();
-    const isInside =
-      event.clientX >= rect.left &&
-      event.clientX <= rect.right &&
-      event.clientY >= rect.top &&
-      event.clientY <= rect.bottom;
-
-    if (!isInside) {
-      dialog.close();
-    }
-  });
-
-  prevProjectBtn.addEventListener("click", () => {
-    const nextIndex = (selectedProjectIndex - 1 + projects.length) % projects.length;
-    openProject(nextIndex);
-  });
-
-  nextProjectBtn.addEventListener("click", () => {
-    const nextIndex = (selectedProjectIndex + 1) % projects.length;
-    openProject(nextIndex);
+  detailBackBtn.addEventListener("click", () => {
+    hideDetail();
   });
 }
 
-function openProject(index) {
+function showDetail(index, source, tileElement) {
   selectedProjectIndex = index;
+  detailSource = source || activePanelId;
   const project = projects[index];
+  const cfg = PORTFOLIO_CONFIG.tiles;
 
-  detailTitle.textContent = project.title;
-  detailIndex.textContent = `${String(index + 1).padStart(2, "0")} / ${String(projects.length).padStart(2, "0")}`;
-  detailDescription.textContent = project.description;
-  if (detailTags) {
-    detailTags.textContent = (project.tags || []).join(" / ");
+  function fillDetailContent() {
+    detailTitle.textContent = project.title;
+    detailIndex.textContent = `${String(index + 1).padStart(2, "0")} / ${String(projects.length).padStart(2, "0")}`;
+    detailDescription.textContent = project.description;
+    if (detailTags) {
+      detailTags.textContent = (project.tags || []).join(" / ");
+    }
+    detailLink.href = project.link;
+    detailLink.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+    detailLink.style.textDecoration = "underline";
+    detailLink.style.textUnderlineOffset = "3px";
+
+    if (detailBackLabel) {
+      detailBackLabel.textContent = detailSource === "index" ? "index" : "overview";
+    }
+
+    detailMedia.innerHTML = "";
+
+    if (project.media.type === "video" && project.media.src) {
+      const video = document.createElement("video");
+      video.src = project.media.src;
+      video.poster = project.media.poster;
+      video.controls = true;
+      video.preload = "metadata";
+      video.playsInline = true;
+      detailMedia.appendChild(video);
+    } else {
+      const image = document.createElement("img");
+      image.src = project.media.poster || project.media.src;
+      image.alt = `${project.title} cover`;
+      detailMedia.appendChild(image);
+    }
   }
-  detailLink.href = project.link;
-  detailLink.textContent = project.link.includes("example.com") ? "Replace with your URL" : "Open project";
 
-  detailMedia.innerHTML = "";
-
-  if (project.media.type === "video" && project.media.src) {
-    const video = document.createElement("video");
-    video.src = project.media.src;
-    video.poster = project.media.poster;
-    video.controls = true;
-    video.preload = "metadata";
-    video.playsInline = true;
-    detailMedia.appendChild(video);
-  } else {
-    const image = document.createElement("img");
-    image.src = project.media.poster || project.media.src;
-    image.alt = `${project.title} cover`;
-    detailMedia.appendChild(image);
+  function showDetailPanel() {
+    panels.forEach((p) => p.classList.remove("is-active"));
+    detailPanel.classList.add("is-active");
+    activePanelId = "detail";
+    const vs = document.querySelector(".view-switch");
+    if (vs) vs.style.display = "none";
   }
 
-  if (!dialog.open) {
-    dialog.showModal();
+  if (cfg.detailReveal && tileElement) {
+    const overlay = document.getElementById("reveal-overlay");
+    const revealImg = document.getElementById("reveal-image");
+    if (overlay && revealImg) {
+      const tileImg = tileElement.querySelector(".tile-media");
+      const imgSrc = tileImg ? (tileImg.currentSrc || tileImg.src) : (project.media.poster || project.media.src);
+      revealImg.src = imgSrc;
+
+      const tileRect = tileElement.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const tileCX = tileRect.left + tileRect.width / 2;
+      const tileCY = tileRect.top + tileRect.height / 2;
+      const scaleFrom = tileRect.width / vw;
+      const translateX = tileCX - vw / 2;
+      const translateY = tileCY - vh / 2;
+
+      revealImg.style.transition = "none";
+      revealImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleFrom})`;
+      revealImg.style.opacity = "0.7";
+      overlay.classList.add("is-active");
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const speed = cfg.detailRevealSpeed + "ms";
+          revealImg.style.transition = `transform ${speed} ease, opacity ${speed} ease`;
+          revealImg.style.transform = "translate(0, 0) scale(1)";
+          revealImg.style.opacity = "1";
+        });
+      });
+
+      fillDetailContent();
+
+      setTimeout(() => {
+        overlay.classList.remove("is-active");
+        revealImg.style.transition = "none";
+        revealImg.style.transform = "";
+        revealImg.style.opacity = "";
+        showDetailPanel();
+      }, cfg.detailRevealSpeed + cfg.detailRevealDuration);
+      return;
+    }
   }
+
+  fillDetailContent();
+  showDetailPanel();
+}
+
+function hideDetail() {
+  detailPanel.classList.remove("is-active");
+
+  const vs = document.querySelector(".view-switch");
+  if (vs) vs.style.display = "";
+
+  const target = detailSource || "projects";
+  detailSource = null;
+  setActivePanel(target);
 }
 
 function setupHeadScene(stage) {
