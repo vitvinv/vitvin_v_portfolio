@@ -85,13 +85,25 @@
     <dialog id="project-dialog" class="project-dialog">
       <article class="project-detail" id="project-detail">
         <button class="dialog-close" type="button" id="dialog-close" aria-label="Close project">Close</button>
-        <div class="detail-media" id="detail-media"></div>
-        <div class="detail-meta">
-          <p class="eyebrow" id="detail-index"></p>
-          <h3 id="detail-title"></h3>
-          <p id="detail-description"></p>
-          <div class="detail-actions">
-            <a id="detail-link" class="detail-link" target="_blank" rel="noreferrer">Open project</a>
+        <div class="detail-scroll">
+          <div class="detail-media" id="detail-media"></div>
+          <div class="detail-blocks">
+            <div class="detail-block">
+              <p class="eyebrow" id="detail-index"></p>
+              <h3 id="detail-title"></h3>
+            </div>
+            <div class="detail-block">
+              <h3>Description</h3>
+              <p id="detail-description"></p>
+            </div>
+            <div class="detail-block" id="detail-tags-block">
+              <h3>Tags</h3>
+              <p id="detail-tags"></p>
+            </div>
+            <div class="detail-block">
+              <h3>Link</h3>
+              <p><a id="detail-link" class="detail-link" target="_blank" rel="noreferrer">Open project</a></p>
+            </div>
           </div>
           <div class="detail-nav">
             <button id="prev-project" type="button">Previous</button>

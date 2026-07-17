@@ -38,8 +38,10 @@ const PORTFOLIO_CONFIG = {
     activeLift: 26,
     inactiveDrop: 14,
     emphasisLerp: 0.14,
+    gestureZoneWidth: 0.6,
     wheelGestureWindowMs: 170,
     autoSpeed: 20,
+    pauseDelay: 20,
     dragFactor: 1,
     dragVelocityFactor: 55,
     wheelScrollFactor: 0.62,
@@ -75,7 +77,7 @@ const projects = gallerySources.map((source, index) => {
     title: `Gallery ${titleIndex}`,
     subtitle: tags.join(" / "),
     tags,
-    description: "Placeholder gallery panel. Replace title, copy, and link for final project content.",
+    description: "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
     link: `https://example.com/project-${index + 1}`,
     media: {
       type: "image",
@@ -102,6 +104,7 @@ const detailMedia = document.getElementById("detail-media");
 const detailTitle = document.getElementById("detail-title");
 const detailIndex = document.getElementById("detail-index");
 const detailDescription = document.getElementById("detail-description");
+const detailTags = document.getElementById("detail-tags");
 const detailLink = document.getElementById("detail-link");
 const prevProjectBtn = document.getElementById("prev-project");
 const nextProjectBtn = document.getElementById("next-project");
@@ -318,6 +321,10 @@ function renderProjects() {
     tile.type = "button";
     tile.className = "project-tile";
     tile.setAttribute("aria-label", project.title);
+    tile.setAttribute("draggable", "false");
+    tile._projectDataId = project.id;
+
+    tile.addEventListener("dragstart", (e) => e.preventDefault());
 
     const mediaEl = createTileMedia(project.media);
     tile.append(mediaEl);
@@ -343,15 +350,8 @@ function renderProjects() {
       }
     });
 
-    tile.addEventListener("click", (event) => {
-      if (tilesMotionController && tilesMotionController.shouldSuppressClick()) {
-        event.preventDefault();
-        return;
-      }
-
-      const originalIndex = parseInt(project.id.replace("project-", ""), 10) - 1;
-      openProject(originalIndex >= 0 ? originalIndex : index % projects.length);
-    });
+    // Tile click handled via container (pointerCapture redirects events)
+    tile._projectIndex = index;
 
     motionTiles.push(tile);
     orbit.appendChild(tile);
@@ -360,10 +360,11 @@ function renderProjects() {
   projects.forEach((project, index) => {
     const listItem = document.createElement("li");
     listItem.className = "projects-list-item";
+    const previewSrc = project.media.poster || project.media.src;
     listItem.innerHTML = `
       <button class="projects-list-btn" type="button">
-        <span>${project.title}<br><small>${project.subtitle}</small></span>
-        <span>View</span>
+        <span>${project.title}<small>${project.subtitle}</small></span>
+        <img class="list-preview" src="${previewSrc}" alt="" loading="lazy" />
       </button>
     `;
 
@@ -418,6 +419,8 @@ function setupTilesMotion(container, tiles, onFocusChange) {
     gestureIndex: -1,
     focusedIndex: -1,
     layerDiagnosticsLogged: false,
+    pauseUntil: 0,
+    pointerDownX: 0,
     wheelGestureTimer: 0,
     rafId: 0,
   };
@@ -517,18 +520,28 @@ function setupTilesMotion(container, tiles, onFocusChange) {
     const rect = container.getBoundingClientRect();
     const width = rect.width || window.innerWidth || 1;
     const localX = Number.isFinite(clientX) ? clamp(clientX - rect.left, 0, width) : width * 0.5;
+    return findClosestTile(width, localX);
+  };
 
+  const getCenterTileIndex = () => {
+    const rect = container.getBoundingClientRect();
+    const width = rect.width || window.innerWidth || 1;
+    const centerX = width * 0.5;
+    return findClosestTile(width, centerX);
+  };
+
+  const findClosestTile = (viewportWidth, targetX) => {
     let nearestIndex = 0;
     let nearestDistance = Number.POSITIVE_INFINITY;
     const span = Math.max(state.trackLength, 1);
 
     state.metrics.forEach((metric, index) => {
-      const x = computeTileX(metric, width, index, false);
+      const x = computeTileX(metric, viewportWidth, index, false);
       const baseCenter = x + metric.width * 0.5;
       const candidates = [baseCenter - span, baseCenter, baseCenter + span];
 
       candidates.forEach((centerX) => {
-        const distance = Math.abs(centerX - localX);
+        const distance = Math.abs(centerX - targetX);
         if (distance < nearestDistance) {
           nearestDistance = distance;
           nearestIndex = index;
@@ -612,30 +625,35 @@ function setupTilesMotion(container, tiles, onFocusChange) {
         closestIndex = index;
       }
 
-      const target = hasActiveDeck && index === activeDeckIndex ? 1 : 0;
+      let target = 0;
+
+      if (isGestureActive) {
+        const zoneRadius = Math.max(width * cfg.gestureZoneWidth * 0.5, 1);
+        target = Math.max(0, 1 - distanceToCenter / zoneRadius);
+      } else if (isHoverActive && index === activeDeckIndex) {
+        target = 1;
+      }
+
       state.emphasis[index] += (target - state.emphasis[index]) * cfg.emphasisLerp;
 
       const emphasis = state.emphasis[index];
       let scale = 1;
       let y = baseY;
 
-      if (isGestureActive) {
-        scale = 1 + (cfg.activeScale - 1) * emphasis;
-        y = baseY - cfg.activeLift * emphasis;
-      } else if (isHoverActive) {
+      if (emphasis > 0.001) {
         scale = 1 + (cfg.activeScale - 1) * emphasis;
         y = baseY - cfg.activeLift * emphasis;
       }
 
       const xDepth = Math.max(1, Math.round((width - x) * 10));
-      const activeBoost = hasActiveDeck && index === activeDeckIndex ? 25000 : Math.round(emphasis * 800);
+      const activeBoost = Math.round(emphasis * 1200);
 
       tile.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) scale(${scale.toFixed(3)})`;
       tile.style.clipPath = "none";
       tile.style.zIndex = `${xDepth + activeBoost}`;
     });
 
-    const displayIndex = hasActiveDeck ? activeDeckIndex : closestIndex;
+    const displayIndex = isHoverActive ? activeDeckIndex : closestIndex;
     if (displayIndex !== state.focusedIndex) {
       state.focusedIndex = displayIndex;
       if (typeof onFocusChange === "function") {
@@ -671,13 +689,14 @@ function setupTilesMotion(container, tiles, onFocusChange) {
 
     event.preventDefault();
     if (!state.wheelGestureTimer) {
-      state.gestureIndex = getNearestIndexByClientX(event.clientX);
+      state.gestureIndex = getCenterTileIndex(container);
     }
 
     if (state.wheelGestureTimer) {
       window.clearTimeout(state.wheelGestureTimer);
     }
 
+    state.pauseUntil = performance.now() + cfg.pauseDelay * 1000;
     state.wheelGestureTimer = window.setTimeout(() => {
       state.wheelGestureTimer = 0;
       state.gestureIndex = -1;
@@ -697,22 +716,29 @@ function setupTilesMotion(container, tiles, onFocusChange) {
       return;
     }
 
-    state.isDragging = true;
     state.pointerId = event.pointerId;
+    state.pointerDownX = event.clientX;
     state.lastDragX = event.clientX;
     state.dragDistance = 0;
-    state.gestureIndex = getNearestIndexByClientX(event.clientX);
-    setHoveredIndex(-1);
-    container.classList.add("is-dragging");
-
-    if (container.setPointerCapture) {
-      container.setPointerCapture(event.pointerId);
-    }
   };
 
   const onPointerMove = (event) => {
-    if (!state.isDragging || event.pointerId !== state.pointerId) {
+    if (event.pointerId !== state.pointerId) {
       return;
+    }
+
+    if (!state.isDragging) {
+      const totalDelta = Math.abs(event.clientX - state.pointerDownX);
+      if (totalDelta < 3) {
+        return;
+      }
+
+      state.isDragging = true;
+      state.pauseUntil = performance.now() + cfg.pauseDelay * 1000;
+      state.gestureIndex = getCenterTileIndex(container);
+      setHoveredIndex(-1);
+      container.classList.add("is-dragging");
+      event.preventDefault();
     }
 
     const deltaX = event.clientX - state.lastDragX;
@@ -723,20 +749,19 @@ function setupTilesMotion(container, tiles, onFocusChange) {
   };
 
   const endDrag = (event) => {
-    if (!state.isDragging) {
-      return;
-    }
-
     if (event && event.pointerId !== undefined && event.pointerId !== state.pointerId) {
       return;
     }
 
-    if (state.dragDistance > 6) {
+    const wasDragging = state.isDragging;
+
+    if (wasDragging && state.dragDistance > 6) {
       state.suppressClickUntil = performance.now() + 130;
     }
 
     state.isDragging = false;
     state.pointerId = null;
+    state.pointerDownX = 0;
     state.dragDistance = 0;
     state.gestureIndex = -1;
 
@@ -759,8 +784,12 @@ function setupTilesMotion(container, tiles, onFocusChange) {
     const deltaSeconds = Math.min((now - state.lastTime) / 1000, 0.05);
     state.lastTime = now;
 
-    const autoStep = -cfg.autoSpeed * deltaSeconds;
-    state.offset += autoStep + state.userVelocity * deltaSeconds;
+    if (!state.isDragging && now > state.pauseUntil) {
+      const autoStep = -cfg.autoSpeed * deltaSeconds;
+      state.offset += autoStep;
+    }
+
+    state.offset += state.userVelocity * deltaSeconds;
     state.userVelocity *= Math.pow(cfg.velocityDamping, deltaSeconds * 60);
 
     if (Math.abs(state.userVelocity) < 0.5) {
@@ -776,8 +805,28 @@ function setupTilesMotion(container, tiles, onFocusChange) {
   renderPositions();
 
   container.addEventListener("wheel", onWheel, { passive: false });
+  window.addEventListener("pointermove", onPointerMove);
+  container.addEventListener("click", (event) => {
+    const tile = event.target.closest(".project-tile");
+    if (!tile || state.isDragging) {
+      return;
+    }
+
+    if (performance.now() < state.suppressClickUntil) {
+      return;
+    }
+
+    const tileIndex = tiles.indexOf(tile);
+    if (tileIndex >= 0) {
+      const projectId = tile._projectDataId;
+      if (projectId) {
+        const originalIndex = parseInt(projectId.replace("project-", ""), 10) - 1;
+        openProject(originalIndex >= 0 ? originalIndex : tileIndex % projects.length);
+      }
+    }
+  });
+
   container.addEventListener("pointerdown", onPointerDown);
-  container.addEventListener("pointermove", onPointerMove);
   window.addEventListener("pointerup", endDrag);
   window.addEventListener("pointercancel", endDrag);
   window.addEventListener("resize", recalcMetrics);
@@ -799,7 +848,7 @@ function setupTilesMotion(container, tiles, onFocusChange) {
       window.cancelAnimationFrame(state.rafId);
       container.removeEventListener("wheel", onWheel);
       container.removeEventListener("pointerdown", onPointerDown);
-      container.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", endDrag);
       window.removeEventListener("pointercancel", endDrag);
       window.removeEventListener("resize", recalcMetrics);
@@ -887,8 +936,11 @@ function openProject(index) {
   const project = projects[index];
 
   detailTitle.textContent = project.title;
-  detailIndex.textContent = `${index + 1} / ${projects.length}`;
+  detailIndex.textContent = `${String(index + 1).padStart(2, "0")} / ${String(projects.length).padStart(2, "0")}`;
   detailDescription.textContent = project.description;
+  if (detailTags) {
+    detailTags.textContent = (project.tags || []).join(" / ");
+  }
   detailLink.href = project.link;
   detailLink.textContent = project.link.includes("example.com") ? "Replace with your URL" : "Open project";
 
