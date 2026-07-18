@@ -288,7 +288,9 @@ function setActivePanel(id) {
   });
 
   const vs = document.querySelector(".view-switch");
-  const showVs = () => { if (vs) vs.style.display = (id === "detail") ? "none" : ""; };
+  const showVs = () => {
+    if (vs) vs.style.display = (id === "detail" || id === "about" || id === "contact") ? "none" : "";
+  };
 
   if (!oldPanel || oldPanel === newPanel) {
     newPanel.classList.add('is-active');
