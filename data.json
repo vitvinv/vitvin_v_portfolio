@@ -14,7 +14,14 @@
         "type": "image",
         "src": "./projects/11111/face0.png",
         "poster": "./projects/11111/face0.png",
-        "previewVideo": ""
+        "previewVideo": "",
+        "files": [
+          {
+            "type": "image",
+            "src": "./projects/11111/face0.png",
+            "poster": ""
+          }
+        ]
       }
     },
     {
@@ -31,7 +38,14 @@
         "type": "image",
         "src": "./projects/22222/Generated Image March 25, 2026 - 7_50PM(1).jpg",
         "poster": "./projects/22222/Generated Image March 25, 2026 - 7_50PM(1).jpg",
-        "previewVideo": ""
+        "previewVideo": "",
+        "files": [
+          {
+            "type": "image",
+            "src": "./projects/22222/Generated Image March 25, 2026 - 7_50PM(1).jpg",
+            "poster": ""
+          }
+        ]
       }
     },
     {
@@ -48,7 +62,14 @@
         "type": "image",
         "src": "./projects/33333/950f644d5b61c97b8b3139a6323147e7.jpg",
         "poster": "./projects/33333/950f644d5b61c97b8b3139a6323147e7.jpg",
-        "previewVideo": ""
+        "previewVideo": "",
+        "files": [
+          {
+            "type": "image",
+            "src": "./projects/33333/950f644d5b61c97b8b3139a6323147e7.jpg",
+            "poster": ""
+          }
+        ]
       }
     },
     {
@@ -65,7 +86,14 @@
         "type": "image",
         "src": "./projects/44444/285844320e1483d2d7fb5fb912ac5082.jpg",
         "poster": "./projects/44444/285844320e1483d2d7fb5fb912ac5082.jpg",
-        "previewVideo": ""
+        "previewVideo": "",
+        "files": [
+          {
+            "type": "image",
+            "src": "./projects/44444/285844320e1483d2d7fb5fb912ac5082.jpg",
+            "poster": ""
+          }
+        ]
       }
     },
     {
@@ -82,7 +110,14 @@
         "type": "image",
         "src": "./projects/55555/3cf5d653cdfdfbcad92c59d59061c310.jpg",
         "poster": "./projects/55555/3cf5d653cdfdfbcad92c59d59061c310.jpg",
-        "previewVideo": ""
+        "previewVideo": "",
+        "files": [
+          {
+            "type": "image",
+            "src": "./projects/55555/3cf5d653cdfdfbcad92c59d59061c310.jpg",
+            "poster": ""
+          }
+        ]
       }
     },
     {
@@ -99,7 +134,14 @@
         "type": "video",
         "src": "./projects/arny-praht/arnypraht.MP4",
         "poster": "./projects/arny-praht/arnypraht.png",
-        "previewVideo": "./projects/arny-praht/arnypraht.MP4"
+        "previewVideo": "./projects/arny-praht/arnypraht.MP4",
+        "files": [
+          {
+            "type": "video",
+            "src": "./projects/arny-praht/arnypraht.MP4",
+            "poster": "./projects/arny-praht/arnypraht.png"
+          }
+        ]
       }
     },
     {
@@ -113,7 +155,109 @@
         "type": "image",
         "src": "./projects/nature-cards/cover.jpg",
         "poster": "./projects/nature-cards/cover.jpg",
-        "previewVideo": ""
+        "previewVideo": "",
+        "files": [
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-01.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-02.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-03.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-04.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-05.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-08.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-09.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-11.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-12.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-13.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-14.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-15.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-16.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-17.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-18.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-19.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-20.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-21.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-22.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/card-23.jpg",
+            "poster": ""
+          }
+        ]
       }
     }
   ],

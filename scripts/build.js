@@ -66,10 +66,33 @@ function scanMedia(folderPath) {
   var mediaType = videos.length > 0 ? "video" : "image";
   var poster = cover || (videos[0] ? sameNamePoster(videos[0]) : null) || images[0];
 
+  // Build full file list for multi-media detail pages
+  // Sort: videos first (by name), then images alphabetically
+  // Exclude cover.* and same-name video posters — they are for previews only
+  var posterNames = {};
+  for (var vi = 0; vi < videos.length; vi++) {
+    var posterFile = sameNamePoster(videos[vi]);
+    if (posterFile) posterNames[posterFile.toLowerCase()] = true;
+  }
+  var allFiles = videos.sort().concat(images.sort());
+  var filesList = [];
+  for (var fi = 0; fi < allFiles.length; fi++) {
+    var f = allFiles[fi];
+    if (/^cover\./i.test(f)) continue;
+    if (posterNames[f.toLowerCase()]) continue;
+    var fExt = path.extname(f).toLowerCase();
+    var fType = VIDEO_EXT[fExt] ? "video" : "image";
+    var fPoster = fType === "video"
+      ? (cover || sameNamePoster(f)) || null
+      : null;
+    filesList.push({ type: fType, src: f, poster: fPoster });
+  }
+
   return {
     type: mediaType,
     src: mainFile,
     poster: poster,
+    files: filesList,
   };
 }
 
@@ -100,6 +123,13 @@ function buildProject(folderName) {
       src: src,
       poster: poster,
       previewVideo: type === "video" ? src : "",
+      files: (media.files || []).map(function (f) {
+        return {
+          type: f.type,
+          src: "./projects/" + folderName + "/" + f.src,
+          poster: f.poster ? "./projects/" + folderName + "/" + f.poster : "",
+        };
+      }),
     },
   };
 }

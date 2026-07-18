@@ -641,26 +641,74 @@ a {
   scrollbar-color: var(--color-ui-border) transparent;
 }
 
-.detail-media {
-  border: 1px solid var(--color-ui-border);
-  overflow: hidden;
-  background: var(--color-bg-detail-media);
-  width: 100%;
-  margin-top: 14px;
-  border-left: 0;
-  border-right: 0;
-  border-radius: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* ── Detail media — single file ──────── */
+.has-single-media .detail-scroll {
+  display: block;
+  overflow-y: auto;
 }
 
-.detail-media img,
-.detail-media video {
+.has-single-media .detail-blocks {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px 16px 24px;
+}
+
+.has-single-media .detail-media-wrap {
+  width: fit-content;
+  max-width: 50vw;
+  background: #ffffff;
+}
+
+.has-single-media .detail-media {
   width: 100%;
+  border: 0;
+  border-radius: 0;
+  margin-top: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.has-single-media .detail-media-item {
+  display: block;
+  max-width: 100%;
+  max-height: 100vh;
+  width: auto;
   height: auto;
   object-fit: contain;
+}
+
+/* ── Detail media — multiple files ───── */
+.has-multi-media .detail-media {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--detail-media-gap, 1px);
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  margin-top: 0;
+  background: #ffffff;
+  overflow: visible;
+}
+
+.has-multi-media .detail-media-item {
+  width: 100%;
+  height: auto;
   display: block;
+  aspect-ratio: auto;
+}
+
+.has-multi-media .detail-media video.detail-media-item {
+  aspect-ratio: auto;
+}
+
+/* ── Shared media item ───────────────── */
+.detail-media {
+  overflow: hidden;
+}
+
+.detail-media-wrap {
+  position: relative;
+  width: 100%;
 }
 
 .detail-blocks {
@@ -712,13 +760,6 @@ a {
 .detail-block #detail-description {
   margin-top: 10px;
   color: var(--color-text-muted);
-}
-
-#detail-subtitle {
-  font-family: var(--font-sans);
-  font-size: var(--fs-body);
-  color: var(--color-text-muted);
-  margin: 0;
 }
 
 #detail-tags {
@@ -948,6 +989,74 @@ a {
   .project-dialog {
     border-radius: 12px;
   }
+}
+
+/* ── Mobile: reset detail media to stack ── */
+@media (max-width: 900px) {
+  .has-single-media .detail-scroll {
+    display: block;
+  }
+
+  .has-single-media .detail-blocks {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 16px 16px 24px;
+  }
+
+  .has-single-media .detail-media-wrap {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    height: auto;
+    background: transparent;
+  }
+
+  .has-single-media .detail-media {
+    display: block;
+  }
+
+  .has-single-media .detail-media-item {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .has-single-media .detail-credits {
+    grid-column: auto;
+  }
+
+  .has-multi-media .detail-media {
+    grid-template-columns: 1fr;
+    gap: 1px;
+  }
+}
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 400ms ease;
+}
+
+.loading-screen.is-done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-counter {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-text-meta);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.loading-counter.is-visible {
+  opacity: 1;
 }
 
 @keyframes fade-up {

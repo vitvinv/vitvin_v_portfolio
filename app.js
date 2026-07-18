@@ -52,7 +52,83 @@ const PORTFOLIO_CONFIG = {
     detailRevealSpeed: 400,
     detailRevealDuration: 600,
   },
+  detail: {
+    mediaGap: 1,
+  },
 };
+
+var LOADING = (function () {
+  var screen = document.getElementById("loading-screen");
+  var counter = document.getElementById("loading-counter");
+  var loaded = 0;
+  var delayTimer = null;
+  var finished = false;
+  var mediaDone = false;
+  var modelDone = false;
+
+  setTimeout(function () {
+    if (!modelDone) {
+      modelDone = true;
+      update();
+    }
+  }, 10000);
+
+  function update() {
+    if (finished || !screen || !counter) return;
+    var pct = Math.round(loaded);
+    if (mediaDone && modelDone) pct = 100;
+    counter.textContent = pct + "%";
+
+    if (!delayTimer) {
+      delayTimer = setTimeout(function () {
+        counter.classList.add("is-visible");
+      }, 500);
+    }
+
+    if (pct >= 100 && mediaDone && modelDone) {
+      finish();
+    }
+  }
+
+  function finish() {
+    if (finished) return;
+    finished = true;
+    if (delayTimer) { clearTimeout(delayTimer); delayTimer = null; }
+    counter.classList.add("is-visible");
+    counter.textContent = "100%";
+    setTimeout(function () {
+      screen.classList.add("is-done");
+      setTimeout(function () {
+        if (screen && screen.parentNode) screen.style.display = "none";
+      }, 450);
+    }, 300);
+  }
+
+  return {
+    add: function (pct) {
+      loaded = Math.min(loaded + pct, 99);
+      update();
+    },
+
+    mediaReady: function () {
+      mediaDone = true;
+      loaded = Math.max(loaded, 99);
+      update();
+    },
+
+    modelReady: function () {
+      modelDone = true;
+      update();
+    },
+
+    setDone: function () {
+      loaded = 100;
+      mediaDone = true;
+      modelDone = true;
+      update();
+    }
+  };
+})();
 
 var gallerySources = [
   "./projects/11111/face0.png",
@@ -108,9 +184,9 @@ const detailMedia = document.getElementById("detail-media");
 const detailTitle = document.getElementById("detail-title");
 const detailIndex = document.getElementById("detail-index");
 const detailDescription = document.getElementById("detail-description");
-const detailSubtitle = document.getElementById("detail-subtitle");
 const detailTags = document.getElementById("detail-tags");
 const detailVideoControls = document.getElementById("detail-video-controls");
+const detailScroll = document.querySelector(".detail-scroll");
 
 let selectedProjectIndex = 0;
 let detailSource = null;
@@ -268,10 +344,12 @@ async function boot() {
     const data = await res.json();
     projects = data.projects || [];
     renderSidePanel(data.info || {});
+    LOADING.add(35);
   } catch (e) {
     console.warn("data.json unavailable, using fallback:", e.message);
     projects = getFallbackProjects();
     renderSidePanel(getFallbackInfo());
+    LOADING.add(35);
   }
 
   setupTabs();
@@ -279,10 +357,13 @@ async function boot() {
   setupResponsiveLayout();
   setActivePanel(activePanelId);
   renderProjects();
+  LOADING.add(25);
   setupDetailPanel();
   setupHeadScene(document.getElementById("head-stage"));
   applyMobileMetaVars();
   syncMobileInfo();
+
+  trackTileMediaLoads();
 
   document.querySelector(".copyright-link")?.addEventListener("click", (e) => {
     e.preventDefault();
@@ -1065,9 +1146,6 @@ function showDetail(index, source, tileElement) {
   function fillDetailContent() {
     detailTitle.textContent = project.title;
     detailDescription.textContent = project.description;
-    if (detailSubtitle) {
-      detailSubtitle.textContent = project.subtitle || "";
-    }
     if (detailTags) {
       detailTags.textContent = (project.tags || []).join(" / ");
     }
@@ -1077,33 +1155,55 @@ function showDetail(index, source, tileElement) {
 
     detailMedia.innerHTML = "";
 
-    if (project.media.type === "video" && project.media.src) {
-      const video = document.createElement("video");
-      video.src = project.media.src;
-      video.poster = project.media.poster;
-      video.preload = "metadata";
-      video.playsInline = true;
-      video.id = "detail-video";
-      detailMedia.appendChild(video);
+    var allFiles = project.media.files && project.media.files.length > 0
+      ? project.media.files
+      : [{ type: project.media.type, src: project.media.src, poster: project.media.poster }];
 
-      video.addEventListener("loadedmetadata", () => {
-        if (video.videoWidth && video.videoHeight) {
-          video.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
-        }
-      });
+    var totalFiles = allFiles.length;
+    var isSingle = totalFiles <= 1;
 
-      if (detailVideoControls) {
-        detailVideoControls.style.display = "";
-        bindVideoControls(video);
+    if (detailScroll) {
+      detailScroll.classList.toggle("has-multi-media", !isSingle);
+      detailScroll.classList.toggle("has-single-media", isSingle);
+      detailScroll.style.setProperty("--detail-media-gap", PORTFOLIO_CONFIG.detail.mediaGap + "px");
+    }
+
+    for (var fi = 0; fi < totalFiles; fi++) {
+      var file = allFiles[fi];
+
+      if (file.type === "video" && file.src) {
+        var video = document.createElement("video");
+        video.src = file.src;
+        video.poster = file.poster || "";
+        video.preload = "metadata";
+        video.playsInline = true;
+        video.className = "detail-media-item";
+        detailMedia.appendChild(video);
+
+        video.addEventListener("loadedmetadata", function () {
+          if (this.videoWidth && this.videoHeight) {
+            this.style.aspectRatio = this.videoWidth + " / " + this.videoHeight;
+          }
+        });
+      } else if (file.src) {
+        var image = document.createElement("img");
+        image.src = file.poster || file.src;
+        tryImageExtensions(image, image.src);
+        image.alt = project.title + " image " + (fi + 1);
+        image.className = "detail-media-item";
+        image.loading = fi === 0 ? "eager" : "lazy";
+        detailMedia.appendChild(image);
       }
-    } else {
-      const image = document.createElement("img");
-      image.src = project.media.poster || project.media.src;
-      tryImageExtensions(image, image.src);
-      image.alt = `${project.title} cover`;
-      detailMedia.appendChild(image);
+    }
 
-      if (detailVideoControls) {
+    // Video controls: show for first video, hide for all-image
+    var firstIsVideo = totalFiles > 0 && allFiles[0].type === "video";
+    if (detailVideoControls) {
+      if (firstIsVideo) {
+        detailVideoControls.style.display = "";
+        var firstVideo = detailMedia.querySelector("video");
+        if (firstVideo) bindVideoControls(firstVideo);
+      } else {
         detailVideoControls.style.display = "none";
       }
     }
@@ -1213,8 +1313,10 @@ function bindVideoControls(video) {
 }
 
 function hideDetail() {
-  const video = document.getElementById("detail-video");
-  if (video) video.pause();
+  var videos = detailMedia.querySelectorAll("video");
+  for (var i = 0; i < videos.length; i++) {
+    try { videos[i].pause(); } catch (_) {}
+  }
 
   detailPanel.classList.remove("is-active");
   detailPanel.classList.add("is-leaving");
@@ -1287,6 +1389,8 @@ function setupHeadScene(stage) {
   loader.load(
     PORTFOLIO_CONFIG.head.modelPath,
     (gltf) => {
+      LOADING.add(35);
+      LOADING.modelReady();
       const model = gltf.scene;
       const cfg = PORTFOLIO_CONFIG.head;
 
@@ -1352,6 +1456,8 @@ function setupHeadScene(stage) {
       }
     },
     (error) => {
+      LOADING.add(35);
+      LOADING.modelReady();
       const fallback = new THREE.Mesh(
         new THREE.IcosahedronGeometry(0.9, 2),
         new THREE.MeshStandardMaterial({ color: 0xd0b398, flatShading: true, metalness: 0.02, roughness: 0.92 })
@@ -1556,4 +1662,35 @@ function getObjectWidth(object) {
 
   const size = box.getSize(new THREE.Vector3());
   return Math.max(size.x, size.z, 0.001);
+}
+
+function trackTileMediaLoads() {
+  var mediaEls = document.querySelectorAll(".tile-media");
+  if (mediaEls.length === 0) {
+    LOADING.mediaReady();
+    return;
+  }
+
+  var pending = mediaEls.length;
+  var timeout = setTimeout(function () {
+    LOADING.mediaReady();
+  }, 4000);
+
+  function oneDone() {
+    pending -= 1;
+    if (pending <= 0) {
+      clearTimeout(timeout);
+      LOADING.mediaReady();
+    }
+  }
+
+  for (var i = 0; i < mediaEls.length; i++) {
+    var el = mediaEls[i];
+    if (el.complete || el.readyState >= 2) {
+      oneDone();
+    } else {
+      el.addEventListener("load", oneDone, { once: true });
+      el.addEventListener("error", oneDone, { once: true });
+    }
+  }
 }
