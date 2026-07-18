@@ -72,7 +72,7 @@ const galleryTags = [
   ["Visual", "Prototype"],
 ];
 
-const projects = gallerySources.map((source, index) => {
+let projects = gallerySources.map((source, index) => {
   const titleIndex = String(index + 1).padStart(2, "0");
   const tags = galleryTags[index % galleryTags.length];
   return {
@@ -171,21 +171,147 @@ function syncMobileInfo() {
   }
 }
 
-setupTabs();
-setupViewSwitch();
-setupResponsiveLayout();
-setActivePanel(activePanelId);
-renderProjects();
-setupDetailPanel();
-setupHeadScene(document.getElementById("head-stage"));
-applyMobileMetaVars();
-syncMobileInfo();
+/* ── Data layer ───────────────────── */
+async function fetchSheetData() {
+  try {
+    const response = await fetch("./data.json");
+    if (!response.ok) return null;
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
 
-/* ── Copyright link → main page ───── */
-document.querySelector(".copyright-link")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  setActivePanel("projects");
-});
+function transformSheetProjects(raw) {
+  return raw.map((item, index) => ({
+    id: item.id || `project-${index + 1}`,
+    title: item.title || `Gallery ${String(index + 1).padStart(2, "0")}`,
+    subtitle: item.subtitle || "",
+    tags: typeof item.tags === "string" ? item.tags.split(",").map(t => t.trim()) : (item.tags || []),
+    description: item.description || "",
+    link: item.link_url || `https://example.com/project-${index + 1}`,
+    media: {
+      type: item.media_type || "image",
+      src: item.media_src || "",
+      poster: item.tile_image || item.media_src || "",
+      previewVideo: item.media_type === "video" ? item.media_src : "",
+    },
+  }));
+}
+
+function getFallbackProjects() {
+  return gallerySources.map((source, index) => {
+    const titleIndex = String(index + 1).padStart(2, "0");
+    const tags = galleryTags[index % galleryTags.length];
+    return {
+      id: `project-${index + 1}`,
+      title: `Gallery ${titleIndex}`,
+      subtitle: tags.join(" / "),
+      tags,
+      description: "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
+      link: `https://example.com/project-${index + 1}`,
+      media: { type: "image", src: source, poster: source, previewVideo: "" },
+    };
+  });
+}
+
+function getFallbackInfo() {
+  return {
+    copyright_name: "VALENTIN VITVINSKII \u00A9 2026",
+    copyright_lorem: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
+    experience: "Creative Developer at Studio Name (2020\u2013present)\nFrontend Lead at Agency (2018\u20132020)",
+    cv_label: "CV",
+    cv_link_text: "Download CV (PDF)",
+    cv_link_url: "#",
+    tools_label: "Tools",
+    tools_text: "Three.js / WebGL, React, Motion Design, Figma, Blender, GSAP",
+    contact_heading: "Contact",
+    contact_email: "hello@example.com",
+    contact_telegram: "yourhandle",
+    contact_instagram: "yourhandle",
+  };
+}
+
+function renderSidePanel(info) {
+  const sidePanel = document.getElementById("info-side-panel");
+  if (!sidePanel || !info) return;
+
+  const top = sidePanel.querySelector(".side-panel-top");
+  const bottom = sidePanel.querySelector(".side-panel-bottom");
+  if (!top || !bottom) return;
+
+  top.innerHTML = "";
+  bottom.innerHTML = "";
+
+  const copyright = document.createElement("section");
+  copyright.className = "side-block copyright-header";
+  copyright.innerHTML = `
+    <h3><a class="copyright-link" href="#">${info.copyright_name || ""}</a></h3>
+    ${info.copyright_lorem ? `<p class="copyright-lorem">${info.copyright_lorem.replace(/\n/g, "<br>")}</p>` : ""}
+  `;
+  top.appendChild(copyright);
+
+  if (info.experience) {
+    const el = document.createElement("section");
+    el.className = "side-block";
+    el.innerHTML = `<h3>Experience</h3><p>${info.experience.replace(/\n/g, "<br>")}</p>`;
+    top.appendChild(el);
+  }
+
+  if (info.cv_link_text) {
+    const el = document.createElement("section");
+    el.className = "side-block";
+    el.innerHTML = `<h3>${info.cv_label || "CV"}</h3><p><a href="${info.cv_link_url || "#"}" target="_blank" rel="noreferrer">${info.cv_link_text}</a></p>`;
+    top.appendChild(el);
+  }
+
+  if (info.tools_text) {
+    const el = document.createElement("section");
+    el.className = "side-block";
+    el.innerHTML = `<h3>${info.tools_label || "Tools"}</h3><p>${info.tools_text}</p>`;
+    top.appendChild(el);
+  }
+
+  if (info.contact_email || info.contact_telegram || info.contact_instagram) {
+    const links = [];
+    if (info.contact_email) links.push(`<a href="mailto:${info.contact_email}">email</a>`);
+    if (info.contact_telegram) links.push(`<a href="https://t.me/${info.contact_telegram}" target="_blank" rel="noreferrer">telegram</a>`);
+    if (info.contact_instagram) links.push(`<a href="https://instagram.com/${info.contact_instagram}" target="_blank" rel="noreferrer">instagram</a>`);
+    const el = document.createElement("section");
+    el.className = "side-block";
+    el.innerHTML = `<h3>${info.contact_heading || "Contact"}</h3><p>${links.join(" &middot; ")}</p>`;
+    bottom.appendChild(el);
+  }
+}
+
+/* ── Boot ─────────────────────────── */
+async function boot() {
+  const data = await fetchSheetData();
+  if (data) {
+    projects = transformSheetProjects(data.projects);
+    renderSidePanel(data.info);
+  } else {
+    projects = getFallbackProjects();
+    renderSidePanel(getFallbackInfo());
+  }
+
+  setupTabs();
+  setupViewSwitch();
+  setupResponsiveLayout();
+  setActivePanel(activePanelId);
+  renderProjects();
+  setupDetailPanel();
+  setupHeadScene(document.getElementById("head-stage"));
+  applyMobileMetaVars();
+  syncMobileInfo();
+
+  document.querySelector(".copyright-link")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    setActivePanel("projects");
+  });
+}
+
+boot();
 
 function isProjectsTabActive() {
   return projectsPanel ? projectsPanel.classList.contains("is-active") : false;
@@ -376,19 +502,11 @@ function renderProjects() {
         tilesMotionController.setHovered(index);
       }
       updateHeadMeta(index);
-
-      if (mediaEl.tagName === "VIDEO") {
-        mediaEl.play().catch(() => {});
-      }
     });
 
     tile.addEventListener("mouseleave", () => {
       if (tilesMotionController) {
         tilesMotionController.setHovered(-1);
-      }
-
-      if (mediaEl.tagName === "VIDEO") {
-        mediaEl.pause();
       }
     });
 
@@ -903,20 +1021,6 @@ function setupTilesMotion(container, tiles, onFocusChange) {
 }
 
 function createTileMedia(media) {
-  if (media.type === "video" && media.previewVideo) {
-    const video = document.createElement("video");
-    video.className = "tile-media";
-    video.loop = true;
-    video.muted = true;
-    video.playsInline = true;
-    video.preload = "metadata";
-    video.poster = media.poster;
-    video.dataset.src = media.previewVideo;
-
-    lazyLoadVideo(video);
-    return video;
-  }
-
   const image = document.createElement("img");
   image.className = "tile-media";
   image.src = media.poster || media.src;
@@ -924,29 +1028,6 @@ function createTileMedia(media) {
   image.loading = "eager";
   image.decoding = "async";
   return image;
-}
-
-function lazyLoadVideo(video) {
-  const observer = new IntersectionObserver(
-    (entries, io) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
-
-        if (video.dataset.src) {
-          video.src = video.dataset.src;
-          video.removeAttribute("data-src");
-          video.load();
-        }
-
-        io.unobserve(video);
-      });
-    },
-    { rootMargin: "200px" }
-  );
-
-  observer.observe(video);
 }
 
 function setupDetailPanel() {
