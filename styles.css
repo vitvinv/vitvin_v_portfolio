@@ -1,8 +1,8 @@
 :root {
   --pad-x: 0px;
-  --font-base: "Helvetica Neue", Arial, sans-serif;
-  --font-heading: "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --font-base: "Inter", sans-serif;
+  --font-heading: "Inter", sans-serif;
+  --font-mono: "SFMono-Regular", monospace;
   --font-info: var(--font-base);
   --font-detail: var(--font-base);
   --bg: #ffffff;
@@ -149,13 +149,18 @@ body {
 
 .panel {
   display: none;
-  animation: fade-up 320ms ease;
   padding-left: 16px;
   padding-right: 16px;
 }
 
 .panel.is-active {
   display: block;
+  animation: fade-up 220ms ease;
+}
+
+.panel.is-leaving {
+  display: block;
+  animation: fade-out 120ms ease forwards;
 }
 
 .panel[data-panel="projects"] {
@@ -167,7 +172,6 @@ body {
   height: calc(100dvh - var(--panel-bottom));
   min-height: 320px;
   overflow: hidden;
-  animation: none;
 }
 
 .head-stage {
@@ -487,22 +491,15 @@ a {
   display: none;
   flex-direction: column;
   padding: 0;
-  animation: detail-reveal 320ms ease;
 }
 
 .detail-panel.is-active {
   display: flex;
+  animation: fade-up 220ms ease;
 }
 
-@keyframes detail-reveal {
-  from {
-    opacity: 0;
-    clip-path: inset(0 0 100% 0);
-  }
-  to {
-    opacity: 1;
-    clip-path: inset(0 0 0 0);
-  }
+.detail-panel.is-leaving {
+  display: flex;
 }
 
 .detail-back {
@@ -649,6 +646,7 @@ a {
 
 .reveal-overlay.is-active {
   display: flex;
+  animation: fade-up 240ms ease;
 }
 
 .reveal-image {
@@ -806,12 +804,10 @@ a {
 }
 
 @keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }

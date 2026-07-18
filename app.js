@@ -264,7 +264,16 @@ function updateSliderKnob(panelId) {
   }
 }
 
+let panelTransitionId = null;
+
 function setActivePanel(id) {
+  if (id === activePanelId) return;
+  if (panelTransitionId) return;
+
+  const oldPanel = panels.find(p => p.classList.contains('is-active'));
+  const newPanel = panels.find(p => p.dataset.panel === id);
+  if (!newPanel) return;
+
   activePanelId = id;
 
   tabs.forEach((tab) => {
@@ -272,15 +281,38 @@ function setActivePanel(id) {
     const isActive = tabId === id || (tabId === "projects" && (id === "projects" || id === "index"));
     tab.classList.toggle("is-active", isActive);
   });
-  panels.forEach((panel) => panel.classList.toggle("is-active", panel.dataset.panel === id));
 
-  updateSliderKnob(id);
+  const vs = document.querySelector(".view-switch");
+  const showVs = () => { if (vs) vs.style.display = (id === "detail") ? "none" : ""; };
 
-  if (id === "projects") {
-    window.requestAnimationFrame(() => {
-      window.dispatchEvent(new Event("resize"));
-    });
+  if (!oldPanel || oldPanel === newPanel) {
+    newPanel.classList.add('is-active');
+    showVs();
+    updateSliderKnob(id);
+    if (id === "projects") {
+      window.requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
+    }
+    return;
   }
+
+  oldPanel.classList.remove('is-active');
+  oldPanel.classList.add('is-leaving');
+
+  panelTransitionId = setTimeout(() => {
+    oldPanel.classList.remove('is-leaving');
+    oldPanel.style.display = 'none';
+
+    newPanel.style.display = '';
+    newPanel.classList.add('is-active');
+    showVs();
+    updateSliderKnob(id);
+
+    if (id === "projects") {
+      window.requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
+    }
+
+    panelTransitionId = null;
+  }, 120);
 }
 
 function updateHeadMeta(index) {
@@ -653,11 +685,10 @@ function setupTilesMotion(container, tiles, onFocusChange) {
       }
 
       const xDepth = Math.max(1, Math.round((width - x) * 10));
-      const activeBoost = Math.round(emphasis * 1200);
 
       tile.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) scale(${scale.toFixed(3)})`;
       tile.style.clipPath = "none";
-      tile.style.zIndex = `${xDepth + activeBoost}`;
+      tile.style.zIndex = `${xDepth}`;
     });
 
     const displayIndex = isHoverActive ? activeDeckIndex : closestIndex;
@@ -963,6 +994,8 @@ function showDetail(index, source, tileElement) {
 
   function showDetailPanel() {
     panels.forEach((p) => p.classList.remove("is-active"));
+    detailPanel.classList.remove("is-leaving");
+    detailPanel.style.display = "";
     detailPanel.classList.add("is-active");
     activePanelId = "detail";
     const vs = document.querySelector(".view-switch");
@@ -1007,7 +1040,7 @@ function showDetail(index, source, tileElement) {
         revealImg.style.transition = "none";
         revealImg.style.transform = "";
         revealImg.style.opacity = "";
-        showDetailPanel();
+        requestAnimationFrame(() => showDetailPanel());
       }, cfg.detailRevealSpeed + cfg.detailRevealDuration);
       return;
     }
@@ -1019,13 +1052,16 @@ function showDetail(index, source, tileElement) {
 
 function hideDetail() {
   detailPanel.classList.remove("is-active");
+  detailPanel.classList.add("is-leaving");
 
-  const vs = document.querySelector(".view-switch");
-  if (vs) vs.style.display = "";
+  setTimeout(() => {
+    detailPanel.classList.remove("is-leaving");
+    detailPanel.style.display = "none";
 
-  const target = detailSource || "projects";
-  detailSource = null;
-  setActivePanel(target);
+    const target = detailSource || "projects";
+    detailSource = null;
+    setActivePanel(target);
+  }, 120);
 }
 
 function setupHeadScene(stage) {
