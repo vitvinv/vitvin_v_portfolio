@@ -1,0 +1,14 @@
+{
+  "copyright_name": "VALENTIN VITVINSKII © 2026",
+  "copyright_lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
+  "experience": "Creative Developer at Studio Name (2020–present)\nFrontend Lead at Agency (2018–2020)",
+  "cv_label": "CV",
+  "cv_link_text": "Download CV (PDF)",
+  "cv_link_url": "#",
+  "tools_label": "Tools",
+  "tools_text": "Three.js / WebGL, React, Motion Design, Figma, Blender, GSAP",
+  "contact_heading": "Contact",
+  "contact_email": "hello@example.com",
+  "contact_telegram": "yourhandle",
+  "contact_instagram": "yourhandle"
+}

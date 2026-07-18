@@ -1,70 +1,120 @@
 {
   "projects": [
     {
-      "id": "project-1",
-      "title": "Gallery 01",
+      "id": "11111",
+      "title": "11111",
       "subtitle": "AI / 3D",
-      "tags": "AI, 3D",
+      "tags": [
+        "AI",
+        "3D"
+      ],
       "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
-      "link_url": "https://example.com/project-1",
-      "media_type": "image",
-      "media_src": "./media/face0.png",
-      "tile_image": "./media/face0.png"
+      "link": "",
+      "media": {
+        "type": "image",
+        "src": "./projects/11111/face0.png",
+        "poster": "./projects/11111/face0.png",
+        "previewVideo": ""
+      }
     },
     {
-      "id": "project-2",
-      "title": "Gallery 02",
-      "subtitle": "Brand / Motion",
-      "tags": "Brand, Motion",
-      "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
-      "link_url": "https://example.com/project-2",
-      "media_type": "video",
-      "media_src": "./media/arnypraht.MP4",
-      "tile_image": "./media/arnypraht-cover.jpg"
-    },
-    {
-      "id": "project-3",
-      "title": "Gallery 03",
+      "id": "22222",
+      "title": "22222",
       "subtitle": "Design / WebGL",
-      "tags": "Design, WebGL",
+      "tags": [
+        "Design",
+        "WebGL"
+      ],
       "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
-      "link_url": "https://example.com/project-3",
-      "media_type": "image",
-      "media_src": "./media/Generated Image March 25, 2026 - 7_50PM(1).jpg",
-      "tile_image": "./media/Generated Image March 25, 2026 - 7_50PM(1).jpg"
+      "link": "",
+      "media": {
+        "type": "image",
+        "src": "./projects/22222/Generated Image March 25, 2026 - 7_50PM(1).jpg",
+        "poster": "./projects/22222/Generated Image March 25, 2026 - 7_50PM(1).jpg",
+        "previewVideo": ""
+      }
     },
     {
-      "id": "project-4",
-      "title": "Gallery 04",
-      "subtitle": "Render / Code",
-      "tags": "Render, Code",
-      "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
-      "link_url": "https://example.com/project-4",
-      "media_type": "image",
-      "media_src": "./media/285844320e1483d2d7fb5fb912ac5082.jpg",
-      "tile_image": "./media/285844320e1483d2d7fb5fb912ac5082.jpg"
-    },
-    {
-      "id": "project-5",
-      "title": "Gallery 05",
+      "id": "33333",
+      "title": "33333",
       "subtitle": "Studio / Identity",
-      "tags": "Studio, Identity",
+      "tags": [
+        "Studio",
+        "Identity"
+      ],
       "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
-      "link_url": "https://example.com/project-5",
-      "media_type": "image",
-      "media_src": "./media/950f644d5b61c97b8b3139a6323147e7.jpg",
-      "tile_image": "./media/950f644d5b61c97b8b3139a6323147e7.jpg"
+      "link": "",
+      "media": {
+        "type": "image",
+        "src": "./projects/33333/950f644d5b61c97b8b3139a6323147e7.jpg",
+        "poster": "./projects/33333/950f644d5b61c97b8b3139a6323147e7.jpg",
+        "previewVideo": ""
+      }
     },
     {
-      "id": "project-6",
-      "title": "Gallery 06",
-      "subtitle": "Visual / Prototype",
-      "tags": "Visual, Prototype",
+      "id": "44444",
+      "title": "44444",
+      "subtitle": "Render / Code",
+      "tags": [
+        "Render",
+        "Code"
+      ],
       "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
-      "link_url": "https://example.com/project-6",
-      "media_type": "image",
-      "media_src": "./media/3cf5d653cdfdfbcad92c59d59061c310.jpg",
-      "tile_image": "./media/3cf5d653cdfdfbcad92c59d59061c310.jpg"
+      "link": "",
+      "media": {
+        "type": "image",
+        "src": "./projects/44444/285844320e1483d2d7fb5fb912ac5082.jpg",
+        "poster": "./projects/44444/285844320e1483d2d7fb5fb912ac5082.jpg",
+        "previewVideo": ""
+      }
+    },
+    {
+      "id": "55555",
+      "title": "55555",
+      "subtitle": "Visual / Prototype",
+      "tags": [
+        "Visual",
+        "Prototype"
+      ],
+      "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
+      "link": "",
+      "media": {
+        "type": "image",
+        "src": "./projects/55555/3cf5d653cdfdfbcad92c59d59061c310.jpg",
+        "poster": "./projects/55555/3cf5d653cdfdfbcad92c59d59061c310.jpg",
+        "previewVideo": ""
+      }
+    },
+    {
+      "id": "arny-praht",
+      "title": "Arny Praht",
+      "subtitle": "Brand / Motion",
+      "tags": [
+        "Brand",
+        "Motion"
+      ],
+      "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
+      "link": "",
+      "media": {
+        "type": "video",
+        "src": "./projects/arny-praht/arnypraht.MP4",
+        "poster": "./projects/arny-praht/arnypraht.png",
+        "previewVideo": "./projects/arny-praht/arnypraht.MP4"
+      }
+    },
+    {
+      "id": "nature-cards",
+      "title": "Nature Cards",
+      "subtitle": "",
+      "tags": [],
+      "description": "",
+      "link": "",
+      "media": {
+        "type": "image",
+        "src": "./projects/nature-cards/cover.jpg",
+        "poster": "./projects/nature-cards/cover.jpg",
+        "previewVideo": ""
+      }
     }
   ],
   "info": {

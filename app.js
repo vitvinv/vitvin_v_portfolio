@@ -54,13 +54,14 @@ const PORTFOLIO_CONFIG = {
   },
 };
 
-const gallerySources = [
-  "./media/face0.png",
-  "./media/example.jpg",
-  "./media/Generated Image March 25, 2026 - 7_50PM(1).jpg",
-  "./media/285844320e1483d2d7fb5fb912ac5082.jpg",
-  "./media/950f644d5b61c97b8b3139a6323147e7.jpg",
-  "./media/3cf5d653cdfdfbcad92c59d59061c310.jpg",
+var gallerySources = [
+  "./projects/11111/face0.png",
+  "./projects/22222/Generated Image March 25, 2026 - 7_50PM(1).jpg",
+  "./projects/33333/950f644d5b61c97b8b3139a6323147e7.jpg",
+  "./projects/44444/285844320e1483d2d7fb5fb912ac5082.jpg",
+  "./projects/55555/3cf5d653cdfdfbcad92c59d59061c310.jpg",
+  "./projects/arny-praht/arnypraht.MP4",
+  "./projects/nature-cards/cover.jpg",
 ];
 
 const galleryTags = [
@@ -73,15 +74,15 @@ const galleryTags = [
 ];
 
 let projects = gallerySources.map((source, index) => {
-  const titleIndex = String(index + 1).padStart(2, "0");
+  const id = `project-${index + 1}`;
   const tags = galleryTags[index % galleryTags.length];
   return {
-    id: `project-${index + 1}`,
-    title: `Gallery ${titleIndex}`,
+    id: id,
+    title: "loading\u2026",
     subtitle: tags.join(" / "),
     tags,
-    description: "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
-    link: `https://example.com/project-${index + 1}`,
+    description: "",
+    link: "",
     media: {
       type: "image",
       src: source,
@@ -107,14 +108,13 @@ const detailMedia = document.getElementById("detail-media");
 const detailTitle = document.getElementById("detail-title");
 const detailIndex = document.getElementById("detail-index");
 const detailDescription = document.getElementById("detail-description");
-const detailTags = document.getElementById("detail-tags");
-const detailLink = document.getElementById("detail-link");
+const detailSubtitle = document.getElementById("detail-subtitle");
+const detailVideoControls = document.getElementById("detail-video-controls");
 
 let selectedProjectIndex = 0;
 let detailSource = null;
 let tilesMotionController = null;
 let activePanelId = panels.find((panel) => panel.classList.contains("is-active"))?.dataset.panel || "projects";
-let activeMetaIndex = -1;
 
 function applyMobileMetaVars() {
   const cfg = PORTFOLIO_CONFIG.head;
@@ -172,44 +172,19 @@ function syncMobileInfo() {
 }
 
 /* ── Data layer ───────────────────── */
-async function fetchSheetData() {
-  try {
-    const response = await fetch("./data.json");
-    if (!response.ok) return null;
-    return await response.json();
-  } catch {
-    return null;
-  }
-}
-
-function transformSheetProjects(raw) {
-  return raw.map((item, index) => ({
-    id: item.id || `project-${index + 1}`,
-    title: item.title || `Gallery ${String(index + 1).padStart(2, "0")}`,
-    subtitle: item.subtitle || "",
-    tags: typeof item.tags === "string" ? item.tags.split(",").map(t => t.trim()) : (item.tags || []),
-    description: item.description || "",
-    link: item.link_url || `https://example.com/project-${index + 1}`,
-    media: {
-      type: item.media_type || "image",
-      src: item.media_src || "",
-      poster: item.tile_image || item.media_src || "",
-      previewVideo: item.media_type === "video" ? item.media_src : "",
-    },
-  }));
-}
+var FALLBACK_TEXT = "if you see this message, then there was an error on my side while filling the page and i promise to fix it soon";
 
 function getFallbackProjects() {
-  return gallerySources.map((source, index) => {
-    const titleIndex = String(index + 1).padStart(2, "0");
-    const tags = galleryTags[index % galleryTags.length];
+  return gallerySources.map(function (source, index) {
+    var id = "project-" + (index + 1);
+    var tags = galleryTags[index % galleryTags.length];
     return {
-      id: `project-${index + 1}`,
-      title: `Gallery ${titleIndex}`,
+      id: id,
+      title: FALLBACK_TEXT,
       subtitle: tags.join(" / "),
-      tags,
-      description: "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
-      link: `https://example.com/project-${index + 1}`,
+      tags: tags,
+      description: FALLBACK_TEXT,
+      link: "",
       media: { type: "image", src: source, poster: source, previewVideo: "" },
     };
   });
@@ -217,18 +192,18 @@ function getFallbackProjects() {
 
 function getFallbackInfo() {
   return {
-    copyright_name: "VALENTIN VITVINSKII \u00A9 2026",
-    copyright_lorem: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
-    experience: "Creative Developer at Studio Name (2020\u2013present)\nFrontend Lead at Agency (2018\u20132020)",
+    copyright_name: FALLBACK_TEXT,
+    copyright_lorem: FALLBACK_TEXT,
+    experience: FALLBACK_TEXT,
     cv_label: "CV",
-    cv_link_text: "Download CV (PDF)",
+    cv_link_text: FALLBACK_TEXT,
     cv_link_url: "#",
     tools_label: "Tools",
-    tools_text: "Three.js / WebGL, React, Motion Design, Figma, Blender, GSAP",
+    tools_text: FALLBACK_TEXT,
     contact_heading: "Contact",
-    contact_email: "hello@example.com",
-    contact_telegram: "yourhandle",
-    contact_instagram: "yourhandle",
+    contact_email: FALLBACK_TEXT,
+    contact_telegram: FALLBACK_TEXT,
+    contact_instagram: FALLBACK_TEXT,
   };
 }
 
@@ -286,11 +261,14 @@ function renderSidePanel(info) {
 
 /* ── Boot ─────────────────────────── */
 async function boot() {
-  const data = await fetchSheetData();
-  if (data) {
-    projects = transformSheetProjects(data.projects);
-    renderSidePanel(data.info);
-  } else {
+  try {
+    const res = await fetch("./data.json");
+    if (!res.ok) throw new Error("data.json not ok");
+    const data = await res.json();
+    projects = data.projects || [];
+    renderSidePanel(data.info || {});
+  } catch (e) {
+    console.warn("data.json unavailable, using fallback:", e.message);
     projects = getFallbackProjects();
     renderSidePanel(getFallbackInfo());
   }
@@ -448,20 +426,10 @@ function setActivePanel(id) {
   }, 120);
 }
 
-function updateHeadMeta(index) {
-  if (!headMetaName || !headMetaTags) {
-    return;
-  }
-
-  const safeIndex = Number.isInteger(index) && index >= 0 && index < projects.length ? index : 0;
-  if (safeIndex === activeMetaIndex) {
-    return;
-  }
-
-  const project = projects[safeIndex];
-  activeMetaIndex = safeIndex;
+function updateHeadMeta(project) {
+  if (!headMetaName || !headMetaTags || !project) return;
   headMetaName.textContent = project.title;
-  headMetaTags.textContent = project.tags.join(" / ");
+  headMetaTags.textContent = (project.tags || []).join(" / ");
 }
 
 function renderProjects() {
@@ -479,8 +447,12 @@ function renderProjects() {
   const avgCardW = 220;
   const autoCount = Math.max(4, Math.ceil(viewWidth / avgCardW) + 5);
   const tileCount = cfg.visibleCount > 0 ? cfg.visibleCount : autoCount;
+  // Ensure tile count is a multiple of project count so every cycle
+  // contains the full project set — no partial loops.
+  const copies = Math.max(1, Math.ceil(tileCount / projects.length));
+  const totalTiles = copies * projects.length;
   const loopedProjects = [];
-  for (let i = 0; i < tileCount; i++) {
+  for (let i = 0; i < totalTiles; i++) {
     loopedProjects.push(projects[i % projects.length]);
   }
 
@@ -501,7 +473,7 @@ function renderProjects() {
       if (tilesMotionController) {
         tilesMotionController.setHovered(index);
       }
-      updateHeadMeta(index);
+      updateHeadMeta(project);
     });
 
     tile.addEventListener("mouseleave", () => {
@@ -532,9 +504,13 @@ function renderProjects() {
     projectsList.appendChild(listItem);
   });
 
-  updateHeadMeta(0);
+  updateHeadMeta(projects[0]);
   tilesMotionController = setupTilesMotion(orbit, motionTiles, (focusedIndex) => {
-    updateHeadMeta(focusedIndex);
+    const focusedTile = motionTiles[focusedIndex];
+    if (focusedTile && focusedTile._projectDataId) {
+      const focusedProject = projects.find(function (p) { return p.id === focusedTile._projectDataId; });
+      if (focusedProject) updateHeadMeta(focusedProject);
+    }
   });
 }
 
@@ -748,7 +724,10 @@ function setupTilesMotion(container, tiles, onFocusChange) {
     });
 
     state.trackLength = Math.max(cursor, 1);
-    state.renderX.fill(Number.NaN);
+    // Initialize sequential positions so the first render shows correct tile order
+    for (var ri = 0; ri < tiles.length; ri++) {
+      state.renderX[ri] = state.metrics[ri].start;
+    }
   };
 
   const renderPositions = () => {
@@ -983,7 +962,7 @@ function setupTilesMotion(container, tiles, onFocusChange) {
     if (tileIndex >= 0) {
       const projectId = tile._projectDataId;
       if (projectId) {
-        const originalIndex = parseInt(projectId.replace("project-", ""), 10) - 1;
+        const originalIndex = projects.findIndex(function (p) { return p.id === projectId; });
         showDetail(originalIndex >= 0 ? originalIndex : tileIndex % projects.length, activePanelId, tile);
       }
     }
@@ -1020,10 +999,28 @@ function setupTilesMotion(container, tiles, onFocusChange) {
   };
 }
 
+var IMG_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
+
+function tryImageExtensions(imgEl, originalSrc) {
+  if (!originalSrc) return;
+  var base = originalSrc.replace(/\.[^.]+$/, "");
+  var tried = [originalSrc.substring(base.length)];
+  imgEl.onerror = function () {
+    var next = IMG_EXTENSIONS.find(function (ext) { return tried.indexOf(ext) === -1; });
+    if (next) {
+      tried.push(next);
+      this.src = base + next;
+    } else {
+      this.onerror = null;
+    }
+  };
+}
+
 function createTileMedia(media) {
-  const image = document.createElement("img");
+  var image = document.createElement("img");
   image.className = "tile-media";
   image.src = media.poster || media.src;
+  tryImageExtensions(image, image.src);
   image.alt = "";
   image.loading = "eager";
   image.decoding = "async";
@@ -1067,13 +1064,9 @@ function showDetail(index, source, tileElement) {
     detailTitle.textContent = project.title;
     detailIndex.textContent = `${String(index + 1).padStart(2, "0")} / ${String(projects.length).padStart(2, "0")}`;
     detailDescription.textContent = project.description;
-    if (detailTags) {
-      detailTags.textContent = (project.tags || []).join(" / ");
+    if (detailSubtitle) {
+      detailSubtitle.textContent = project.subtitle || (project.tags || []).join(" / ");
     }
-    detailLink.href = project.link;
-    detailLink.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
-    detailLink.style.textDecoration = "underline";
-    detailLink.style.textUnderlineOffset = "3px";
 
     detailMedia.innerHTML = "";
 
@@ -1081,15 +1074,31 @@ function showDetail(index, source, tileElement) {
       const video = document.createElement("video");
       video.src = project.media.src;
       video.poster = project.media.poster;
-      video.controls = true;
       video.preload = "metadata";
       video.playsInline = true;
+      video.id = "detail-video";
       detailMedia.appendChild(video);
+
+      video.addEventListener("loadedmetadata", () => {
+        if (video.videoWidth && video.videoHeight) {
+          video.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
+        }
+      });
+
+      if (detailVideoControls) {
+        detailVideoControls.style.display = "";
+        bindVideoControls(video);
+      }
     } else {
       const image = document.createElement("img");
       image.src = project.media.poster || project.media.src;
+      tryImageExtensions(image, image.src);
       image.alt = `${project.title} cover`;
       detailMedia.appendChild(image);
+
+      if (detailVideoControls) {
+        detailVideoControls.style.display = "none";
+      }
     }
   }
 
@@ -1152,7 +1161,54 @@ function showDetail(index, source, tileElement) {
   showDetailPanel();
 }
 
+function bindVideoControls(video) {
+  const playBtn = document.getElementById("detail-video-play");
+  const playIcon = document.getElementById("detail-play-icon");
+  const pauseIcon = document.getElementById("detail-pause-icon");
+  const fullscreenBtn = document.getElementById("detail-video-fullscreen");
+
+  function showPlay() { playIcon.style.display = ""; pauseIcon.style.display = "none"; }
+  function showPause() { playIcon.style.display = "none"; pauseIcon.style.display = ""; }
+
+  if (playBtn) {
+    playBtn.onclick = () => {
+      if (video.paused) {
+        video.play();
+        showPause();
+      } else {
+        video.pause();
+        showPlay();
+      }
+    };
+  }
+
+  if (fullscreenBtn) {
+    fullscreenBtn.onclick = () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      }
+    };
+  }
+
+  video.onplay = () => showPause();
+  video.onpause = () => showPlay();
+  video.onended = () => showPlay();
+  video.onclick = () => {
+    if (video.paused) { video.play(); showPause(); }
+    else { video.pause(); showPlay(); }
+  };
+
+  showPlay();
+}
+
 function hideDetail() {
+  const video = document.getElementById("detail-video");
+  if (video) video.pause();
+
   detailPanel.classList.remove("is-active");
   detailPanel.classList.add("is-leaving");
 
