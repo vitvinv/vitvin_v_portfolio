@@ -103,7 +103,6 @@ const headMetaTags = document.getElementById("head-meta-tags");
 
 const detailPanel = document.querySelector("[data-panel='detail']");
 const detailBackBtn = document.getElementById("detail-back");
-const detailBackLabel = document.getElementById("detail-back-label");
 const detailMedia = document.getElementById("detail-media");
 const detailTitle = document.getElementById("detail-title");
 const detailIndex = document.getElementById("detail-index");
@@ -181,6 +180,12 @@ setupDetailPanel();
 setupHeadScene(document.getElementById("head-stage"));
 applyMobileMetaVars();
 syncMobileInfo();
+
+/* ── Copyright link → main page ───── */
+document.querySelector(".copyright-link")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  setActivePanel("projects");
+});
 
 function isProjectsTabActive() {
   return projectsPanel ? projectsPanel.classList.contains("is-active") : false;
@@ -950,6 +955,23 @@ function setupDetailPanel() {
   detailBackBtn.addEventListener("click", () => {
     hideDetail();
   });
+
+  const prevBtn = document.getElementById("detail-prev");
+  const nextBtn = document.getElementById("detail-next");
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => {
+      const newIndex = (selectedProjectIndex - 1 + projects.length) % projects.length;
+      showDetail(newIndex, detailSource || "projects");
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      const newIndex = (selectedProjectIndex + 1) % projects.length;
+      showDetail(newIndex, detailSource || "projects");
+    });
+  }
 }
 
 function showDetail(index, source, tileElement) {
@@ -969,10 +991,6 @@ function showDetail(index, source, tileElement) {
     detailLink.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
     detailLink.style.textDecoration = "underline";
     detailLink.style.textUnderlineOffset = "3px";
-
-    if (detailBackLabel) {
-      detailBackLabel.textContent = detailSource === "index" ? "index" : "overview";
-    }
 
     detailMedia.innerHTML = "";
 
@@ -996,6 +1014,7 @@ function showDetail(index, source, tileElement) {
     panels.forEach((p) => p.classList.remove("is-active"));
     detailPanel.classList.remove("is-leaving");
     detailPanel.style.display = "";
+    void detailPanel.offsetWidth;
     detailPanel.classList.add("is-active");
     activePanelId = "detail";
     const vs = document.querySelector(".view-switch");

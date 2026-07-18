@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
@@ -66,10 +66,17 @@
             </div>
           </div>
         </div>
-        <button class="detail-back" type="button" id="detail-back" aria-label="Back">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <span id="detail-back-label">back</span>
-        </button>
+        <button class="detail-back" type="button" id="detail-back" aria-label="Back">back</button>
+        <div class="detail-nav">
+          <button class="detail-nav-btn" type="button" id="detail-prev" aria-label="Previous">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>prev</span>
+          </button>
+          <button class="detail-nav-btn" type="button" id="detail-next" aria-label="Next">
+            <span>next</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
       </section>
     </main>
 
@@ -80,7 +87,7 @@
     <aside class="info-side-panel" id="info-side-panel" aria-label="Side info panel">
       <div class="side-panel-top">
         <section class="side-block copyright-header">
-          <h3>VALENTIN VITVINSKII &copy; 2026</h3>
+          <h3><a class="copyright-link" href="#">VALENTIN VITVINSKII &copy; 2026</a></h3>
           <p class="copyright-lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
         </section>
         <section class="side-block">
