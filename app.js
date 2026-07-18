@@ -109,6 +109,7 @@ const detailTitle = document.getElementById("detail-title");
 const detailIndex = document.getElementById("detail-index");
 const detailDescription = document.getElementById("detail-description");
 const detailSubtitle = document.getElementById("detail-subtitle");
+const detailTags = document.getElementById("detail-tags");
 const detailVideoControls = document.getElementById("detail-video-controls");
 
 let selectedProjectIndex = 0;
@@ -495,7 +496,8 @@ function renderProjects() {
     const previewSrc = project.media.poster || project.media.src;
     listItem.innerHTML = `
       <button class="projects-list-btn" type="button">
-        <span>${project.title}<small>${project.subtitle}</small></span>
+        <span class="projects-list-name">${project.title}</span>
+        <span class="projects-list-tags">${(project.tags || []).join(" / ")}</span>
         <img class="list-preview" src="${previewSrc}" alt="" loading="lazy" />
       </button>
     `;
@@ -1062,10 +1064,15 @@ function showDetail(index, source, tileElement) {
 
   function fillDetailContent() {
     detailTitle.textContent = project.title;
-    detailIndex.textContent = `${String(index + 1).padStart(2, "0")} / ${String(projects.length).padStart(2, "0")}`;
     detailDescription.textContent = project.description;
     if (detailSubtitle) {
-      detailSubtitle.textContent = project.subtitle || (project.tags || []).join(" / ");
+      detailSubtitle.textContent = project.subtitle || "";
+    }
+    if (detailTags) {
+      detailTags.textContent = (project.tags || []).join(" / ");
+    }
+    if (detailBackBtn) {
+      detailBackBtn.textContent = detailSource === "index" ? "back to index" : "back to overview";
     }
 
     detailMedia.innerHTML = "";
