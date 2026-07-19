@@ -51,6 +51,18 @@
           },
           {
             "type": "image",
+            "src": "./projects/nature-cards/all_resize_1.png",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/all_resize_2.png",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
             "src": "./projects/nature-cards/card-01.jpg",
             "poster": "",
             "caption": ""
@@ -58,12 +70,6 @@
           {
             "type": "image",
             "src": "./projects/nature-cards/card-02.jpg",
-            "poster": "",
-            "caption": ""
-          },
-          {
-            "type": "image",
-            "src": "./projects/nature-cards/card-03.jpg",
             "poster": "",
             "caption": ""
           },
@@ -87,12 +93,6 @@
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-09.jpg",
-            "poster": "",
-            "caption": ""
-          },
-          {
-            "type": "image",
             "src": "./projects/nature-cards/card-11.jpg",
             "poster": "",
             "caption": ""
@@ -106,12 +106,6 @@
           {
             "type": "image",
             "src": "./projects/nature-cards/card-13.jpg",
-            "poster": "",
-            "caption": ""
-          },
-          {
-            "type": "image",
-            "src": "./projects/nature-cards/card-14.jpg",
             "poster": "",
             "caption": ""
           },
@@ -142,24 +136,6 @@
           {
             "type": "image",
             "src": "./projects/nature-cards/card-19.jpg",
-            "poster": "",
-            "caption": ""
-          },
-          {
-            "type": "image",
-            "src": "./projects/nature-cards/card-20.jpg",
-            "poster": "",
-            "caption": ""
-          },
-          {
-            "type": "image",
-            "src": "./projects/nature-cards/card-21.jpg",
-            "poster": "",
-            "caption": ""
-          },
-          {
-            "type": "image",
-            "src": "./projects/nature-cards/card-22.jpg",
             "poster": "",
             "caption": ""
           },

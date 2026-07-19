@@ -629,6 +629,7 @@ a {
   flex: 1;
   overflow-y: auto;
   padding: 0;
+  scrollbar-gutter: stable;
 }
 
 .detail-scroll .detail-blocks {
@@ -658,6 +659,7 @@ a {
   padding: 0;
   scrollbar-width: thin;
   scrollbar-color: var(--color-ui-border) transparent;
+  scrollbar-gutter: stable;
 }
 
 /* ── Detail media — single file ──────── */
@@ -716,15 +718,13 @@ a {
 
 /* ── Detail media — multiple files ───── */
 .has-multi-media .detail-media {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--detail-media-gap, 1px);
-  align-items: start;
+  position: relative;
   width: 100%;
   border: 0;
   border-radius: 0;
   margin-top: 0;
   background: #ffffff;
+  overflow: hidden;
 }
 
 .detail-media-item-wrap {
@@ -745,9 +745,14 @@ a {
   width: 100%;
 }
 
+.has-multi-media .detail-media-item-wrap {
+  position: absolute;
+  overflow: hidden;
+}
+
 .has-multi-media .detail-media-item-wrap .detail-media-item {
   width: 100%;
-  height: 100%;
+  height: auto;
   display: block;
   object-fit: cover;
 }
@@ -1138,13 +1143,13 @@ a {
     object-fit: contain;
   }
 
-  .has-single-media .detail-credits {
-    grid-column: auto;
+  .has-single-media .detail-media-item-wrap,
+  .has-single-media .detail-media-inner {
+    width: 100%;
   }
 
-  .has-multi-media .detail-media {
-    grid-template-columns: 1fr;
-    gap: 1px;
+  .has-single-media .detail-credits {
+    grid-column: auto;
   }
 
   .detail-media-item-wrap {

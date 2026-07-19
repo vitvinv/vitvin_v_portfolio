@@ -93,7 +93,7 @@ var MIME = {
 // ── Server ───────────────────────────────────────────
 
 var server = http.createServer(function (req, res) {
-  var parsed = url.parse(req.url, true);
+  var parsed = new URL(req.url, "http://" + (req.headers.host || "localhost"));
 
   // Static file serving
   var rawPath = parsed.pathname === "/" ? "/index.html" : parsed.pathname;

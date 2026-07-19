@@ -218,10 +218,6 @@ function syncMobileInfo() {
   const contactBlocks = [];
 
   blocks.forEach((block) => {
-    if (block.classList.contains("copyright-header")) {
-      return;
-    }
-
     const h3 = block.querySelector("h3");
     if (!h3) {
       return;
@@ -1171,11 +1167,10 @@ function showDetail(index, source, tileElement) {
       : [{ type: project.media.type, src: project.media.src, poster: project.media.poster }];
 
     var totalFiles = allFiles.length;
-    var isSingle = totalFiles <= 1;
 
     if (detailScroll) {
-      detailScroll.classList.toggle("has-multi-media", !isSingle);
-      detailScroll.classList.toggle("has-single-media", isSingle);
+      detailScroll.classList.add("has-multi-media");
+      detailScroll.classList.remove("has-single-media");
       detailScroll.style.setProperty("--detail-media-gap", PORTFOLIO_CONFIG.detail.mediaGap + "px");
     }
 
@@ -1203,6 +1198,8 @@ function showDetail(index, source, tileElement) {
         image.alt = project.title + " image " + (fi + 1);
         image.className = "detail-media-item";
         image.loading = fi === 0 ? "eager" : "lazy";
+        image.addEventListener("load", scheduleMasonry);
+        image.addEventListener("error", scheduleMasonry);
         inner.appendChild(image);
       }
 
@@ -1225,6 +1222,10 @@ function showDetail(index, source, tileElement) {
 
     // Image lightbox: click any detail image to enlarge
     setupImageLightbox();
+
+    // Masonry layout
+    ensureMasonryObserver();
+    scheduleMasonry();
   }
 
   function showDetailPanel() {
@@ -1338,7 +1339,7 @@ function addPerVideoControls(inner, video) {
     '<img class="vid-play-icon" src="./icons/music-play-play-button-svgrepo-com.svg" alt="" width="18" height="18">' +
     '<img class="vid-pause-icon" src="./icons/media-player-music-pause-svgrepo-com.svg" alt="" width="18" height="18" style="display:none">' +
     '</button>' +
-    '<button class="detail-video-btn detail-vid-mute" type="button" aria-label="Mute" style="display:none">' +
+    '<button class="detail-video-btn detail-vid-mute" type="button" aria-label="Mute">' +
     '<img class="vid-audio-on" src="./icons/audio-svgrepo-com.svg" alt="" width="16" height="16">' +
     '<img class="vid-audio-off" src="./icons/audio-off-svgrepo-com.svg" alt="" width="16" height="16" style="display:none">' +
     '</button>' +
@@ -1366,13 +1367,20 @@ function addPerVideoControls(inner, video) {
     };
   }
 
-  // Fullscreen — request on inner wrapper so controls stay visible
+  // Fullscreen — video on iOS (divs don't support it), inner on desktop
   function toggleFullscreen() {
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    } else if (video.webkitEnterFullscreen) {
+      // iOS Safari — only <video> supports fullscreen
+      video.webkitEnterFullscreen();
     } else if (inner.requestFullscreen) {
+      // Desktop — fullscreen on inner keeps controls visible
       inner.classList.add("is-fullscreen");
       inner.requestFullscreen();
+    } else if (video.requestFullscreen) {
+      video.requestFullscreen();
     } else if (inner.webkitRequestFullscreen) {
       inner.classList.add("is-fullscreen");
       inner.webkitRequestFullscreen();
@@ -1414,40 +1422,11 @@ function addPerVideoControls(inner, video) {
   video.onended = showPlay;
   showPlay();
 
-  // ── Audio detection (show mute button only for videos with audio) ──
   video.addEventListener("loadedmetadata", function () {
     if (this.videoWidth && this.videoHeight) {
       this.style.aspectRatio = this.videoWidth + " / " + this.videoHeight;
     }
-
-    if (!muteBtn) return;
-    var detected = false;
-
-    // Firefox
-    if (typeof video.mozHasAudio !== "undefined") {
-      detected = video.mozHasAudio;
-    }
-    // Chromium / Safari — captureStream reads actual tracks
-    else if (video.captureStream && video.readyState >= 1) {
-      try {
-        var stream = video.captureStream();
-        detected = stream.getAudioTracks().length > 0;
-        stream.getTracks().forEach(function (t) { t.stop(); });
-      } catch (_) {
-        // captureStream may fail; fall back to webkit counter
-        if (video.webkitAudioDecodedByteCount > 0) detected = true;
-      }
-    }
-    // WebKit numeric fallback
-    else if (video.webkitAudioDecodedByteCount > 0) {
-      detected = true;
-    }
-    // Safari audioTracks
-    else if (video.audioTracks && video.audioTracks.length > 0) {
-      detected = true;
-    }
-
-    if (detected) muteBtn.style.display = "";
+    layoutDetailMasonry();
   });
 
   // ── Fullscreen idle timeout (hide controls after 3s of inactivity) ──
@@ -1895,4 +1874,81 @@ function trackTileMediaLoads() {
       el.addEventListener("error", oneDone, { once: true });
     }
   }
+}
+
+var _masonryRAF = null;
+
+function scheduleMasonry() {
+  if (_masonryRAF) return;
+  _masonryRAF = requestAnimationFrame(function () {
+    _masonryRAF = null;
+    layoutDetailMasonry();
+  });
+}
+
+function layoutDetailMasonry() {
+  var gap = PORTFOLIO_CONFIG.detail.mediaGap || 1;
+  var minColW = 280;
+  var items = detailMedia.querySelectorAll(".detail-media-item-wrap");
+  if (items.length === 0) {
+    detailMedia.style.height = "";
+    return;
+  }
+
+  var containerW = detailMedia.clientWidth;
+  if (containerW <= 0) return;
+
+  var cols = Math.max(1, Math.floor((containerW + gap) / (minColW + gap)));
+  var colW = (containerW - (cols - 1) * gap) / cols;
+  var colHeights = new Array(cols);
+  for (var c = 0; c < cols; c++) colHeights[c] = 0;
+
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+
+    var bestCol = 0;
+    for (var c = 1; c < cols; c++) {
+      if (colHeights[c] < colHeights[bestCol]) bestCol = c;
+    }
+
+    item.style.position = "absolute";
+    item.style.left = bestCol * (colW + gap) + "px";
+    item.style.top = colHeights[bestCol] + "px";
+    item.style.width = colW + "px";
+
+    var h = item.offsetHeight;
+    colHeights[bestCol] += h + gap;
+  }
+
+  var maxH = 0;
+  for (var c = 0; c < cols; c++) {
+    if (colHeights[c] > maxH) maxH = colHeights[c];
+  }
+  detailMedia.style.height = Math.max(maxH - gap, 0) + "px";
+}
+
+// Image loads change item heights but not container width — force relayout
+// Set up resize observer on the detail media container
+var ensureMasonryObserver;
+
+if (window.ResizeObserver) {
+  var masonryObserver = new ResizeObserver(scheduleMasonry);
+  var masonryObserving = false;
+  ensureMasonryObserver = function () {
+    if (masonryObserving) return;
+    if (detailMedia && detailMedia.parentNode) {
+      masonryObserver.observe(detailMedia);
+      masonryObserving = true;
+    }
+  };
+} else {
+  ensureMasonryObserver = function () {};
+  var _resizeRAF = null;
+  window.addEventListener("resize", function () {
+    if (_resizeRAF) return;
+    _resizeRAF = requestAnimationFrame(function () {
+      _resizeRAF = null;
+    scheduleMasonry();
+  });
+  });
 }
