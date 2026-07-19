@@ -41,7 +41,7 @@ function folderTitle(name) {
 
 // ── Media detection ───────────────────────────────────
 
-function scanMedia(folderPath) {
+function scanMedia(folderPath, captions) {
   var files = fs.readdirSync(folderPath).filter(function (f) {
     var ext = path.extname(f).toLowerCase();
     return VIDEO_EXT[ext] || IMAGE_EXT[ext];
@@ -74,8 +74,9 @@ function scanMedia(folderPath) {
     var posterFile = sameNamePoster(videos[vi]);
     if (posterFile) posterNames[posterFile.toLowerCase()] = true;
   }
-  var allFiles = videos.sort().concat(images.sort());
+   var allFiles = videos.sort().concat(images.sort());
   var filesList = [];
+  var captionIdx = 0;
   for (var fi = 0; fi < allFiles.length; fi++) {
     var f = allFiles[fi];
     if (/^cover\./i.test(f)) continue;
@@ -85,7 +86,9 @@ function scanMedia(folderPath) {
     var fPoster = fType === "video"
       ? (cover || sameNamePoster(f)) || null
       : null;
-    filesList.push({ type: fType, src: f, poster: fPoster });
+    var cap = (captions && captionIdx < captions.length) ? (captions[captionIdx] || "") : "";
+    filesList.push({ type: fType, src: f, poster: fPoster, caption: cap });
+    captionIdx++;
   }
 
   return {
@@ -101,7 +104,8 @@ function scanMedia(folderPath) {
 function buildProject(folderName) {
   var folderPath = path.join(PROJECTS_DIR, folderName);
   var meta = parseJSONC(path.join(folderPath, "meta.jsonc"));
-  var media = scanMedia(folderPath);
+  var captions = Array.isArray(meta.captions) ? meta.captions : null;
+  var media = scanMedia(folderPath, captions);
 
   // Allow meta to override media_src and tile_image
   var src = meta.media_src || (media.src ? "./projects/" + folderName + "/" + media.src : "");
@@ -128,6 +132,7 @@ function buildProject(folderName) {
           type: f.type,
           src: "./projects/" + folderName + "/" + f.src,
           poster: f.poster ? "./projects/" + folderName + "/" + f.poster : "",
+          caption: f.caption || "",
         };
       }),
     },
