@@ -283,6 +283,20 @@ body {
   object-fit: contain;
   object-position: center;
   background: var(--color-bg-tile-media);
+  filter: grayscale(100%);
+  transition: filter 400ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-tile:hover .tile-media {
+    filter: grayscale(0%);
+  }
+}
+
+@media (hover: none) {
+  .project-tile.is-focused .tile-media {
+    filter: grayscale(0%);
+  }
 }
 
 .head-meta {
@@ -677,6 +691,12 @@ a {
   object-fit: contain;
 }
 
+.has-single-media .detail-media-item-wrap {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+}
+
 /* ── Detail media — multiple files ───── */
 .has-multi-media .detail-media {
   display: grid;
@@ -690,15 +710,31 @@ a {
   overflow: visible;
 }
 
-.has-multi-media .detail-media-item {
-  width: 100%;
-  height: auto;
-  display: block;
-  aspect-ratio: auto;
+.detail-media-item-wrap {
+  position: relative;
+  overflow: hidden;
 }
 
-.has-multi-media .detail-media video.detail-media-item {
-  aspect-ratio: auto;
+.has-multi-media .detail-media-item-wrap .detail-media-item {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.has-multi-media .detail-media-item-wrap video.detail-media-item {
+  object-fit: contain;
+  background: #000;
+}
+
+/* ── Per-video controls (shared) ────────── */
+.detail-media-item-wrap .detail-vid-ctrl {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  z-index: 2;
 }
 
 /* ── Shared media item ───────────────── */
@@ -844,7 +880,7 @@ a {
   will-change: transform, opacity;
 }
 
-@media (orientation: landscape) {
+@media (min-width: 731px) {
   .portrait-tab {
     display: none;
   }
@@ -939,14 +975,12 @@ a {
     left: calc(var(--landscape-side-width) + 12px);
   }
 
-
+  .has-single-media .detail-media-wrap {
+    max-width: calc(100vw - var(--landscape-side-width) - 40px);
+  }
 }
 
-@media (orientation: portrait) {
-  .portrait-tab {
-    display: inline-flex;
-  }
-
+@media (max-width: 730px) {
   .mobile-copyright {
     display: inline-flex;
   }
@@ -1028,6 +1062,10 @@ a {
   .has-multi-media .detail-media {
     grid-template-columns: 1fr;
     gap: 1px;
+  }
+
+  .detail-media-item-wrap {
+    width: 100%;
   }
 }
 

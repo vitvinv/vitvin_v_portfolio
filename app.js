@@ -131,13 +131,14 @@ var LOADING = (function () {
 })();
 
 var gallerySources = [
-  "./projects/11111/face0.png",
-  "./projects/22222/Generated Image March 25, 2026 - 7_50PM(1).jpg",
-  "./projects/33333/950f644d5b61c97b8b3139a6323147e7.jpg",
-  "./projects/44444/285844320e1483d2d7fb5fb912ac5082.jpg",
-  "./projects/55555/3cf5d653cdfdfbcad92c59d59061c310.jpg",
+  "./projects/Yandex.Afisha/1080 x 1920 output 2.mp4",
+  "./projects/Arive/arive.mp4",
+  "./projects/AVAVAV/AVAVAV.mp4",
+  "./projects/ginger-cotton/ginger_cotton_final.mp4",
+  "./projects/AR_sticker/IMG_1356.MP4",
   "./projects/arny-praht/arnypraht.MP4",
   "./projects/nature-cards/cover.jpg",
+  "./projects/salaryman/output4_encoded_2.mp4",
 ];
 
 const galleryTags = [
@@ -171,7 +172,7 @@ let projects = gallerySources.map((source, index) => {
 const tabs = Array.from(document.querySelectorAll(".tab"));
 const panels = Array.from(document.querySelectorAll(".panel"));
 const projectsPanel = panels.find((panel) => panel.dataset.panel === "projects");
-const orientationMedia = window.matchMedia("(orientation: landscape)");
+const orientationMedia = window.matchMedia("(min-width: 731px)");
 
 const orbit = document.getElementById("tiles-orbit");
 const projectsList = document.getElementById("projects-list");
@@ -589,6 +590,10 @@ function renderProjects() {
 
   updateHeadMeta(projects[0]);
   tilesMotionController = setupTilesMotion(orbit, motionTiles, (focusedIndex) => {
+    for (var i = 0; i < motionTiles.length; i++) {
+      motionTiles[i].classList.toggle("is-focused", i === focusedIndex);
+    }
+
     const focusedTile = motionTiles[focusedIndex];
     if (focusedTile && focusedTile._projectDataId) {
       const focusedProject = projects.find(function (p) { return p.id === focusedTile._projectDataId; });
@@ -1170,6 +1175,8 @@ function showDetail(index, source, tileElement) {
 
     for (var fi = 0; fi < totalFiles; fi++) {
       var file = allFiles[fi];
+      var wrap = document.createElement("div");
+      wrap.className = "detail-media-item-wrap";
 
       if (file.type === "video" && file.src) {
         var video = document.createElement("video");
@@ -1178,7 +1185,9 @@ function showDetail(index, source, tileElement) {
         video.preload = "metadata";
         video.playsInline = true;
         video.className = "detail-media-item";
-        detailMedia.appendChild(video);
+        wrap.appendChild(video);
+
+        addPerVideoControls(wrap, video);
 
         video.addEventListener("loadedmetadata", function () {
           if (this.videoWidth && this.videoHeight) {
@@ -1192,20 +1201,14 @@ function showDetail(index, source, tileElement) {
         image.alt = project.title + " image " + (fi + 1);
         image.className = "detail-media-item";
         image.loading = fi === 0 ? "eager" : "lazy";
-        detailMedia.appendChild(image);
+        wrap.appendChild(image);
       }
+
+      detailMedia.appendChild(wrap);
     }
 
-    // Video controls: show for first video, hide for all-image
-    var firstIsVideo = totalFiles > 0 && allFiles[0].type === "video";
     if (detailVideoControls) {
-      if (firstIsVideo) {
-        detailVideoControls.style.display = "";
-        var firstVideo = detailMedia.querySelector("video");
-        if (firstVideo) bindVideoControls(firstVideo);
-      } else {
-        detailVideoControls.style.display = "none";
-      }
+      detailVideoControls.style.display = "none";
     }
   }
 
@@ -1305,6 +1308,57 @@ function bindVideoControls(video) {
   video.onpause = () => showPlay();
   video.onended = () => showPlay();
   video.onclick = () => {
+    if (video.paused) { video.play(); showPause(); }
+    else { video.pause(); showPlay(); }
+  };
+
+  showPlay();
+}
+
+function addPerVideoControls(wrap, video) {
+  var ctrl = document.createElement("div");
+  ctrl.className = "detail-vid-ctrl";
+  ctrl.innerHTML =
+    '<button class="detail-video-btn detail-vid-play" type="button" aria-label="Play">' +
+    '<img class="vid-play-icon" src="./icons/music-play-play-button-svgrepo-com.svg" alt="" width="18" height="18">' +
+    '<img class="vid-pause-icon" src="./icons/media-player-music-pause-svgrepo-com.svg" alt="" width="18" height="18" style="display:none">' +
+    '</button>' +
+    '<button class="detail-video-btn detail-vid-fullscreen" type="button" aria-label="Fullscreen">' +
+    '<img src="./icons/fullscreen-svgrepo-com.svg" alt="" width="16" height="16">' +
+    '</button>';
+  wrap.appendChild(ctrl);
+
+  var playBtn = ctrl.querySelector(".detail-vid-play");
+  var playIcon = ctrl.querySelector(".vid-play-icon");
+  var pauseIcon = ctrl.querySelector(".vid-pause-icon");
+  var fullscreenBtn = ctrl.querySelector(".detail-vid-fullscreen");
+
+  function showPlay() { playIcon.style.display = ""; pauseIcon.style.display = "none"; }
+  function showPause() { playIcon.style.display = "none"; pauseIcon.style.display = ""; }
+
+  if (playBtn) {
+    playBtn.onclick = function () {
+      if (video.paused) { video.play(); showPause(); }
+      else { video.pause(); showPlay(); }
+    };
+  }
+
+  if (fullscreenBtn) {
+    fullscreenBtn.onclick = function () {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      }
+    };
+  }
+
+  video.onplay = showPause;
+  video.onpause = showPlay;
+  video.onended = showPlay;
+  video.onclick = function () {
     if (video.paused) { video.play(); showPause(); }
     else { video.pause(); showPlay(); }
   };

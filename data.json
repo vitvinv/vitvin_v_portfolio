@@ -1,8 +1,8 @@
 {
   "projects": [
     {
-      "id": "11111",
-      "title": "11111",
+      "id": "Yandex.Afisha",
+      "title": "Yandex.Afisha",
       "subtitle": "AI / 3D",
       "tags": [
         "AI",
@@ -11,22 +11,42 @@
       "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
       "link": "",
       "media": {
-        "type": "image",
-        "src": "./projects/11111/face0.png",
-        "poster": "./projects/11111/face0.png",
-        "previewVideo": "",
+        "type": "video",
+        "src": "./projects/Yandex.Afisha/1080 x 1920 output 2.mp4",
+        "poster": "./projects/Yandex.Afisha/1080 x 1920 output 2.jpg",
+        "previewVideo": "./projects/Yandex.Afisha/1080 x 1920 output 2.mp4",
         "files": [
           {
+            "type": "video",
+            "src": "./projects/Yandex.Afisha/1080 x 1920 output 2.mp4",
+            "poster": "./projects/Yandex.Afisha/1080 x 1920 output 2.jpg"
+          },
+          {
+            "type": "video",
+            "src": "./projects/Yandex.Afisha/1080 x 1920 output 2_1.mp4",
+            "poster": "./projects/Yandex.Afisha/1080 x 1920 output 2_1.jpg"
+          },
+          {
             "type": "image",
-            "src": "./projects/11111/face0.png",
+            "src": "./projects/Yandex.Afisha/photo_2026-01-15_13-14-25.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/Yandex.Afisha/photo_2026-01-16_15-40-32.jpg",
+            "poster": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/Yandex.Afisha/photo_2026-01-16_15-40-34.jpg",
             "poster": ""
           }
         ]
       }
     },
     {
-      "id": "22222",
-      "title": "22222",
+      "id": "Arive",
+      "title": "Arive",
       "subtitle": "Design / WebGL",
       "tags": [
         "Design",
@@ -35,22 +55,22 @@
       "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
       "link": "",
       "media": {
-        "type": "image",
-        "src": "./projects/22222/Generated Image March 25, 2026 - 7_50PM(1).jpg",
-        "poster": "./projects/22222/Generated Image March 25, 2026 - 7_50PM(1).jpg",
-        "previewVideo": "",
+        "type": "video",
+        "src": "./projects/Arive/arive.mp4",
+        "poster": "./projects/Arive/arive.jpg",
+        "previewVideo": "./projects/Arive/arive.mp4",
         "files": [
           {
-            "type": "image",
-            "src": "./projects/22222/Generated Image March 25, 2026 - 7_50PM(1).jpg",
-            "poster": ""
+            "type": "video",
+            "src": "./projects/Arive/arive.mp4",
+            "poster": "./projects/Arive/arive.jpg"
           }
         ]
       }
     },
     {
-      "id": "33333",
-      "title": "33333",
+      "id": "AVAVAV",
+      "title": "AVAVAV",
       "subtitle": "Studio / Identity",
       "tags": [
         "Studio",
@@ -59,22 +79,22 @@
       "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
       "link": "",
       "media": {
-        "type": "image",
-        "src": "./projects/33333/950f644d5b61c97b8b3139a6323147e7.jpg",
-        "poster": "./projects/33333/950f644d5b61c97b8b3139a6323147e7.jpg",
-        "previewVideo": "",
+        "type": "video",
+        "src": "./projects/AVAVAV/AVAVAV.mp4",
+        "poster": "./projects/AVAVAV/AVAVAV.png",
+        "previewVideo": "./projects/AVAVAV/AVAVAV.mp4",
         "files": [
           {
-            "type": "image",
-            "src": "./projects/33333/950f644d5b61c97b8b3139a6323147e7.jpg",
-            "poster": ""
+            "type": "video",
+            "src": "./projects/AVAVAV/AVAVAV.mp4",
+            "poster": "./projects/AVAVAV/AVAVAV.png"
           }
         ]
       }
     },
     {
-      "id": "44444",
-      "title": "44444",
+      "id": "ginger-cotton",
+      "title": "Ginger Cotton",
       "subtitle": "Render / Code",
       "tags": [
         "Render",
@@ -83,22 +103,27 @@
       "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
       "link": "",
       "media": {
-        "type": "image",
-        "src": "./projects/44444/285844320e1483d2d7fb5fb912ac5082.jpg",
-        "poster": "./projects/44444/285844320e1483d2d7fb5fb912ac5082.jpg",
-        "previewVideo": "",
+        "type": "video",
+        "src": "./projects/ginger-cotton/ginger_cotton_final.mp4",
+        "poster": "./projects/ginger-cotton/noblack_TG_title.jpg",
+        "previewVideo": "./projects/ginger-cotton/ginger_cotton_final.mp4",
         "files": [
           {
+            "type": "video",
+            "src": "./projects/ginger-cotton/ginger_cotton_final.mp4",
+            "poster": ""
+          },
+          {
             "type": "image",
-            "src": "./projects/44444/285844320e1483d2d7fb5fb912ac5082.jpg",
+            "src": "./projects/ginger-cotton/noblack_TG_title.jpg",
             "poster": ""
           }
         ]
       }
     },
     {
-      "id": "55555",
-      "title": "55555",
+      "id": "AR_sticker",
+      "title": "AR Sticker",
       "subtitle": "Visual / Prototype",
       "tags": [
         "Visual",
@@ -107,14 +132,24 @@
       "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
       "link": "",
       "media": {
-        "type": "image",
-        "src": "./projects/55555/3cf5d653cdfdfbcad92c59d59061c310.jpg",
-        "poster": "./projects/55555/3cf5d653cdfdfbcad92c59d59061c310.jpg",
-        "previewVideo": "",
+        "type": "video",
+        "src": "./projects/AR_sticker/IMG_1356.MP4",
+        "poster": "./projects/AR_sticker/cover.jpg",
+        "previewVideo": "./projects/AR_sticker/IMG_1356.MP4",
         "files": [
           {
+            "type": "video",
+            "src": "./projects/AR_sticker/IMG_1356.MP4",
+            "poster": "./projects/AR_sticker/cover.jpg"
+          },
+          {
+            "type": "video",
+            "src": "./projects/AR_sticker/IMG_1356_1.mp4",
+            "poster": "./projects/AR_sticker/cover.jpg"
+          },
+          {
             "type": "image",
-            "src": "./projects/55555/3cf5d653cdfdfbcad92c59d59061c310.jpg",
+            "src": "./projects/AR_sticker/photo_2026-01-16_18-52-16.jpg",
             "poster": ""
           }
         ]
@@ -133,13 +168,13 @@
       "media": {
         "type": "video",
         "src": "./projects/arny-praht/arnypraht.MP4",
-        "poster": "./projects/arny-praht/arnypraht.png",
+        "poster": "./projects/arny-praht/arnypraht.jpg",
         "previewVideo": "./projects/arny-praht/arnypraht.MP4",
         "files": [
           {
             "type": "video",
             "src": "./projects/arny-praht/arnypraht.MP4",
-            "poster": "./projects/arny-praht/arnypraht.png"
+            "poster": "./projects/arny-praht/arnypraht.jpg"
           }
         ]
       }
@@ -256,6 +291,27 @@
             "type": "image",
             "src": "./projects/nature-cards/card-23.jpg",
             "poster": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "salaryman",
+      "title": "Salaryman",
+      "subtitle": "",
+      "tags": [],
+      "description": "",
+      "link": "",
+      "media": {
+        "type": "video",
+        "src": "./projects/salaryman/output4_encoded_2.mp4",
+        "poster": "./projects/salaryman/output4_encoded_2.jpg",
+        "previewVideo": "./projects/salaryman/output4_encoded_2.mp4",
+        "files": [
+          {
+            "type": "video",
+            "src": "./projects/salaryman/output4_encoded_2.mp4",
+            "poster": "./projects/salaryman/output4_encoded_2.jpg"
           }
         ]
       }
