@@ -33,7 +33,7 @@
       "tags": [
         "3D",
         "Drawing",
-        "Card Game Prototype"
+        "Card Game"
       ],
       "description": "Collection of cards made during 4-day session in Creasidence. I have teamed up with an artist who drew pastel textures, which I then wrapped around low-poly animals.",
       "link": "",
@@ -330,8 +330,7 @@
       "subtitle": "",
       "tags": [
         "CGI",
-        "Socials",
-        "Motion"
+        "concept"
       ],
       "description": "My theory is that for productive creative work, it's essential to step away from the computer and do at least part of the work manually (clicking the mouse doesn't count!). I've taken the first step towards fully hands-on work on a digital project and transferred a clay character into the digital space.",
       "link": "",
@@ -353,16 +352,16 @@
   ],
   "info": {
     "copyright_name": "VALENTIN VITVINSKII © 2026",
-    "copyright_lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
-    "experience": "Creative Developer at Studio Name (2020–present)\nFrontend Lead at Agency (2018–2020)",
+    "copyright_lorem": "Hello! My name is Valentin. I've been working in computer graphics and creative production for the past five years. I enjoy working at the intersection of technology and creativity, so I can build complex pipelines using 3D and AI - and get faster iterations, greater control and reliable results. \n\nLooking forward for exciting projects and collabs!",
+    "experience": "CGI freelance (2023–present)\nAuthor for Щёлочь studio (2025-present)\nCreator for jewelry brand (2021-2023)",
     "cv_label": "CV",
-    "cv_link_text": "Download CV (PDF)",
+    "cv_link_text": "download PDF",
     "cv_link_url": "#",
     "tools_label": "Tools",
-    "tools_text": "Three.js / WebGL, React, Motion Design, Figma, Blender, GSAP",
+    "tools_text": "ComfyUI, Blender, Adobe and a whole zoo of video AIs",
     "contact_heading": "Contact",
-    "contact_email": "hello@example.com",
-    "contact_telegram": "yourhandle",
-    "contact_instagram": "yourhandle"
+    "contact_email": "vitvin.val@gmail.com",
+    "contact_telegram": "vitvin_v",
+    "contact_instagram": "vitvin_v"
   }
 }

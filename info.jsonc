@@ -1,14 +1,14 @@
 {
   "copyright_name": "VALENTIN VITVINSKII © 2026",
-  "copyright_lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
-  "experience": "Creative Developer at Studio Name (2020–present)\nFrontend Lead at Agency (2018–2020)",
+  "copyright_lorem": "Hello! My name is Valentin. I've been working in computer graphics and creative production for the past five years. I enjoy working at the intersection of technology and creativity, so I can build complex pipelines using 3D and AI - and get faster iterations, greater control and reliable results. \n\nLooking forward for exciting projects and collabs!",
+  "experience": "CGI freelance (2023–present)\nAuthor for Щёлочь studio (2025-present)\nCreator for jewelry brand (2021-2023)",
   "cv_label": "CV",
-  "cv_link_text": "Download CV (PDF)",
+  "cv_link_text": "download PDF",
   "cv_link_url": "#",
   "tools_label": "Tools",
-  "tools_text": "Three.js / WebGL, React, Motion Design, Figma, Blender, GSAP",
+  "tools_text": "ComfyUI, Blender, Adobe and a whole zoo of video AIs",
   "contact_heading": "Contact",
-  "contact_email": "hello@example.com",
-  "contact_telegram": "yourhandle",
-  "contact_instagram": "yourhandle"
+  "contact_email": "vitvin.val@gmail.com",
+  "contact_telegram": "vitvin_v",
+  "contact_instagram": "vitvin_v"
 }
