@@ -1,9 +1,8 @@
 {
-  "date": "2025-02",
-  "subtitle": "Visual / Prototype",
-  "tags": "Visual, Prototype",
-  "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
+  "date": "2023-07",
+  "tags": "CGI, Socials, Motion",
+  "description": "My theory is that for productive creative work, it's essential to step away from the computer and do at least part of the work manually (clicking the mouse doesn't count!). I've taken the first step towards fully hands-on work on a digital project and transferred a clay character into the digital space.",
   "captions": [
-    "Cycles render — character blockout with atmospheric lighting"
+    "This salaryman is made of real clay and 3D scanned"
   ]
 }

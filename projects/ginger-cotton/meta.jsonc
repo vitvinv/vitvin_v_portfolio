@@ -1,10 +1,8 @@
 {
-  "date": "2026-04",
-  "subtitle": "Render / Code",
-  "tags": "Render, Code",
-  "description": "A visual exploration of form and motion. This project combines real-time graphics with tactile interfaces, built using Three.js and WebGL. The color palette draws from natural tones while the interaction model emphasizes direct manipulation and fluid feedback.",
+  "date": "2023-07",
+  "tags": "CGI, Socials, Motion",
+  "description": "White Hearts dress promo for Ginger Cotton",
   "captions": [
-    "Final animation — fabric simulation and lighting pass",
-    "Title card — typography lockup used across the project"
+    ""
   ]
 }

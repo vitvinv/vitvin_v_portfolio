@@ -84,7 +84,7 @@ function scanMedia(folderPath, captions) {
     var fExt = path.extname(f).toLowerCase();
     var fType = VIDEO_EXT[fExt] ? "video" : "image";
     var fPoster = fType === "video"
-      ? (cover || sameNamePoster(f)) || null
+      ? sameNamePoster(f) || null
       : null;
     var cap = (captions && captionIdx < captions.length) ? (captions[captionIdx] || "") : "";
     filesList.push({ type: fType, src: f, poster: fPoster, caption: cap });

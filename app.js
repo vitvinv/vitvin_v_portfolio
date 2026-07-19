@@ -131,14 +131,14 @@ var LOADING = (function () {
 })();
 
 var gallerySources = [
-  "./projects/Yandex.Afisha/1080 x 1920 output 2.mp4",
   "./projects/Arive/arive.mp4",
-  "./projects/AVAVAV/AVAVAV.mp4",
-  "./projects/ginger-cotton/ginger_cotton_final.mp4",
-  "./projects/AR_sticker/IMG_1356.MP4",
-  "./projects/arny-praht/arnypraht.MP4",
-  "./projects/salaryman/output4_encoded_2.mp4",
   "./projects/nature-cards/cover.jpg",
+  "./projects/AR-stickers/AR-demo.MP4",
+  "./projects/Yandex.Afisha/1080 x 1920 output 2.mp4",
+  "./projects/AVAVAV/AVAVAV.mp4",
+  "./projects/arny-praht/arnypraht.MP4",
+  "./projects/ginger-cotton/ginger_cotton_final.mp4",
+  "./projects/salaryman/salaryman.mp4",
 ];
 
 const galleryTags = [
@@ -185,7 +185,6 @@ const detailMedia = document.getElementById("detail-media");
 const detailTitle = document.getElementById("detail-title");
 const detailIndex = document.getElementById("detail-index");
 const detailDescription = document.getElementById("detail-description");
-const detailTags = document.getElementById("detail-tags");
 const detailVideoControls = document.getElementById("detail-video-controls");
 const detailScroll = document.querySelector(".detail-scroll");
 
@@ -1161,9 +1160,6 @@ function showDetail(index, source, tileElement) {
   function fillDetailContent() {
     detailTitle.textContent = project.title;
     detailDescription.textContent = project.description;
-    if (detailTags) {
-      detailTags.textContent = (project.tags || []).join(" / ");
-    }
     if (detailBackBtn) {
       detailBackBtn.textContent = detailSource === "index" ? "back to index" : "back to overview";
     }
