@@ -80,9 +80,8 @@ var LOADING = (function () {
     counter.textContent = pct + "%";
 
     if (!delayTimer) {
-      delayTimer = setTimeout(function () {
-        counter.classList.add("is-visible");
-      }, 500);
+      counter.classList.add("is-visible");
+      delayTimer = true;
     }
 
     if (pct >= 100 && mediaDone && modelDone) {
@@ -1198,8 +1197,19 @@ function showDetail(index, source, tileElement) {
         image.alt = project.title + " image " + (fi + 1);
         image.className = "detail-media-item";
         image.loading = fi === 0 ? "eager" : "lazy";
-        image.addEventListener("load", scheduleMasonry);
-        image.addEventListener("error", scheduleMasonry);
+
+        function showImage() {
+          if (!image.classList.contains("is-loaded")) {
+            image.classList.add("is-loaded");
+            scheduleMasonry();
+          }
+        }
+        if (image.complete && image.naturalWidth > 0) {
+          showImage();
+        } else {
+          image.addEventListener("load", showImage);
+          image.addEventListener("error", showImage);
+        }
         inner.appendChild(image);
       }
 
@@ -1373,7 +1383,7 @@ function addPerVideoControls(inner, video) {
       if (document.exitFullscreen) document.exitFullscreen();
       else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
     } else if (video.webkitEnterFullscreen) {
-      // iOS Safari — only <video> supports fullscreen
+      // iOS Safari — only <video> supports fullscreen, needs direct gesture
       video.webkitEnterFullscreen();
     } else if (inner.requestFullscreen) {
       // Desktop — fullscreen on inner keeps controls visible
@@ -1389,18 +1399,31 @@ function addPerVideoControls(inner, video) {
 
   if (fullscreenBtn) {
     fullscreenBtn.onclick = toggleFullscreen;
+    // iOS gesture workaround: some versions require the touch to originate
+    // from the video element; try touchend which may carry a valid gesture
+    fullscreenBtn.addEventListener("touchend", function (e) {
+      if (!video.webkitEnterFullscreen) return;
+      e.preventDefault();
+      video.webkitEnterFullscreen();
+    });
   }
 
   // Double-click → fullscreen
   video.addEventListener("dblclick", function (e) {
     e.preventDefault();
-    toggleFullscreen();
+    if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+    else toggleFullscreen();
   });
 
-  // Video click → play / pause
+  // Video click → play / pause (or fullscreen on iOS)
   video.onclick = function () {
-    if (video.paused) { video.play(); showPause(); }
-    else { video.pause(); showPlay(); }
+    if (video.webkitEnterFullscreen) {
+      video.webkitEnterFullscreen();
+    } else if (video.paused) {
+      video.play(); showPause();
+    } else {
+      video.pause(); showPlay();
+    }
   };
 
   // Mute toggle
@@ -1426,7 +1449,13 @@ function addPerVideoControls(inner, video) {
     if (this.videoWidth && this.videoHeight) {
       this.style.aspectRatio = this.videoWidth + " / " + this.videoHeight;
     }
-    layoutDetailMasonry();
+    this.classList.add("is-loaded");
+    scheduleMasonry();
+  });
+
+  video.addEventListener("error", function () {
+    this.classList.add("is-loaded");
+    scheduleMasonry();
   });
 
   // ── Fullscreen idle timeout (hide controls after 3s of inactivity) ──
