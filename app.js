@@ -1458,6 +1458,32 @@ function addPerVideoControls(inner, video) {
     scheduleMasonry();
   });
 
+  // ── Loading progress ──
+  var progressEl = document.createElement("span");
+  progressEl.className = "detail-vid-progress";
+  inner.appendChild(progressEl);
+
+  video.addEventListener("progress", function () {
+    if (video.buffered.length > 0 && video.duration && isFinite(video.duration)) {
+      var pct = Math.round((video.buffered.end(video.buffered.length - 1) / video.duration) * 100);
+      if (pct >= 100) {
+        progressEl.style.display = "none";
+      } else {
+        progressEl.textContent = pct + "%";
+        progressEl.style.display = "";
+      }
+    }
+  });
+
+  video.addEventListener("canplay", function () {
+    progressEl.style.display = "none";
+  });
+
+  // Hide progress immediately if video is already buffered
+  if (video.readyState >= 3) {
+    progressEl.style.display = "none";
+  }
+
   // ── Fullscreen idle timeout (hide controls after 3s of inactivity) ──
   var idleTimer = null;
   var IDLE_DELAY = 3000;

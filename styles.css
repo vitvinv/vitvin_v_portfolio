@@ -807,6 +807,23 @@ a {
   background: rgba(255, 255, 255, 0.15);
 }
 
+/* ── Video loading progress ──────────────── */
+.detail-vid-progress {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+}
+
 /* ── Fullscreen ─────────────────────────── */
 .detail-media-inner.is-fullscreen {
   width: 100vw;
