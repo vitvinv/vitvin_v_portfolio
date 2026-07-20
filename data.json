@@ -9,8 +9,32 @@
         "Campaign",
         "Video"
       ],
-      "description": "",
+      "description": "AI-powered creative campaign for Letuelle × Yandex Plus. Featuring new cosmetic products for this season.",
       "link": "",
+      "links": [
+        {
+          "url": "",
+          "label": ""
+        },
+        {
+          "url": "",
+          "label": ""
+        }
+      ],
+      "credits": [
+        {
+          "role": "Studio",
+          "name": "Entusiasm"
+        },
+        {
+          "role": "AI Motion",
+          "name": "Anastasiia Makurina, Valentin Vitvinskii"
+        },
+        {
+          "role": "Client",
+          "name": "Letuelle × Yandex"
+        }
+      ],
       "media": {
         "type": "video",
         "src": "./projects/Letuelle×Yandex/1.mp4",
@@ -49,6 +73,8 @@
       ],
       "description": "Little spec TV commertials inspired by travel to Georgia. ბორჯომი ფრთებს გასხამს — borjomi gives you wings",
       "link": "",
+      "links": [],
+      "credits": [],
       "media": {
         "type": "video",
         "src": "./projects/borjomi-gives-wings/borjomi_cow.mp4",
@@ -72,6 +98,12 @@
             "src": "./projects/borjomi-gives-wings/borjomi_sheep.mp4",
             "poster": "./projects/borjomi-gives-wings/borjomi_sheep.jpg",
             "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/borjomi-gives-wings/bottle.jpg",
+            "poster": "",
+            "caption": "For some reason a have never tasted Borjomi in Russia, so my first time happend in Georgia"
           }
         ]
       }
@@ -87,6 +119,18 @@
       ],
       "description": "Send a photo of your car and receive a ca(r)d. It works in ComfyUI via Gemini — one model searches the internet for information about the car, while the other generates the card by looking through a small collection of classic Pokémon designs. [This is a non-profit, fan-made project. No copyright infringement is intended, and all rights belong to their respective owners.]",
       "link": "",
+      "links": [
+        {
+          "url": "",
+          "label": ""
+        }
+      ],
+      "credits": [
+        {
+          "role": "",
+          "name": ""
+        }
+      ],
       "media": {
         "type": "image",
         "src": "./projects/car(d)s--カドカ/cover.jpg",
@@ -167,6 +211,18 @@
       ],
       "description": "Collection of cards made during 4-day session in Creasidence. I have teamed up with an artist who drew pastel textures, which I then wrapped around low-poly animals.",
       "link": "",
+      "links": [
+        {
+          "url": "",
+          "label": ""
+        }
+      ],
+      "credits": [
+        {
+          "role": "",
+          "name": ""
+        }
+      ],
       "media": {
         "type": "image",
         "src": "./projects/nature-cards/cover.jpg",
@@ -295,6 +351,18 @@
       ],
       "description": "A pitch I made for Samokat and its subsidiary Arive cosmetics brand",
       "link": "",
+      "links": [
+        {
+          "url": "",
+          "label": ""
+        }
+      ],
+      "credits": [
+        {
+          "role": "",
+          "name": ""
+        }
+      ],
       "media": {
         "type": "video",
         "src": "./projects/Samokat×Arive/arive.mp4",
@@ -350,6 +418,18 @@
       ],
       "description": "WIP - a tiny 3D scene you can place anywhere",
       "link": "",
+      "links": [
+        {
+          "url": "",
+          "label": ""
+        }
+      ],
+      "credits": [
+        {
+          "role": "",
+          "name": ""
+        }
+      ],
       "media": {
         "type": "video",
         "src": "./projects/AR-stickers/AR-demo.mp4",
@@ -381,6 +461,22 @@
       ],
       "description": "Animation for Yandex.Afisha advertising campaign",
       "link": "",
+      "links": [
+        {
+          "url": "",
+          "label": ""
+        }
+      ],
+      "credits": [
+        {
+          "role": "Studio",
+          "name": "Breathing Exercises"
+        },
+        {
+          "role": "AI-motion",
+          "name": "Valentin Vitvinskii"
+        }
+      ],
       "media": {
         "type": "video",
         "src": "./projects/Yandex.Afisha/1.mp4",
@@ -437,6 +533,18 @@
       ],
       "description": "Part of SS24 campaign in Europe",
       "link": "",
+      "links": [
+        {
+          "url": "",
+          "label": ""
+        }
+      ],
+      "credits": [
+        {
+          "role": "",
+          "name": ""
+        }
+      ],
       "media": {
         "type": "video",
         "src": "./projects/AVAVAV/AVAVAV.mp4",
@@ -463,6 +571,18 @@
       ],
       "description": "This chocolate handbag was animated for Valentine's day in Arny Praht",
       "link": "",
+      "links": [
+        {
+          "url": "",
+          "label": ""
+        }
+      ],
+      "credits": [
+        {
+          "role": "",
+          "name": ""
+        }
+      ],
       "media": {
         "type": "video",
         "src": "./projects/arny-praht/arnypraht.MP4",
@@ -489,6 +609,18 @@
       ],
       "description": "I've created several ring designs and reels for them while working in Sangria Jewelry",
       "link": "",
+      "links": [
+        {
+          "url": "",
+          "label": ""
+        }
+      ],
+      "credits": [
+        {
+          "role": "",
+          "name": ""
+        }
+      ],
       "media": {
         "type": "video",
         "src": "./projects/sangria-jewelry/1-cell.mp4",
@@ -539,6 +671,18 @@
       ],
       "description": "White Hearts dress promo for Ginger Cotton. Clay heroines represent different body shapes, and they all can fit in this one free-size dress.",
       "link": "",
+      "links": [
+        {
+          "url": "",
+          "label": ""
+        }
+      ],
+      "credits": [
+        {
+          "role": "",
+          "name": ""
+        }
+      ],
       "media": {
         "type": "video",
         "src": "./projects/ginger-cotton/1-ginger_cotton_final.mp4",
@@ -613,6 +757,18 @@
       ],
       "description": "My theory is that for productive creative work, it's essential to step away from the computer and do at least part of the work manually (clicking the mouse doesn't count!). I've taken the first step towards fully hands-on work on a digital project and transferred a clay character into the digital space.",
       "link": "",
+      "links": [
+        {
+          "url": "",
+          "label": ""
+        }
+      ],
+      "credits": [
+        {
+          "role": "",
+          "name": ""
+        }
+      ],
       "media": {
         "type": "video",
         "src": "./projects/salaryman/salaryman.mp4",

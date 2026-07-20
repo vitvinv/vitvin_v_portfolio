@@ -25,9 +25,10 @@ function parseJSONC(filePath) {
   if (!fs.existsSync(filePath)) return {};
   var raw = fs.readFileSync(filePath, "utf-8");
   var cleaned = raw
-    .replace(/\/\*[\s\S]*?\*\//g, "")   // block comments
-    .replace(/\/\/.*$/gm, "")            // line comments
-    .replace(/,\s*([}\]])/g, "$1");      // trailing commas
+    .replace(/\r\n/g, "\n")                // normalize line endings
+    .replace(/\/\*[\s\S]*?\*\//g, "")       // block comments
+    .replace(/(^|\s)\/\/.*$/gm, "$1")       // line comments (not inside URLs)
+    .replace(/,\s*([}\]])/g, "$1");          // trailing commas
   return JSON.parse(cleaned);
 }
 
@@ -121,6 +122,8 @@ function buildProject(folderName) {
       : (meta.tags || []),
     description: meta.description || "",
     link: meta.link_url || "",
+    links: meta.links || [],
+    credits: meta.credits || [],
     _date: meta.date || "0000-00",
     media: {
       type: type,

@@ -7,5 +7,12 @@
     "",
     "- some of the most noteable takes of this project",
     "",
+  ],
+  "links": [
+    { "url": "", "label": "" }
+  ],
+  "credits": [
+    { "role": "Studio", "name": "Breathing Exercises" },
+    { "role": "AI-motion", "name": "Valentin Vitvinskii" }
   ]
 }

@@ -1,10 +1,19 @@
 {
   "date": "2026-05",
   "tags": "AI, Campaign, Video",
-  "description": "",
+  "description": "AI-powered creative campaign for Letuelle × Yandex Plus. Featuring new cosmetic products for this season.",
   "captions": [
     "",
     "",
     ""
+  ],
+  "links": [
+    { "url": "", "label": "" },
+    { "url": "", "label": "" }
+  ],
+  "credits": [
+    { "role": "Studio", "name": "Entusiasm" },
+    { "role": "AI Motion", "name": "Anastasiia Makurina, Valentin Vitvinskii" },
+    { "role": "Client", "name": "Letuelle × Yandex" }
   ]
 }

@@ -14,13 +14,14 @@ const PORTFOLIO_CONFIG = {
     cameraMinZ: 2.8,
     cameraMaxZ: 8.5,
     cameraLookAtY: 0,
-    diagnostics: true,
+    diagnostics: false,
     debugMaterial: false,
     headExposure: 1.3,
     mobileBaseY: 0.6,
     mobileScaleBoost: 1.25,
     mobileMetaBottom: "clamp(320px, 50%, 420px)",
     mobileMetaFontSize: "10px",
+    pixelRatio: 0.6,      // <1 = PSX pixelated upscale; 1 = native; >1 = supersampling
   },
   tiles: {
     mediaScale: 1,
@@ -190,6 +191,8 @@ const detailIndex = document.getElementById("detail-index");
 const detailDescription = document.getElementById("detail-description");
 const detailTags = document.getElementById("detail-tags");
 const detailVideoControls = document.getElementById("detail-video-controls");
+const detailLinks = document.getElementById("detail-links");
+const detailRoles = document.getElementById("detail-roles");
 const detailScroll = document.querySelector(".detail-scroll");
 
 let selectedProjectIndex = 0;
@@ -1251,6 +1254,40 @@ function showDetail(index, source, tileElement) {
     // Masonry layout
     ensureMasonryObserver();
     scheduleMasonry();
+
+    // Links and credits
+    populateLinksAndCredits();
+  }
+
+  function populateLinksAndCredits() {
+    if (detailLinks) {
+      var links = (project.links || []).filter(function (l) { return l.url; });
+      if (links.length > 0) {
+        var html = '<h4>Links</h4>';
+        for (var i = 0; i < links.length; i++) {
+          var label = links[i].label || links[i].url;
+          html += '<a href="' + links[i].url + '" target="_blank" rel="noreferrer">' + label + '</a><br>';
+        }
+        detailLinks.innerHTML = html;
+        detailLinks.style.display = "";
+      } else {
+        detailLinks.style.display = "none";
+      }
+    }
+
+    if (detailRoles) {
+      var credits = (project.credits || []).filter(function (c) { return c.role || c.name; });
+      if (credits.length > 0) {
+        var html = '<h4>Credits</h4>';
+        for (var i = 0; i < credits.length; i++) {
+          html += '<div class="role-row"><span class="role-label">' + credits[i].role + '</span><span>' + credits[i].name + '</span></div>';
+        }
+        detailRoles.innerHTML = html;
+        detailRoles.style.display = "";
+      } else {
+        detailRoles.style.display = "none";
+      }
+    }
   }
 
   function showDetailPanel() {
@@ -1594,8 +1631,8 @@ function setupHeadScene(stage) {
   const scene = new THREE.Scene();
   scene.background = null;
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
+  const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, PORTFOLIO_CONFIG.head.pixelRatio));
 
   stage.appendChild(renderer.domElement);
 

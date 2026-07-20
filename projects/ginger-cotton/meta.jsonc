@@ -5,4 +5,11 @@
   "captions": [
     ""
   ]
+,
+  "links": [
+    { "url": "", "label": "" }
+  ],
+  "credits": [
+    { "role": "", "name": "" }
+  ]
 }

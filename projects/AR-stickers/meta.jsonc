@@ -7,4 +7,11 @@
     "",
     "Try it yourself!"
   ]
+,
+  "links": [
+    { "url": "", "label": "" }
+  ],
+  "credits": [
+    { "role": "", "name": "" }
+  ]
 }

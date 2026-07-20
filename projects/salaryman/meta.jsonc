@@ -5,4 +5,11 @@
   "captions": [
     "This salaryman is made of real clay and 3D scanned"
   ]
+,
+  "links": [
+    { "url": "", "label": "" }
+  ],
+  "credits": [
+    { "role": "", "name": "" }
+  ]
 }
