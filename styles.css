@@ -810,6 +810,17 @@ a {
   background: rgba(255, 255, 255, 0.15);
 }
 
+/* Hide secondary buttons until video is played */
+.detail-media-inner .detail-vid-ctrl .detail-vid-mute,
+.detail-media-inner .detail-vid-ctrl .detail-vid-fullscreen {
+  display: none;
+}
+
+.detail-media-inner .detail-vid-ctrl.is-active .detail-vid-mute,
+.detail-media-inner .detail-vid-ctrl.is-active .detail-vid-fullscreen {
+  display: inline-flex;
+}
+
 /* ── Video loading progress ──────────────── */
 .detail-vid-progress {
   position: absolute;

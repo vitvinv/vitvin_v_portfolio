@@ -1360,16 +1360,16 @@ function addPerVideoControls(inner, video) {
   var ctrl = document.createElement("div");
   ctrl.className = "detail-vid-ctrl";
   ctrl.innerHTML =
-    '<button class="detail-video-btn detail-vid-play" type="button" aria-label="Play">' +
-    '<img class="vid-play-icon" src="./icons/music-play-play-button-svgrepo-com.svg" alt="" width="18" height="18">' +
-    '<img class="vid-pause-icon" src="./icons/media-player-music-pause-svgrepo-com.svg" alt="" width="18" height="18" style="display:none">' +
+    '<button class="detail-video-btn detail-vid-fullscreen" type="button" aria-label="Fullscreen">' +
+    '<img src="./icons/fullscreen-svgrepo-com.svg" alt="" width="16" height="16">' +
     '</button>' +
     '<button class="detail-video-btn detail-vid-mute" type="button" aria-label="Mute">' +
     '<img class="vid-audio-on" src="./icons/audio-svgrepo-com.svg" alt="" width="16" height="16">' +
     '<img class="vid-audio-off" src="./icons/audio-off-svgrepo-com.svg" alt="" width="16" height="16" style="display:none">' +
     '</button>' +
-    '<button class="detail-video-btn detail-vid-fullscreen" type="button" aria-label="Fullscreen">' +
-    '<img src="./icons/fullscreen-svgrepo-com.svg" alt="" width="16" height="16">' +
+    '<button class="detail-video-btn detail-vid-play" type="button" aria-label="Play">' +
+    '<img class="vid-play-icon" src="./icons/music-play-play-button-svgrepo-com.svg" alt="" width="18" height="18">' +
+    '<img class="vid-pause-icon" src="./icons/media-player-music-pause-svgrepo-com.svg" alt="" width="18" height="18" style="display:none">' +
     '</button>';
   inner.appendChild(ctrl);
 
@@ -1397,7 +1397,10 @@ function addPerVideoControls(inner, video) {
     if (document.fullscreenElement || document.webkitFullscreenElement) {
       if (document.exitFullscreen) document.exitFullscreen();
       else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-    } else if (video.requestFullscreen) {
+      return;
+    }
+    ctrl.classList.add("is-active");
+    if (video.requestFullscreen) {
       // Standard Fullscreen API (modern iOS 16.4+, desktop)
       video.requestFullscreen();
     } else if (video.webkitEnterFullscreen) {
@@ -1434,6 +1437,11 @@ function addPerVideoControls(inner, video) {
       video.pause(); showPlay();
     }
   };
+
+  // Show secondary controls on first play
+  video.addEventListener("play", function () {
+    ctrl.classList.add("is-active");
+  });
 
   // Mute toggle
   if (muteBtn) {
