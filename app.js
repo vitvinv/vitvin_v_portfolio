@@ -130,8 +130,9 @@ var LOADING = (function () {
 })();
 
 var gallerySources = [
-  "./projects/Arive/arive.mp4",
+  "./projects/Letuelle×Yandex/1.mp4",
   "./projects/nature-cards/cover.jpg",
+  "./projects/Samokat×Arive/arive.mp4",
   "./projects/AR-stickers/AR-demo.MP4",
   "./projects/Yandex.Afisha/1080 x 1920 output 2.mp4",
   "./projects/AVAVAV/AVAVAV.mp4",
@@ -184,6 +185,7 @@ const detailMedia = document.getElementById("detail-media");
 const detailTitle = document.getElementById("detail-title");
 const detailIndex = document.getElementById("detail-index");
 const detailDescription = document.getElementById("detail-description");
+const detailTags = document.getElementById("detail-tags");
 const detailVideoControls = document.getElementById("detail-video-controls");
 const detailScroll = document.querySelector(".detail-scroll");
 
@@ -1155,6 +1157,9 @@ function showDetail(index, source, tileElement) {
   function fillDetailContent() {
     detailTitle.textContent = project.title;
     detailDescription.textContent = project.description;
+    if (detailTags) {
+      detailTags.textContent = (project.tags || []).join(" / ");
+    }
     if (detailBackBtn) {
       detailBackBtn.textContent = detailSource === "index" ? "back to index" : "back to overview";
     }
@@ -1196,13 +1201,10 @@ function showDetail(index, source, tileElement) {
         tryImageExtensions(image, image.src);
         image.alt = project.title + " image " + (fi + 1);
         image.className = "detail-media-item";
-        image.loading = fi === 0 ? "eager" : "lazy";
+        image.loading = "eager";
 
         function showImage() {
-          if (!image.classList.contains("is-loaded")) {
-            image.classList.add("is-loaded");
-            scheduleMasonry();
-          }
+          scheduleMasonry();
         }
         if (image.complete && image.naturalWidth > 0) {
           showImage();
@@ -1449,12 +1451,10 @@ function addPerVideoControls(inner, video) {
     if (this.videoWidth && this.videoHeight) {
       this.style.aspectRatio = this.videoWidth + " / " + this.videoHeight;
     }
-    this.classList.add("is-loaded");
     scheduleMasonry();
   });
 
   video.addEventListener("error", function () {
-    this.classList.add("is-loaded");
     scheduleMasonry();
   });
 
@@ -1953,7 +1953,9 @@ function layoutDetailMasonry() {
   for (var c = 0; c < cols; c++) {
     if (colHeights[c] > maxH) maxH = colHeights[c];
   }
-  detailMedia.style.height = Math.max(maxH - gap, 0) + "px";
+  if (maxH > 0) {
+    detailMedia.style.height = Math.max(maxH - gap, 0) + "px";
+  }
 }
 
 // Image loads change item heights but not container width — force relayout

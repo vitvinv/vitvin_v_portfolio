@@ -724,7 +724,6 @@ a {
   border-radius: 0;
   margin-top: 0;
   background: #ffffff;
-  overflow: hidden;
 }
 
 .detail-media-item-wrap {
@@ -893,6 +892,23 @@ a {
   text-transform: none;
   letter-spacing: 0;
   color: var(--color-text);
+}
+
+.detail-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.detail-tags {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--color-text-meta);
+  letter-spacing: var(--ls-meta);
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .detail-credits {
