@@ -331,6 +331,11 @@ body {
   letter-spacing: var(--ls-meta);
   text-transform: uppercase;
   pointer-events: none;
+  text-shadow:
+    -0.8px -0.8px 0 rgba(255, 255, 255, 0.6),
+     0.8px -0.8px 0 rgba(255, 255, 255, 0.6),
+    -0.8px  0.8px 0 rgba(255, 255, 255, 0.6),
+     0.8px  0.8px 0 rgba(255, 255, 255, 0.6);
 }
 
 .head-meta-name {
