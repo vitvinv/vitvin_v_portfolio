@@ -136,11 +136,11 @@ var gallerySources = [
   "./projects/nature-cards/cover.jpg",
   "./projects/Samokat×Arive/arive.mp4",
   "./projects/AR-stickers/AR-demo.mp4",
-  "./projects/Yandex.Afisha/1-1080 x 1920 output 2.mp4",
+  "./projects/Yandex.Afisha/1.mp4",
   "./projects/AVAVAV/AVAVAV.mp4",
   "./projects/arny-praht/arnypraht.MP4",
   "./projects/sangria-jewelry/1-cell.mp4",
-  "./projects/ginger-cotton/ginger_cotton_final.mp4",
+  "./projects/ginger-cotton/1-ginger_cotton_final.mp4",
   "./projects/salaryman/salaryman.mp4",
 ];
 
@@ -1397,15 +1397,16 @@ function addPerVideoControls(inner, video) {
     if (document.fullscreenElement || document.webkitFullscreenElement) {
       if (document.exitFullscreen) document.exitFullscreen();
       else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    } else if (video.requestFullscreen) {
+      // Standard Fullscreen API (modern iOS 16.4+, desktop)
+      video.requestFullscreen();
     } else if (video.webkitEnterFullscreen) {
-      // iOS Safari — only <video> supports fullscreen, needs direct gesture
+      // Older iOS Safari
       video.webkitEnterFullscreen();
     } else if (inner.requestFullscreen) {
       // Desktop — fullscreen on inner keeps controls visible
       inner.classList.add("is-fullscreen");
       inner.requestFullscreen();
-    } else if (video.requestFullscreen) {
-      video.requestFullscreen();
     } else if (inner.webkitRequestFullscreen) {
       inner.classList.add("is-fullscreen");
       inner.webkitRequestFullscreen();
@@ -1414,26 +1415,19 @@ function addPerVideoControls(inner, video) {
 
   if (fullscreenBtn) {
     fullscreenBtn.onclick = toggleFullscreen;
-    // iOS gesture workaround: some versions require the touch to originate
-    // from the video element; try touchend which may carry a valid gesture
-    fullscreenBtn.addEventListener("touchend", function (e) {
-      if (!video.webkitEnterFullscreen) return;
-      e.preventDefault();
-      video.webkitEnterFullscreen();
-    });
   }
 
   // Double-click → fullscreen
   video.addEventListener("dblclick", function (e) {
     e.preventDefault();
-    if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
-    else toggleFullscreen();
+    toggleFullscreen();
   });
 
   // Video click → play / pause (or fullscreen on iOS)
   video.onclick = function () {
     if (video.webkitEnterFullscreen) {
-      video.webkitEnterFullscreen();
+      // iOS — tapping video goes fullscreen
+      toggleFullscreen();
     } else if (video.paused) {
       video.play(); showPause();
     } else {

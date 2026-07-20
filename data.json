@@ -383,20 +383,20 @@
       "link": "",
       "media": {
         "type": "video",
-        "src": "./projects/Yandex.Afisha/1-1080 x 1920 output 2.mp4",
-        "poster": "./projects/Yandex.Afisha/1080 x 1920 output 2.jpg",
-        "previewVideo": "./projects/Yandex.Afisha/1-1080 x 1920 output 2.mp4",
+        "src": "./projects/Yandex.Afisha/1.mp4",
+        "poster": "./projects/Yandex.Afisha/1.jpg",
+        "previewVideo": "./projects/Yandex.Afisha/1.mp4",
         "files": [
           {
             "type": "video",
-            "src": "./projects/Yandex.Afisha/1-1080 x 1920 output 2.mp4",
-            "poster": "",
+            "src": "./projects/Yandex.Afisha/1.mp4",
+            "poster": "./projects/Yandex.Afisha/1.jpg",
             "caption": ""
           },
           {
             "type": "video",
-            "src": "./projects/Yandex.Afisha/2-512x704.mp4",
-            "poster": "",
+            "src": "./projects/Yandex.Afisha/2.mp4",
+            "poster": "./projects/Yandex.Afisha/2.jpg",
             "caption": ""
           },
           {
@@ -404,18 +404,6 @@
             "src": "./projects/Yandex.Afisha/best-takes.mp4",
             "poster": "./projects/Yandex.Afisha/best-takes.jpg",
             "caption": "- some of the most noteable takes of this project"
-          },
-          {
-            "type": "image",
-            "src": "./projects/Yandex.Afisha/1080 x 1920 output 2.jpg",
-            "poster": "",
-            "caption": ""
-          },
-          {
-            "type": "image",
-            "src": "./projects/Yandex.Afisha/512x704.jpg",
-            "poster": "",
-            "caption": ""
           },
           {
             "type": "image",
@@ -549,18 +537,72 @@
         "Socials",
         "Motion"
       ],
-      "description": "White Hearts dress promo for Ginger Cotton",
+      "description": "White Hearts dress promo for Ginger Cotton. Clay heroines represent different body shapes, and they all can fit in this one free-size dress.",
       "link": "",
       "media": {
         "type": "video",
-        "src": "./projects/ginger-cotton/ginger_cotton_final.mp4",
-        "poster": "./projects/ginger-cotton/ginger_cotton_final.jpg",
-        "previewVideo": "./projects/ginger-cotton/ginger_cotton_final.mp4",
+        "src": "./projects/ginger-cotton/1-ginger_cotton_final.mp4",
+        "poster": "./projects/ginger-cotton/cover.jpg",
+        "previewVideo": "./projects/ginger-cotton/1-ginger_cotton_final.mp4",
         "files": [
           {
             "type": "video",
-            "src": "./projects/ginger-cotton/ginger_cotton_final.mp4",
-            "poster": "./projects/ginger-cotton/ginger_cotton_final.jpg",
+            "src": "./projects/ginger-cotton/1-ginger_cotton_final.mp4",
+            "poster": "./projects/ginger-cotton/1-ginger_cotton_final.jpg",
+            "caption": ""
+          },
+          {
+            "type": "video",
+            "src": "./projects/ginger-cotton/dance_early_concept.mp4",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/ginger-cotton/2.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/ginger-cotton/3.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/ginger-cotton/backstage_circle.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/ginger-cotton/backstage_clock.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/ginger-cotton/backstage_pear.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/ginger-cotton/backstage_rectangle.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/ginger-cotton/backstage_triangle.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/ginger-cotton/ginger_cotton_characters_demo.jpg",
+            "poster": "",
             "caption": ""
           }
         ]
