@@ -39,6 +39,124 @@
       }
     },
     {
+      "id": "borjomi-gives-wings",
+      "title": "Borjomi Gives Wings",
+      "subtitle": "",
+      "tags": [
+        "AI",
+        "spec ad",
+        "video"
+      ],
+      "description": "Little spec TV commertials inspired by travel to Georgia. ბორჯომი ფრთებს გასხამს — borjomi gives you wings",
+      "link": "",
+      "media": {
+        "type": "video",
+        "src": "./projects/borjomi-gives-wings/borjomi_cow.mp4",
+        "poster": "./projects/borjomi-gives-wings/cover.jpg",
+        "previewVideo": "./projects/borjomi-gives-wings/borjomi_cow.mp4",
+        "files": [
+          {
+            "type": "video",
+            "src": "./projects/borjomi-gives-wings/borjomi_cow.mp4",
+            "poster": "./projects/borjomi-gives-wings/borjomi_cow.jpg",
+            "caption": ""
+          },
+          {
+            "type": "video",
+            "src": "./projects/borjomi-gives-wings/borjomi_horse.mp4",
+            "poster": "./projects/borjomi-gives-wings/borjomi_horse.jpg",
+            "caption": ""
+          },
+          {
+            "type": "video",
+            "src": "./projects/borjomi-gives-wings/borjomi_sheep.mp4",
+            "poster": "./projects/borjomi-gives-wings/borjomi_sheep.jpg",
+            "caption": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "car(d)s--カドカ",
+      "title": "Car(D)S  カドカ",
+      "subtitle": "",
+      "tags": [
+        "AI",
+        "concept",
+        "スゲー"
+      ],
+      "description": "Send a photo of your car and receive a ca(r)d. It works in ComfyUI via Gemini — one model searches the internet for information about the car, while the other generates the card by looking through a small collection of classic Pokémon designs. [This is a non-profit, fan-made project. No copyright infringement is intended, and all rights belong to their respective owners.]",
+      "link": "",
+      "media": {
+        "type": "image",
+        "src": "./projects/car(d)s--カドカ/cover.jpg",
+        "poster": "./projects/car(d)s--カドカ/cover.jpg",
+        "previewVideo": "",
+        "files": [
+          {
+            "type": "image",
+            "src": "./projects/car(d)s--カドカ/Artboard1.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/car(d)s--カドカ/Artboard10.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/car(d)s--カドカ/Artboard2.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/car(d)s--カドカ/Artboard3.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/car(d)s--カドカ/Artboard4.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/car(d)s--カドカ/Artboard5.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/car(d)s--カドカ/Artboard6.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/car(d)s--カドカ/Artboard7.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/car(d)s--カドカ/Artboard8.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/car(d)s--カドカ/Artboard9.jpg",
+            "poster": "",
+            "caption": ""
+          }
+        ]
+      }
+    },
+    {
       "id": "nature-cards",
       "title": "Nature Cards",
       "subtitle": "",
@@ -87,37 +205,13 @@
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-04.jpg",
-            "poster": "",
-            "caption": ""
-          },
-          {
-            "type": "image",
             "src": "./projects/nature-cards/card-05.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-08.jpg",
-            "poster": "",
-            "caption": ""
-          },
-          {
-            "type": "image",
             "src": "./projects/nature-cards/card-11.jpg",
-            "poster": "",
-            "caption": ""
-          },
-          {
-            "type": "image",
-            "src": "./projects/nature-cards/card-12.jpg",
-            "poster": "",
-            "caption": ""
-          },
-          {
-            "type": "image",
-            "src": "./projects/nature-cards/card-13.jpg",
             "poster": "",
             "caption": ""
           },
@@ -154,6 +248,36 @@
           {
             "type": "image",
             "src": "./projects/nature-cards/card-23.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/cockroach.JPG",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/crab.JPG",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/demo_front.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/demo_instruction.png",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/nature-cards/jellyfish.JPG",
             "poster": "",
             "caption": ""
           }
@@ -228,13 +352,13 @@
       "link": "",
       "media": {
         "type": "video",
-        "src": "./projects/AR-stickers/AR-demo.MP4",
+        "src": "./projects/AR-stickers/AR-demo.mp4",
         "poster": "./projects/AR-stickers/cover.jpg",
-        "previewVideo": "./projects/AR-stickers/AR-demo.MP4",
+        "previewVideo": "./projects/AR-stickers/AR-demo.mp4",
         "files": [
           {
             "type": "video",
-            "src": "./projects/AR-stickers/AR-demo.MP4",
+            "src": "./projects/AR-stickers/AR-demo.mp4",
             "poster": "./projects/AR-stickers/AR-demo.jpg",
             "caption": ""
           },
@@ -259,14 +383,38 @@
       "link": "",
       "media": {
         "type": "video",
-        "src": "./projects/Yandex.Afisha/1080 x 1920 output 2.mp4",
+        "src": "./projects/Yandex.Afisha/1-1080 x 1920 output 2.mp4",
         "poster": "./projects/Yandex.Afisha/1080 x 1920 output 2.jpg",
-        "previewVideo": "./projects/Yandex.Afisha/1080 x 1920 output 2.mp4",
+        "previewVideo": "./projects/Yandex.Afisha/1-1080 x 1920 output 2.mp4",
         "files": [
           {
             "type": "video",
-            "src": "./projects/Yandex.Afisha/1080 x 1920 output 2.mp4",
-            "poster": "./projects/Yandex.Afisha/1080 x 1920 output 2.jpg",
+            "src": "./projects/Yandex.Afisha/1-1080 x 1920 output 2.mp4",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "video",
+            "src": "./projects/Yandex.Afisha/2-512x704.mp4",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "video",
+            "src": "./projects/Yandex.Afisha/best-takes.mp4",
+            "poster": "./projects/Yandex.Afisha/best-takes.jpg",
+            "caption": "- some of the most noteable takes of this project"
+          },
+          {
+            "type": "image",
+            "src": "./projects/Yandex.Afisha/1080 x 1920 output 2.jpg",
+            "poster": "",
+            "caption": ""
+          },
+          {
+            "type": "image",
+            "src": "./projects/Yandex.Afisha/512x704.jpg",
+            "poster": "",
             "caption": ""
           },
           {
@@ -337,6 +485,56 @@
             "type": "video",
             "src": "./projects/arny-praht/arnypraht.MP4",
             "poster": "./projects/arny-praht/arnypraht.jpg",
+            "caption": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "sangria-jewelry",
+      "title": "Sangria Jewelry",
+      "subtitle": "",
+      "tags": [
+        "CGI",
+        "socials",
+        "jewelry"
+      ],
+      "description": "I've created several ring designs and reels for them while working in Sangria Jewelry",
+      "link": "",
+      "media": {
+        "type": "video",
+        "src": "./projects/sangria-jewelry/1-cell.mp4",
+        "poster": "./projects/sangria-jewelry/cover.jpg",
+        "previewVideo": "./projects/sangria-jewelry/1-cell.mp4",
+        "files": [
+          {
+            "type": "video",
+            "src": "./projects/sangria-jewelry/1-cell.mp4",
+            "poster": "./projects/sangria-jewelry/1-cell.jpg",
+            "caption": "CELL is created procedurally to resemble organic cells structure"
+          },
+          {
+            "type": "video",
+            "src": "./projects/sangria-jewelry/2-persona.mp4",
+            "poster": "./projects/sangria-jewelry/2-persona.jpg",
+            "caption": "PERSONA is molded to the shape of the owner's face"
+          },
+          {
+            "type": "video",
+            "src": "./projects/sangria-jewelry/3-Y.mp4",
+            "poster": "./projects/sangria-jewelry/3-Y.jpg",
+            "caption": "-Y- can put it on at differend angles. And it looks like Y"
+          },
+          {
+            "type": "video",
+            "src": "./projects/sangria-jewelry/IMG_1388.MP4",
+            "poster": "",
+            "caption": "We even made one of gold and diamonds"
+          },
+          {
+            "type": "video",
+            "src": "./projects/sangria-jewelry/IMG_9115.MOV",
+            "poster": "",
             "caption": ""
           }
         ]

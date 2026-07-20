@@ -1,0 +1,8 @@
+{
+  "date": "2026-02",
+  "tags": "AI, concept, スゲー",
+  "description": "Send a photo of your car and receive a ca(r)d. It works in ComfyUI via Gemini — one model searches the internet for information about the car, while the other generates the card by looking through a small collection of classic Pokémon designs. [This is a non-profit, fan-made project. No copyright infringement is intended, and all rights belong to their respective owners.]",
+  "captions": [
+    ""
+  ]
+}

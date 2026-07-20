@@ -36,7 +36,7 @@
   /* ── Colors — Backgrounds ─────────── */
   --color-bg: #ffffff;
   --color-bg-tile: #f7f7f7;
-  --color-bg-tile-media: #f0f0f0;
+  --color-bg-tile-media: transparent;
   --color-bg-detail-media: #efefef;
 
   /* ── Colors — UI elements ─────────── */
@@ -155,6 +155,11 @@ body {
   z-index: 24;
 }
 
+.view-switch.is-top {
+  top: 12px;
+  bottom: auto;
+}
+
 .slider-toggle {
   position: relative;
   display: inline-flex;
@@ -222,6 +227,12 @@ body {
   height: calc(100dvh - var(--panel-bottom));
   min-height: 320px;
   overflow: hidden;
+}
+
+.panel[data-panel="about"],
+.panel[data-panel="contact"] {
+  padding-left: 30px;
+  padding-right: 16px;
 }
 
 .head-stage {
@@ -554,12 +565,6 @@ a {
     --panel-top: 86px;
   }
 
-  .tab-panels {
-    padding-left: 30px;
-    padding-right: 16px;
-  }
-
-
 }
 
 
@@ -629,7 +634,6 @@ a {
   flex: 1;
   overflow-y: auto;
   padding: 0;
-  scrollbar-gutter: stable;
 }
 
 .detail-scroll .detail-blocks {
@@ -659,7 +663,6 @@ a {
   padding: 0;
   scrollbar-width: thin;
   scrollbar-color: var(--color-ui-border) transparent;
-  scrollbar-gutter: stable;
 }
 
 /* ── Detail media — single file ──────── */
@@ -1113,6 +1116,12 @@ a {
     --pad-x: 0px;
   }
 
+  .panel[data-panel="about"],
+  .panel[data-panel="contact"] {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
 
 
   .site-header {
@@ -1123,6 +1132,11 @@ a {
   .view-switch {
     right: 10px;
     bottom: 10px;
+  }
+
+  .view-switch.is-top {
+    top: 10px;
+    bottom: auto;
   }
 
   .tab-panels {

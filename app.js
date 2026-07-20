@@ -131,12 +131,15 @@ var LOADING = (function () {
 
 var gallerySources = [
   "./projects/Letuelle×Yandex/1.mp4",
+  "./projects/borjomi-gives-wings/borjomi_cow.mp4",
+  "./projects/car(d)s--カドカ/cover.jpg",
   "./projects/nature-cards/cover.jpg",
   "./projects/Samokat×Arive/arive.mp4",
-  "./projects/AR-stickers/AR-demo.MP4",
-  "./projects/Yandex.Afisha/1080 x 1920 output 2.mp4",
+  "./projects/AR-stickers/AR-demo.mp4",
+  "./projects/Yandex.Afisha/1-1080 x 1920 output 2.mp4",
   "./projects/AVAVAV/AVAVAV.mp4",
   "./projects/arny-praht/arnypraht.MP4",
+  "./projects/sangria-jewelry/1-cell.mp4",
   "./projects/ginger-cotton/ginger_cotton_final.mp4",
   "./projects/salaryman/salaryman.mp4",
 ];
@@ -361,6 +364,16 @@ async function boot() {
   syncMobileInfo();
 
   trackTileMediaLoads();
+
+  positionViewSwitch();
+  window.addEventListener("resize", function () {
+    if (!_switchRAF) {
+      _switchRAF = requestAnimationFrame(function () {
+        _switchRAF = null;
+        positionViewSwitch();
+      });
+    }
+  });
 
   document.querySelector(".copyright-link")?.addEventListener("click", (e) => {
     e.preventDefault();
@@ -1462,26 +1475,33 @@ function addPerVideoControls(inner, video) {
   var progressEl = document.createElement("span");
   progressEl.className = "detail-vid-progress";
   inner.appendChild(progressEl);
+  var progressDone = false;
 
-  video.addEventListener("progress", function () {
+  function updateProgress() {
+    if (progressDone) return;
     if (video.buffered.length > 0 && video.duration && isFinite(video.duration)) {
       var pct = Math.round((video.buffered.end(video.buffered.length - 1) / video.duration) * 100);
       if (pct >= 100) {
+        progressDone = true;
         progressEl.style.display = "none";
       } else {
         progressEl.textContent = pct + "%";
         progressEl.style.display = "";
       }
     }
-  });
+  }
 
-  video.addEventListener("canplay", function () {
+  function hideProgress() {
+    progressDone = true;
     progressEl.style.display = "none";
-  });
+  }
 
-  // Hide progress immediately if video is already buffered
-  if (video.readyState >= 3) {
-    progressEl.style.display = "none";
+  video.addEventListener("progress", updateProgress);
+  video.addEventListener("canplaythrough", hideProgress);
+  video.addEventListener("playing", hideProgress);
+
+  if (video.readyState >= 4) {
+    hideProgress();
   }
 
   // ── Fullscreen idle timeout (hide controls after 3s of inactivity) ──
@@ -1898,6 +1918,40 @@ function getObjectWidth(object) {
 
   const size = box.getSize(new THREE.Vector3());
   return Math.max(size.x, size.z, 0.001);
+}
+
+var _switchRAF = null;
+
+function positionViewSwitch() {
+  var vs = document.querySelector(".view-switch");
+  if (!vs) return;
+
+  // Find the rightmost visible tab
+  var tabs = document.querySelectorAll(".tab");
+  var lastTab = null;
+  for (var i = tabs.length - 1; i >= 0; i--) {
+    var rect = tabs[i].getBoundingClientRect();
+    if (rect.width > 0 && rect.height > 0) {
+      lastTab = tabs[i];
+      break;
+    }
+  }
+
+  // No visible tabs — safe to put switch at top
+  if (!lastTab) {
+    vs.classList.add("is-top");
+    return;
+  }
+
+  var tabRight = lastTab.getBoundingClientRect().right;
+  var switchWidth = vs.offsetWidth;
+  var gap = 16; // minimum gap between last tab and switch
+
+  if (window.innerWidth - tabRight - 12 >= switchWidth + gap) {
+    vs.classList.add("is-top");
+  } else {
+    vs.classList.remove("is-top");
+  }
 }
 
 function trackTileMediaLoads() {
