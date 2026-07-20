@@ -1428,10 +1428,7 @@ function addPerVideoControls(inner, video) {
 
   // Video click → play / pause (or fullscreen on iOS)
   video.onclick = function () {
-    if (video.webkitEnterFullscreen) {
-      // iOS — tapping video goes fullscreen
-      toggleFullscreen();
-    } else if (video.paused) {
+    if (video.paused) {
       video.play(); showPause();
     } else {
       video.pause(); showPlay();
