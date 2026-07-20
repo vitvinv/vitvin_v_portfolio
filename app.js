@@ -1655,14 +1655,11 @@ function setupHeadScene(stage) {
 
   const exp = PORTFOLIO_CONFIG.head.headExposure;
 
-  const keyLight = new THREE.DirectionalLight(0xffffff, 1.1 * exp);
-  keyLight.position.set(4, 3, 6);
+  const sun = new THREE.DirectionalLight(0xffffff, 1.4 * exp);
+  sun.position.set(3, 4, 5);
 
-  const fillLight = new THREE.DirectionalLight(0xffe6cf, 0.7 * exp);
-  fillLight.position.set(-4, 1, 3);
-
-  const ambient = new THREE.AmbientLight(0xfff3e6, 0.95 * exp);
-  scene.add(keyLight, fillLight, ambient);
+  const ambientLight = new THREE.AmbientLight(0xfff0e0, 0.9 * exp);
+  scene.add(sun, ambientLight);
 
   const group = new THREE.Group();
   group.position.set(
@@ -1700,22 +1697,20 @@ function setupHeadScene(stage) {
           if (cfg.debugMaterial) {
             child.material = new THREE.MeshNormalMaterial({ flatShading: true });
           } else {
-            // Force all materials to respond to scene lights
-            const mat = child.material;
-            if (mat && (mat.isMeshBasicMaterial || !mat.isMeshStandardMaterial)) {
-              const newMat = new THREE.MeshStandardMaterial({
+            // Only upgrade unlit (basic) materials to Lambert for diffuse shading
+            var mat = child.material;
+            if (mat && mat.isMeshBasicMaterial) {
+              child.material = new THREE.MeshLambertMaterial({
                 color: mat.color || 0xddccbb,
                 map: mat.map || null,
-                roughness: 0.7,
-                metalness: 0.05,
               });
-              child.material = newMat;
             }
           }
         }
       });
 
       group.add(model);
+      renderer.compile(scene, camera);
 
       const detectedWidth = getObjectWidth(model);
       if (detectedWidth) {
@@ -1752,7 +1747,7 @@ function setupHeadScene(stage) {
       LOADING.modelReady();
       const fallback = new THREE.Mesh(
         new THREE.IcosahedronGeometry(0.9, 2),
-        new THREE.MeshStandardMaterial({ color: 0xd0b398, flatShading: true, metalness: 0.02, roughness: 0.92 })
+        new THREE.MeshLambertMaterial({ color: 0xd0b398, flatShading: true })
       );
       group.add(fallback);
 

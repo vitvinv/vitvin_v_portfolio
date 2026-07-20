@@ -298,6 +298,8 @@ body {
   display: block;
   object-fit: contain;
   object-position: center;
+  will-change: filter;
+  transform: translateZ(0);
   background: var(--color-bg-tile-media);
   filter: grayscale(100%);
   transition: filter var(--fade-slow);
