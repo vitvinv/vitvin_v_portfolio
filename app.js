@@ -225,7 +225,16 @@ function syncMobileInfo() {
   const contactBlocks = [];
 
   blocks.forEach((block) => {
-    const h3 = block.querySelector("h3");
+    if (block.classList.contains("copyright-header")) {
+      // Keep the "Hello! My name is..." paragraph but drop the name header
+      var clone = block.cloneNode(true);
+      var h3 = clone.querySelector("h3");
+      if (h3) h3.remove();
+      aboutBlocks.push(clone);
+      return;
+    }
+
+    var h3 = block.querySelector("h3");
     if (!h3) {
       return;
     }
