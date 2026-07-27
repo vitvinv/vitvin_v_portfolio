@@ -37,26 +37,26 @@
       ],
       "media": {
         "type": "video",
-        "src": "./projects/Letuelle%C3%97Yandex/1.mp4",
-        "poster": "./projects/Letuelle%C3%97Yandex/1.jpg",
-        "previewVideo": "./projects/Letuelle%C3%97Yandex/1.mp4",
+        "src": "./projects/Letuelle×Yandex/1.mp4",
+        "poster": "./projects/Letuelle×Yandex/1.jpg",
+        "previewVideo": "./projects/Letuelle×Yandex/1.mp4",
         "files": [
           {
             "type": "video",
-            "src": "./projects/Letuelle%C3%97Yandex/1.mp4",
-            "poster": "./projects/Letuelle%C3%97Yandex/1.jpg",
+            "src": "./projects/Letuelle×Yandex/1.mp4",
+            "poster": "./projects/Letuelle×Yandex/1.jpg",
             "caption": ""
           },
           {
             "type": "video",
-            "src": "./projects/Letuelle%C3%97Yandex/2.mp4",
-            "poster": "./projects/Letuelle%C3%97Yandex/2.jpg",
+            "src": "./projects/Letuelle×Yandex/2.mp4",
+            "poster": "./projects/Letuelle×Yandex/2.jpg",
             "caption": ""
           },
           {
             "type": "video",
-            "src": "./projects/Letuelle%C3%97Yandex/3.mp4",
-            "poster": "./projects/Letuelle%C3%97Yandex/3.jpg",
+            "src": "./projects/Letuelle×Yandex/3.mp4",
+            "poster": "./projects/Letuelle×Yandex/3.jpg",
             "caption": ""
           }
         ]
@@ -133,67 +133,67 @@
       ],
       "media": {
         "type": "image",
-        "src": "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/cover.jpg",
-        "poster": "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/cover.jpg",
+        "src": "./projects/car(d)s-カドカ/cover.jpg",
+        "poster": "./projects/car(d)s-カドカ/cover.jpg",
         "previewVideo": "",
         "files": [
           {
             "type": "image",
-            "src": "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/Artboard1.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard1.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/Artboard10.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard10.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/Artboard2.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard2.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/Artboard3.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard3.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/Artboard4.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard4.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/Artboard5.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard5.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/Artboard6.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard6.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/Artboard7.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard7.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/Artboard8.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard8.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/Artboard9.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard9.jpg",
             "poster": "",
             "caption": ""
           }
@@ -365,43 +365,43 @@
       ],
       "media": {
         "type": "video",
-        "src": "./projects/Samokat%C3%97Arive/arive.mp4",
-        "poster": "./projects/Samokat%C3%97Arive/arive.jpg",
-        "previewVideo": "./projects/Samokat%C3%97Arive/arive.mp4",
+        "src": "./projects/Samokat×Arive/arive.mp4",
+        "poster": "./projects/Samokat×Arive/arive.jpg",
+        "previewVideo": "./projects/Samokat×Arive/arive.mp4",
         "files": [
           {
             "type": "video",
-            "src": "./projects/Samokat%C3%97Arive/arive.mp4",
-            "poster": "./projects/Samokat%C3%97Arive/arive.jpg",
+            "src": "./projects/Samokat×Arive/arive.mp4",
+            "poster": "./projects/Samokat×Arive/arive.jpg",
             "caption": "The whole Arive clip is carefully stitched from multiple generated shots"
           },
           {
             "type": "image",
-            "src": "./projects/Samokat%C3%97Arive/1440x720(1).jpg",
+            "src": "./projects/Samokat×Arive/1440x720(1).jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/Samokat%C3%97Arive/2-product-in-scene-hor.jpg",
+            "src": "./projects/Samokat×Arive/2-product-in-scene-hor.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/Samokat%C3%97Arive/2-product-in-scene-vert.jpg",
+            "src": "./projects/Samokat×Arive/2-product-in-scene-vert.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/Samokat%C3%97Arive/4-billboard-mockup-fall.jpg",
+            "src": "./projects/Samokat×Arive/4-billboard-mockup-fall.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/Samokat%C3%97Arive/4-billboard-mockup-winter.jpg",
+            "src": "./projects/Samokat×Arive/4-billboard-mockup-winter.jpg",
             "poster": "",
             "caption": ""
           }

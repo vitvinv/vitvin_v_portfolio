@@ -177,8 +177,8 @@ function buildProject(folderName) {
   var media = scanMedia(folderPath, captions);
 
   // Allow meta to override media_src and tile_image
-  var src = meta.media_src || (media.src ? pathEscape("./projects/" + folderName + "/" + media.src) : "");
-  var poster = meta.tile_image || (media.poster ? pathEscape("./projects/" + folderName + "/" + media.poster) : src);
+  var src = meta.media_src || (media.src ? "./projects/" + folderName + "/" + media.src : "");
+  var poster = meta.tile_image || (media.poster ? "./projects/" + folderName + "/" + media.poster : src);
   var type = meta.media_type || media.type || "image";
 
   return {
@@ -201,8 +201,8 @@ function buildProject(folderName) {
       files: (media.files || []).map(function (f) {
         return {
           type: f.type,
-          src: pathEscape("./projects/" + folderName + "/" + f.src),
-          poster: f.poster ? pathEscape("./projects/" + folderName + "/" + f.poster) : "",
+          src: "./projects/" + folderName + "/" + f.src,
+          poster: f.poster ? "./projects/" + folderName + "/" + f.poster : "",
           caption: f.caption || "",
         };
       }),

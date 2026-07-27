@@ -146,11 +146,11 @@ if (document.fonts && document.fonts.ready) {
 }
 
 var gallerySources = [
-  "./projects/Letuelle%C3%97Yandex/1.mp4",
+  "./projects/Letuelle×Yandex/1.mp4",
   "./projects/Borjomi-Gives-Wings/borjomi_cow.mp4",
-  "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/cover.jpg",
+  "./projects/car(d)s-カドカ/cover.jpg",
   "./projects/Nature-Cards/cover.jpg",
-  "./projects/Samokat%C3%97Arive/arive.mp4",
+  "./projects/Samokat×Arive/arive.mp4",
   "./projects/AR-stickers/AR-demo.mp4",
   "./projects/Yandex.Afisha/1.mp4",
   "./projects/AVAVAV/AVAVAV.mp4",
