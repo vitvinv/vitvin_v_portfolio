@@ -101,6 +101,13 @@ var TRANSLIT = (function () {
   return map;
 })();
 
+function pathEscape(p) {
+  if (!p) return "";
+  var prefix = p.indexOf("./") === 0 ? "./" : "";
+  var rest = prefix ? p.slice(2) : p;
+  return prefix + rest.split("/").map(function (part) { return encodeURIComponent(part); }).join("/");
+}
+
 // ── Media detection ───────────────────────────────────
 
 function scanMedia(folderPath, captions) {
@@ -170,8 +177,8 @@ function buildProject(folderName) {
   var media = scanMedia(folderPath, captions);
 
   // Allow meta to override media_src and tile_image
-  var src = meta.media_src || (media.src ? "./projects/" + folderName + "/" + media.src : "");
-  var poster = meta.tile_image || (media.poster ? "./projects/" + folderName + "/" + media.poster : src);
+  var src = meta.media_src || (media.src ? pathEscape("./projects/" + folderName + "/" + media.src) : "");
+  var poster = meta.tile_image || (media.poster ? pathEscape("./projects/" + folderName + "/" + media.poster) : src);
   var type = meta.media_type || media.type || "image";
 
   return {
@@ -194,8 +201,8 @@ function buildProject(folderName) {
       files: (media.files || []).map(function (f) {
         return {
           type: f.type,
-          src: "./projects/" + folderName + "/" + f.src,
-          poster: f.poster ? "./projects/" + folderName + "/" + f.poster : "",
+          src: pathEscape("./projects/" + folderName + "/" + f.src),
+          poster: f.poster ? pathEscape("./projects/" + folderName + "/" + f.poster) : "",
           caption: f.caption || "",
         };
       }),

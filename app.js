@@ -146,11 +146,11 @@ if (document.fonts && document.fonts.ready) {
 }
 
 var gallerySources = [
-  "./projects/Letuelle×Yandex/1.mp4",
+  "./projects/Letuelle%C3%97Yandex/1.mp4",
   "./projects/Borjomi-Gives-Wings/borjomi_cow.mp4",
-  "./projects/car(d)s-カドカ/cover.jpg",
+  "./projects/car(d)s-%E3%82%AB%E3%83%89%E3%82%AB/cover.jpg",
   "./projects/Nature-Cards/cover.jpg",
-  "./projects/Samokat×Arive/arive.mp4",
+  "./projects/Samokat%C3%97Arive/arive.mp4",
   "./projects/AR-stickers/AR-demo.mp4",
   "./projects/Yandex.Afisha/1.mp4",
   "./projects/AVAVAV/AVAVAV.mp4",
@@ -1567,39 +1567,6 @@ function addPerVideoControls(inner, video) {
   video.addEventListener("error", function () {
     scheduleMasonry();
   });
-
-  // ── Loading progress ──
-  var progressEl = document.createElement("span");
-  progressEl.className = "detail-vid-progress";
-  inner.appendChild(progressEl);
-  var progressDone = false;
-
-  function updateProgress() {
-    if (progressDone) return;
-    if (video.buffered.length > 0 && video.duration && isFinite(video.duration)) {
-      var pct = Math.round((video.buffered.end(video.buffered.length - 1) / video.duration) * 100);
-      if (pct >= 100) {
-        progressDone = true;
-        progressEl.style.display = "none";
-      } else {
-        progressEl.textContent = pct + "%";
-        progressEl.style.display = "";
-      }
-    }
-  }
-
-  function hideProgress() {
-    progressDone = true;
-    progressEl.style.display = "none";
-  }
-
-  video.addEventListener("progress", updateProgress);
-  video.addEventListener("canplaythrough", hideProgress);
-  video.addEventListener("playing", hideProgress);
-
-  if (video.readyState >= 4) {
-    hideProgress();
-  }
 
   // ── Fullscreen idle timeout (hide controls after 3s of inactivity) ──
   var idleTimer = null;
