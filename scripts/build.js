@@ -36,9 +36,70 @@ function parseJSONC(filePath) {
 
 function folderTitle(name) {
   return name
-    .replace(/[-_]/g, " ")
-    .replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    .replace(/--/g, "\u0000")     // double hyphen → sentinel
+    .replace(/[-_]/g, " ")         // single hyphen / underscore → space
+    .replace(/\u0000/g, "-");       // sentinel → single hyphen
 }
+
+function sanitizeId(name) {
+  // Pre-process known multi-char replacements
+  name = name.replace(/×/g, "-x-");
+  name = name.replace(/--/g, "-");
+
+  // Normalize diacritics (umlauts, accents) to base + combining mark
+  name = name.normalize("NFD");
+
+  var out = "";
+  for (var i = 0; i < name.length; i++) {
+    var ch = name[i];
+    var code = ch.charCodeAt(0);
+
+    // Combining diacritical marks — drop
+    if (code >= 0x0300 && code <= 0x036f) continue;
+
+    // ASCII alphanumeric, dash, dot — keep
+    if ((code >= 48 && code <= 57) || (code >= 65 && code <= 90) || (code >= 97 && code <= 122) || ch === "-" || ch === ".") {
+      out += ch;
+      continue;
+    }
+
+    // Transliterate known non-Latin characters
+    out += TRANSLIT[ch] || "";
+  }
+
+  return out.replace(/--+/g, "-").replace(/^-+|-+$/g, "") || "project";
+}
+
+var TRANSLIT = (function () {
+  // Katakana
+  var k = {
+    "ア":"a","イ":"i","ウ":"u","エ":"e","オ":"o",
+    "カ":"ka","キ":"ki","ク":"ku","ケ":"ke","コ":"ko",
+    "サ":"sa","シ":"shi","ス":"su","セ":"se","ソ":"so",
+    "タ":"ta","チ":"chi","ツ":"tsu","テ":"te","ト":"to",
+    "ナ":"na","ニ":"ni","ヌ":"nu","ネ":"ne","ノ":"no",
+    "ハ":"ha","ヒ":"hi","フ":"fu","ヘ":"he","ホ":"ho",
+    "マ":"ma","ミ":"mi","ム":"mu","メ":"me","モ":"mo",
+    "ヤ":"ya","ユ":"yu","ヨ":"yo",
+    "ラ":"ra","リ":"ri","ル":"ru","レ":"re","ロ":"ro",
+    "ワ":"wa","ヲ":"wo","ン":"n",
+    "ガ":"ga","ギ":"gi","グ":"gu","ゲ":"ge","ゴ":"go",
+    "ザ":"za","ジ":"ji","ズ":"zu","ゼ":"ze","ゾ":"zo",
+    "ダ":"da","ヂ":"ji","ヅ":"zu","デ":"de","ド":"do",
+    "バ":"ba","ビ":"bi","ブ":"bu","ベ":"be","ボ":"bo",
+    "パ":"pa","ピ":"pi","プ":"pu","ペ":"pe","ポ":"po",
+    "ー":""
+  };
+  // Cyrillic
+  var c = {
+    "а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"yo","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"shch","ъ":"","ы":"y","ь":"","э":"e","ю":"yu","я":"ya",
+    "А":"A","Б":"B","В":"V","Г":"G","Д":"D","Е":"E","Ё":"Yo","Ж":"Zh","З":"Z","И":"I","Й":"Y","К":"K","Л":"L","М":"M","Н":"N","О":"O","П":"P","Р":"R","С":"S","Т":"T","У":"U","Ф":"F","Х":"H","Ц":"Ts","Ч":"Ch","Ш":"Sh","Щ":"Shch","Ъ":"","Ы":"Y","Ь":"","Э":"E","Ю":"Yu","Я":"Ya"
+  };
+  var map = {};
+  Object.keys(k).forEach(function (key) { map[key] = k[key]; });
+  Object.keys(c).forEach(function (key) { map[key] = c[key]; });
+  return map;
+})();
 
 // ── Media detection ───────────────────────────────────
 
@@ -114,7 +175,7 @@ function buildProject(folderName) {
   var type = meta.media_type || media.type || "image";
 
   return {
-    id: folderName,
+    id: sanitizeId(folderName),
     title: meta.title || folderTitle(folderName),
     subtitle: meta.subtitle || "",
     tags: typeof meta.tags === "string"

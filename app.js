@@ -66,6 +66,7 @@ var LOADING = (function () {
   var finished = false;
   var mediaDone = false;
   var modelDone = false;
+  var fontsDone = false;
 
   setTimeout(function () {
     if (!modelDone) {
@@ -77,7 +78,7 @@ var LOADING = (function () {
   function update() {
     if (finished || !screen || !counter) return;
     var pct = Math.round(loaded);
-    if (mediaDone && modelDone) pct = 100;
+    if (mediaDone && modelDone && fontsDone) pct = 100;
     counter.textContent = pct + "%";
 
     if (!delayTimer) {
@@ -85,7 +86,7 @@ var LOADING = (function () {
       delayTimer = true;
     }
 
-    if (pct >= 100 && mediaDone && modelDone) {
+    if (pct >= 100 && mediaDone && modelDone && fontsDone) {
       finish();
     }
   }
@@ -121,27 +122,41 @@ var LOADING = (function () {
       update();
     },
 
+    fontsReady: function () {
+      fontsDone = true;
+      update();
+    },
+
     setDone: function () {
       loaded = 100;
       mediaDone = true;
       modelDone = true;
+      fontsDone = true;
       update();
     }
   };
 })();
 
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(function () {
+    LOADING.fontsReady();
+  });
+} else {
+  LOADING.fontsReady();
+}
+
 var gallerySources = [
   "./projects/Letuelle×Yandex/1.mp4",
-  "./projects/borjomi-gives-wings/borjomi_cow.mp4",
-  "./projects/car(d)s--カドカ/cover.jpg",
-  "./projects/nature-cards/cover.jpg",
+  "./projects/Borjomi-Gives-Wings/borjomi_cow.mp4",
+  "./projects/car(d)s-カドカ/cover.jpg",
+  "./projects/Nature-Cards/cover.jpg",
   "./projects/Samokat×Arive/arive.mp4",
   "./projects/AR-stickers/AR-demo.mp4",
   "./projects/Yandex.Afisha/1.mp4",
   "./projects/AVAVAV/AVAVAV.mp4",
-  "./projects/arny-praht/arnypraht.MP4",
-  "./projects/sangria-jewelry/1-cell.mp4",
-  "./projects/ginger-cotton/1-ginger_cotton_final.mp4",
+  "./projects/Arny-Praht/arnypraht.MP4",
+  "./projects/Sangria-Jewelry/1-cell.mp4",
+  "./projects/Ginger-Cotton/1-ginger_cotton_final.mp4",
   "./projects/salaryman/salaryman.mp4",
 ];
 
@@ -348,6 +363,31 @@ function renderSidePanel(info) {
   }
 }
 
+/* ── Hash‑based project URLs ────────── */
+var _ignoreHash = false;
+
+function setProjectHash(projectId) {
+  _ignoreHash = true;
+  window.location.hash = projectId ? "#" + encodeURIComponent(projectId) : "";
+  setTimeout(function () { _ignoreHash = false; }, 0);
+}
+
+function handleHashChange() {
+  if (_ignoreHash) return;
+  var raw = window.location.hash.replace(/^#/, "");
+  if (!raw) {
+    if (activePanelId === "detail") hideDetail();
+    return;
+  }
+  if (!projects || !projects.length) return;
+  var id = decodeURIComponent(raw);
+  var idx = projects.findIndex(function (p) { return p.id === id; });
+  if (idx < 0) return;
+  if (activePanelId !== "detail" || selectedProjectIndex !== idx) {
+    showDetail(idx, "direct");
+  }
+}
+
 /* ── Boot ─────────────────────────── */
 async function boot() {
   try {
@@ -401,6 +441,9 @@ async function boot() {
       }
     }
   });
+
+  window.addEventListener("hashchange", handleHashChange);
+  handleHashChange();
 }
 
 boot();
@@ -448,6 +491,13 @@ function setupViewSwitch() {
 
   // Initial knob position
   updateSliderKnob("projects");
+
+  // Auto-correct knob when font loads or option width changes
+  if (window.ResizeObserver) {
+    new ResizeObserver(function () {
+      updateSliderKnob(activePanelId === "index" ? "index" : "projects");
+    }).observe(toggle);
+  }
 }
 
 function setupResponsiveLayout() {
@@ -1179,6 +1229,8 @@ function showDetail(index, source, tileElement) {
   const project = projects[index];
   const cfg = PORTFOLIO_CONFIG.tiles;
 
+  setProjectHash(project.id);
+
   function fillDetailContent() {
     detailTitle.textContent = project.title;
     detailDescription.textContent = project.description;
@@ -1614,6 +1666,8 @@ function setupImageLightbox() {
 }
 
 function hideDetail() {
+  setProjectHash(null);
+
   var videos = detailMedia.querySelectorAll("video");
   for (var i = 0; i < videos.length; i++) {
     try { videos[i].pause(); } catch (_) {}

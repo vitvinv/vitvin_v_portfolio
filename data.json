@@ -1,7 +1,7 @@
 {
   "projects": [
     {
-      "id": "Letuelle×Yandex",
+      "id": "Letuelle-x-Yandex",
       "title": "Letuelle×Yandex",
       "subtitle": "",
       "tags": [
@@ -63,7 +63,7 @@
       }
     },
     {
-      "id": "borjomi-gives-wings",
+      "id": "Borjomi-Gives-Wings",
       "title": "Borjomi Gives Wings",
       "subtitle": "",
       "tags": [
@@ -77,31 +77,31 @@
       "credits": [],
       "media": {
         "type": "video",
-        "src": "./projects/borjomi-gives-wings/borjomi_cow.mp4",
-        "poster": "./projects/borjomi-gives-wings/cover.jpg",
-        "previewVideo": "./projects/borjomi-gives-wings/borjomi_cow.mp4",
+        "src": "./projects/Borjomi-Gives-Wings/borjomi_cow.mp4",
+        "poster": "./projects/Borjomi-Gives-Wings/cover.jpg",
+        "previewVideo": "./projects/Borjomi-Gives-Wings/borjomi_cow.mp4",
         "files": [
           {
             "type": "video",
-            "src": "./projects/borjomi-gives-wings/borjomi_cow.mp4",
-            "poster": "./projects/borjomi-gives-wings/borjomi_cow.jpg",
+            "src": "./projects/Borjomi-Gives-Wings/borjomi_cow.mp4",
+            "poster": "./projects/Borjomi-Gives-Wings/borjomi_cow.jpg",
             "caption": ""
           },
           {
             "type": "video",
-            "src": "./projects/borjomi-gives-wings/borjomi_horse.mp4",
-            "poster": "./projects/borjomi-gives-wings/borjomi_horse.jpg",
+            "src": "./projects/Borjomi-Gives-Wings/borjomi_horse.mp4",
+            "poster": "./projects/Borjomi-Gives-Wings/borjomi_horse.jpg",
             "caption": ""
           },
           {
             "type": "video",
-            "src": "./projects/borjomi-gives-wings/borjomi_sheep.mp4",
-            "poster": "./projects/borjomi-gives-wings/borjomi_sheep.jpg",
+            "src": "./projects/Borjomi-Gives-Wings/borjomi_sheep.mp4",
+            "poster": "./projects/Borjomi-Gives-Wings/borjomi_sheep.jpg",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/borjomi-gives-wings/bottle.jpg",
+            "src": "./projects/Borjomi-Gives-Wings/bottle.jpg",
             "poster": "",
             "caption": "For some reason a have never tasted Borjomi in Russia, so my first time happend in Georgia"
           }
@@ -109,8 +109,8 @@
       }
     },
     {
-      "id": "car(d)s--カドカ",
-      "title": "Car(D)S  カドカ",
+      "id": "cards-katoka",
+      "title": "car(d)s カドカ",
       "subtitle": "",
       "tags": [
         "AI",
@@ -133,67 +133,67 @@
       ],
       "media": {
         "type": "image",
-        "src": "./projects/car(d)s--カドカ/cover.jpg",
-        "poster": "./projects/car(d)s--カドカ/cover.jpg",
+        "src": "./projects/car(d)s-カドカ/cover.jpg",
+        "poster": "./projects/car(d)s-カドカ/cover.jpg",
         "previewVideo": "",
         "files": [
           {
             "type": "image",
-            "src": "./projects/car(d)s--カドカ/Artboard1.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard1.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s--カドカ/Artboard10.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard10.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s--カドカ/Artboard2.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard2.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s--カドカ/Artboard3.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard3.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s--カドカ/Artboard4.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard4.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s--カドカ/Artboard5.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard5.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s--カドカ/Artboard6.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard6.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s--カドカ/Artboard7.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard7.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s--カドカ/Artboard8.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard8.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/car(d)s--カドカ/Artboard9.jpg",
+            "src": "./projects/car(d)s-カドカ/Artboard9.jpg",
             "poster": "",
             "caption": ""
           }
@@ -201,7 +201,7 @@
       }
     },
     {
-      "id": "nature-cards",
+      "id": "Nature-Cards",
       "title": "Nature Cards",
       "subtitle": "",
       "tags": [
@@ -225,115 +225,115 @@
       ],
       "media": {
         "type": "image",
-        "src": "./projects/nature-cards/cover.jpg",
-        "poster": "./projects/nature-cards/cover.jpg",
+        "src": "./projects/Nature-Cards/cover.jpg",
+        "poster": "./projects/Nature-Cards/cover.jpg",
         "previewVideo": "",
         "files": [
           {
             "type": "image",
-            "src": "./projects/nature-cards/1.jpg",
+            "src": "./projects/Nature-Cards/1.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/all_resize_1.png",
+            "src": "./projects/Nature-Cards/all_resize_1.png",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/all_resize_2.png",
+            "src": "./projects/Nature-Cards/all_resize_2.png",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-01.jpg",
+            "src": "./projects/Nature-Cards/card-01.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-02.jpg",
+            "src": "./projects/Nature-Cards/card-02.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-05.jpg",
+            "src": "./projects/Nature-Cards/card-05.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-11.jpg",
+            "src": "./projects/Nature-Cards/card-11.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-15.jpg",
+            "src": "./projects/Nature-Cards/card-15.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-16.jpg",
+            "src": "./projects/Nature-Cards/card-16.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-17.jpg",
+            "src": "./projects/Nature-Cards/card-17.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-18.jpg",
+            "src": "./projects/Nature-Cards/card-18.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-19.jpg",
+            "src": "./projects/Nature-Cards/card-19.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/card-23.jpg",
+            "src": "./projects/Nature-Cards/card-23.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/cockroach.JPG",
+            "src": "./projects/Nature-Cards/cockroach.JPG",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/crab.JPG",
+            "src": "./projects/Nature-Cards/crab.JPG",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/demo_front.jpg",
+            "src": "./projects/Nature-Cards/demo_front.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/demo_instruction.png",
+            "src": "./projects/Nature-Cards/demo_instruction.png",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/nature-cards/jellyfish.JPG",
+            "src": "./projects/Nature-Cards/jellyfish.JPG",
             "poster": "",
             "caption": ""
           }
@@ -341,7 +341,7 @@
       }
     },
     {
-      "id": "Samokat×Arive",
+      "id": "Samokat-x-Arive",
       "title": "Samokat×Arive",
       "subtitle": "",
       "tags": [
@@ -410,7 +410,7 @@
     },
     {
       "id": "AR-stickers",
-      "title": "AR Stickers",
+      "title": "AR stickers",
       "subtitle": "",
       "tags": [
         "AR",
@@ -561,7 +561,7 @@
       }
     },
     {
-      "id": "arny-praht",
+      "id": "Arny-Praht",
       "title": "Arny Praht",
       "subtitle": "",
       "tags": [
@@ -585,21 +585,21 @@
       ],
       "media": {
         "type": "video",
-        "src": "./projects/arny-praht/arnypraht.MP4",
-        "poster": "./projects/arny-praht/arnypraht.jpg",
-        "previewVideo": "./projects/arny-praht/arnypraht.MP4",
+        "src": "./projects/Arny-Praht/arnypraht.MP4",
+        "poster": "./projects/Arny-Praht/arnypraht.jpg",
+        "previewVideo": "./projects/Arny-Praht/arnypraht.MP4",
         "files": [
           {
             "type": "video",
-            "src": "./projects/arny-praht/arnypraht.MP4",
-            "poster": "./projects/arny-praht/arnypraht.jpg",
+            "src": "./projects/Arny-Praht/arnypraht.MP4",
+            "poster": "./projects/Arny-Praht/arnypraht.jpg",
             "caption": ""
           }
         ]
       }
     },
     {
-      "id": "sangria-jewelry",
+      "id": "Sangria-Jewelry",
       "title": "Sangria Jewelry",
       "subtitle": "",
       "tags": [
@@ -623,37 +623,37 @@
       ],
       "media": {
         "type": "video",
-        "src": "./projects/sangria-jewelry/1-cell.mp4",
-        "poster": "./projects/sangria-jewelry/cover.jpg",
-        "previewVideo": "./projects/sangria-jewelry/1-cell.mp4",
+        "src": "./projects/Sangria-Jewelry/1-cell.mp4",
+        "poster": "./projects/Sangria-Jewelry/cover.jpg",
+        "previewVideo": "./projects/Sangria-Jewelry/1-cell.mp4",
         "files": [
           {
             "type": "video",
-            "src": "./projects/sangria-jewelry/1-cell.mp4",
-            "poster": "./projects/sangria-jewelry/1-cell.jpg",
+            "src": "./projects/Sangria-Jewelry/1-cell.mp4",
+            "poster": "./projects/Sangria-Jewelry/1-cell.jpg",
             "caption": "CELL is created procedurally to resemble organic cells structure"
           },
           {
             "type": "video",
-            "src": "./projects/sangria-jewelry/2-persona.mp4",
-            "poster": "./projects/sangria-jewelry/2-persona.jpg",
+            "src": "./projects/Sangria-Jewelry/2-persona.mp4",
+            "poster": "./projects/Sangria-Jewelry/2-persona.jpg",
             "caption": "PERSONA is molded to the shape of the owner's face"
           },
           {
             "type": "video",
-            "src": "./projects/sangria-jewelry/3-Y.mp4",
-            "poster": "./projects/sangria-jewelry/3-Y.jpg",
+            "src": "./projects/Sangria-Jewelry/3-Y.mp4",
+            "poster": "./projects/Sangria-Jewelry/3-Y.jpg",
             "caption": "-Y- can put it on at differend angles. And it looks like Y"
           },
           {
             "type": "video",
-            "src": "./projects/sangria-jewelry/IMG_1388.MP4",
+            "src": "./projects/Sangria-Jewelry/IMG_1388.MP4",
             "poster": "",
             "caption": "We even made one of gold and diamonds"
           },
           {
             "type": "video",
-            "src": "./projects/sangria-jewelry/IMG_9115.MOV",
+            "src": "./projects/Sangria-Jewelry/IMG_9115.MOV",
             "poster": "",
             "caption": ""
           }
@@ -661,7 +661,7 @@
       }
     },
     {
-      "id": "ginger-cotton",
+      "id": "Ginger-Cotton",
       "title": "Ginger Cotton",
       "subtitle": "",
       "tags": [
@@ -685,61 +685,61 @@
       ],
       "media": {
         "type": "video",
-        "src": "./projects/ginger-cotton/1-ginger_cotton_final.mp4",
-        "poster": "./projects/ginger-cotton/cover.jpg",
-        "previewVideo": "./projects/ginger-cotton/1-ginger_cotton_final.mp4",
+        "src": "./projects/Ginger-Cotton/1-ginger_cotton_final.mp4",
+        "poster": "./projects/Ginger-Cotton/cover.jpg",
+        "previewVideo": "./projects/Ginger-Cotton/1-ginger_cotton_final.mp4",
         "files": [
           {
             "type": "video",
-            "src": "./projects/ginger-cotton/1-ginger_cotton_final.mp4",
-            "poster": "./projects/ginger-cotton/1-ginger_cotton_final.jpg",
+            "src": "./projects/Ginger-Cotton/1-ginger_cotton_final.mp4",
+            "poster": "./projects/Ginger-Cotton/1-ginger_cotton_final.jpg",
             "caption": ""
           },
           {
             "type": "video",
-            "src": "./projects/ginger-cotton/dance_early_concept.mp4",
+            "src": "./projects/Ginger-Cotton/dance_early_concept.mp4",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/ginger-cotton/2.jpg",
+            "src": "./projects/Ginger-Cotton/2.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/ginger-cotton/3.jpg",
+            "src": "./projects/Ginger-Cotton/3.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/ginger-cotton/backstage_circle.jpg",
+            "src": "./projects/Ginger-Cotton/backstage_circle.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/ginger-cotton/backstage_clock.jpg",
+            "src": "./projects/Ginger-Cotton/backstage_clock.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/ginger-cotton/backstage_pear.jpg",
+            "src": "./projects/Ginger-Cotton/backstage_pear.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/ginger-cotton/backstage_rectangle.jpg",
+            "src": "./projects/Ginger-Cotton/backstage_rectangle.jpg",
             "poster": "",
             "caption": ""
           },
           {
             "type": "image",
-            "src": "./projects/ginger-cotton/backstage_triangle.jpg",
+            "src": "./projects/Ginger-Cotton/backstage_triangle.jpg",
             "poster": "",
             "caption": ""
           }
@@ -748,7 +748,7 @@
     },
     {
       "id": "salaryman",
-      "title": "Salaryman",
+      "title": "salaryman",
       "subtitle": "",
       "tags": [
         "CGI",
