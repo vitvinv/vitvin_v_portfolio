@@ -337,10 +337,14 @@ function renderSidePanel(info) {
     top.appendChild(el);
   }
 
-  if (info.cv_link_text) {
-    const el = document.createElement("section");
+  var cvLinks = info.cv_links || [];
+  if (cvLinks.length > 0) {
+    var links = cvLinks.map(function (l) {
+      return '<a href="' + (l.url || "#") + '" target="_blank" rel="noreferrer">' + (l.label || l.url) + '</a>';
+    }).join(" &middot; ");
+    var el = document.createElement("section");
     el.className = "side-block";
-    el.innerHTML = `<h3>${info.cv_label || "CV"}</h3><p><a href="${info.cv_link_url || "#"}" target="_blank" rel="noreferrer">${info.cv_link_text}</a></p>`;
+    el.innerHTML = '<h3>' + (info.cv_label || "CV") + '</h3><p>' + links + '</p>';
     top.appendChild(el);
   }
 
