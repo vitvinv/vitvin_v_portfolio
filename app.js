@@ -372,7 +372,14 @@ var _ignoreHash = false;
 
 function setProjectHash(projectId) {
   _ignoreHash = true;
-  window.location.hash = projectId ? "#" + encodeURIComponent(projectId) : "";
+  if (projectId) {
+    window.location.hash = "#" + encodeURIComponent(projectId);
+  } else if (history.replaceState) {
+    // Remove the trailing # without adding a history entry or firing hashchange
+    history.replaceState(null, "", window.location.pathname + window.location.search);
+  } else {
+    window.location.hash = "";
+  }
   setTimeout(function () { _ignoreHash = false; }, 0);
 }
 
@@ -388,7 +395,7 @@ function handleHashChange() {
   var idx = projects.findIndex(function (p) { return p.id === id; });
   if (idx < 0) return;
   if (activePanelId !== "detail" || selectedProjectIndex !== idx) {
-    showDetail(idx, "direct");
+    showDetail(idx, "projects");
   }
 }
 
@@ -1651,7 +1658,10 @@ function hideDetail() {
     detailPanel.classList.remove("is-leaving");
     detailPanel.style.display = "none";
 
-    const target = detailSource || "projects";
+    // Only return to a real panel; deep links use "projects" as the fallback
+    const target = detailSource && panels.some((p) => p.dataset.panel === detailSource)
+      ? detailSource
+      : "projects";
     detailSource = null;
     setActivePanel(target);
   }, 120);
