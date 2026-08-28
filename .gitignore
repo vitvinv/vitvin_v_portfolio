@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Agent / IDE workspaces — never commit
+.kilo/
+.freebuff/
+.agents/
+.agentmemory/
+.hermes/
+.claude/
+.cursor/
+.graphify/
+.expanse.json
+
+# Local config / secrets
+.env
+.env.*
+*.local.md
+local_config.py
+
+# Local caches / databases
+__pycache__/
+*.pyc
+*.db
+*.sqlite
+
+# OS / editor
+.DS_Store
+Thumbs.db
