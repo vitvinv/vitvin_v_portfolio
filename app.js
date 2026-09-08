@@ -421,6 +421,14 @@ async function boot() {
   setActivePanel(activePanelId);
   renderProjects();
   LOADING.add(25);
+
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    const meta = document.getElementById("head-meta");
+    if (meta && orbit) {
+      orbit.addEventListener("mouseenter", () => meta.classList.add("is-visible"));
+      orbit.addEventListener("mouseleave", () => meta.classList.remove("is-visible"));
+    }
+  }
   setupDetailPanel();
   setupHeadScene(document.getElementById("head-stage"));
   applyMobileMetaVars();

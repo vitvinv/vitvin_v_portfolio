@@ -331,6 +331,7 @@ body {
   letter-spacing: var(--ls-meta);
   text-transform: uppercase;
   pointer-events: none;
+  transition: opacity var(--fade);
   text-shadow:
     -0.8px -0.8px 0 rgba(255, 255, 255, 0.6),
      0.8px -0.8px 0 rgba(255, 255, 255, 0.6),
@@ -348,6 +349,16 @@ body {
 .head-meta-tags {
   color: var(--color-text-meta);
   text-align: right;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .head-meta {
+    opacity: 0;
+  }
+
+  .head-meta.is-visible {
+    opacity: 1;
+  }
 }
 
 .info-side-panel {
