@@ -15,6 +15,7 @@ var PROJECTS_DIR = path.join(ROOT, "projects");
 var INFO_FILE = path.join(ROOT, "info.jsonc");
 var DATA_FILE = path.join(ROOT, "data.json");
 var APP_FILE = path.join(ROOT, "app.js");
+var INDEX_FILE = path.join(ROOT, "index.html");
 
 var VIDEO_EXT = { ".mp4": true, ".webm": true, ".mov": true, ".avi": true };
 var IMAGE_EXT = { ".jpg": true, ".jpeg": true, ".png": true, ".webp": true, ".gif": true };
@@ -254,6 +255,9 @@ function buildAll() {
 
   // Update gallerySources in app.js
   updateGallerySources(projects);
+
+  // Update bio preview meta tags in index.html
+  updateBioPreview(info);
 }
 
 // ── Update app.js gallerySources ──────────────────────
@@ -273,6 +277,38 @@ function updateGallerySources(projects) {
 
   fs.writeFileSync(APP_FILE, content);
   console.log("Updated gallerySources in app.js");
+}
+
+// ── Bio preview meta tags in index.html ───────────────
+
+function escapeHtmlAttr(value) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function updateBioPreview(info) {
+  if (!fs.existsSync(INDEX_FILE)) return;
+  var bio = escapeHtmlAttr((info && info.bio_preview) || "");
+  var content = fs.readFileSync(INDEX_FILE, "utf-8");
+
+  content = content.replace(
+    /(<meta\s+name="description"[\s\S]*?content=")[^"]*(")/,
+    "$1" + bio + "$2"
+  );
+  content = content.replace(
+    /(<meta\s+property="og:description"[\s\S]*?content=")[^"]*(")/,
+    "$1" + bio + "$2"
+  );
+  content = content.replace(
+    /(<meta\s+name="twitter:description"[\s\S]*?content=")[^"]*(")/,
+    "$1" + bio + "$2"
+  );
+
+  fs.writeFileSync(INDEX_FILE, content);
+  console.log("Updated bio preview meta tags in index.html");
 }
 
 // ── Run ──────────────────────────────────────────────
