@@ -256,8 +256,8 @@ function buildAll() {
   // Update gallerySources in app.js
   updateGallerySources(projects);
 
-  // Update bio preview meta tags in index.html
-  updateBioPreview(info);
+  // Update preview meta tags in index.html
+  updatePreviewMeta(info);
 }
 
 // ── Update app.js gallerySources ──────────────────────
@@ -279,7 +279,7 @@ function updateGallerySources(projects) {
   console.log("Updated gallerySources in app.js");
 }
 
-// ── Bio preview meta tags in index.html ───────────────
+// ── Preview meta tags in index.html ───────────────────
 
 function escapeHtmlAttr(value) {
   return value
@@ -289,9 +289,10 @@ function escapeHtmlAttr(value) {
     .replace(/>/g, "&gt;");
 }
 
-function updateBioPreview(info) {
+function updatePreviewMeta(info) {
   if (!fs.existsSync(INDEX_FILE)) return;
   var bio = escapeHtmlAttr((info && info.bio_preview) || "");
+  var title = escapeHtmlAttr((info && info.title_preview) || "");
   var content = fs.readFileSync(INDEX_FILE, "utf-8");
 
   content = content.replace(
@@ -306,9 +307,17 @@ function updateBioPreview(info) {
     /(<meta\s+name="twitter:description"[\s\S]*?content=")[^"]*(")/,
     "$1" + bio + "$2"
   );
+  content = content.replace(
+    /(<meta\s+property="og:title"[\s\S]*?content=")[^"]*(")/,
+    "$1" + title + "$2"
+  );
+  content = content.replace(
+    /(<meta\s+name="twitter:title"[\s\S]*?content=")[^"]*(")/,
+    "$1" + title + "$2"
+  );
 
   fs.writeFileSync(INDEX_FILE, content);
-  console.log("Updated bio preview meta tags in index.html");
+  console.log("Updated preview meta tags in index.html");
 }
 
 // ── Run ──────────────────────────────────────────────
