@@ -1478,15 +1478,15 @@ function addPerVideoControls(inner, video) {
   ctrl.className = "detail-vid-ctrl";
   ctrl.innerHTML =
     '<button class="detail-video-btn detail-vid-fullscreen" type="button" aria-label="Fullscreen">' +
-    '<img src="./icons/fullscreen-svgrepo-com.svg" alt="" width="16" height="16">' +
+    '<img src="./icons/fullscreen.svg" alt="" width="16" height="16">' +
     '</button>' +
     '<button class="detail-video-btn detail-vid-mute" type="button" aria-label="Mute">' +
-    '<img class="vid-audio-on" src="./icons/audio-svgrepo-com.svg" alt="" width="16" height="16">' +
-    '<img class="vid-audio-off" src="./icons/audio-off-svgrepo-com.svg" alt="" width="16" height="16" style="display:none">' +
+    '<img class="vid-audio-on" src="./icons/volume-up.svg" alt="" width="16" height="16">' +
+    '<img class="vid-audio-off" src="./icons/volume-off.svg" alt="" width="16" height="16" style="display:none">' +
     '</button>' +
     '<button class="detail-video-btn detail-vid-play" type="button" aria-label="Play">' +
-    '<img class="vid-play-icon" src="./icons/music-play-play-button-svgrepo-com.svg" alt="" width="18" height="18">' +
-    '<img class="vid-pause-icon" src="./icons/media-player-music-pause-svgrepo-com.svg" alt="" width="18" height="18" style="display:none">' +
+    '<img class="vid-play-icon" src="./icons/play.svg" alt="" width="18" height="18">' +
+    '<img class="vid-pause-icon" src="./icons/pause.svg" alt="" width="18" height="18" style="display:none">' +
     '</button>';
   inner.appendChild(ctrl);
 

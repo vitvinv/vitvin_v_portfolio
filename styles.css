@@ -55,6 +55,9 @@
   --panel-top: 74px;
   --panel-bottom: 28px;
   --landscape-side-width: clamp(240px, 24vw, 340px);
+  --switch-w: 44px;
+  --btn-h: 28px;
+  --switch-gap: 4px;
 
   /* ── Transitions ────────────────────── */
   --fade: 220ms ease;
@@ -150,19 +153,15 @@ body {
 
 .view-switch {
   position: fixed;
-  right: 12px;
-  bottom: 12px;
   z-index: 24;
-}
-
-.view-switch.is-top {
-  top: 12px;
-  bottom: auto;
 }
 
 .slider-toggle {
   position: relative;
   display: inline-flex;
+  flex-direction: column;
+  gap: var(--switch-gap);
+  width: var(--switch-w);
   font: inherit;
   font-size: var(--fs-button);
   letter-spacing: var(--ls-button);
@@ -173,7 +172,11 @@ body {
 .slider-option {
   position: relative;
   z-index: 2;
-  padding: 6px 10px;
+  width: 100%;
+  height: var(--btn-h);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--color-text-button);
   transition: color 200ms ease;
   white-space: nowrap;
@@ -186,12 +189,13 @@ body {
 .slider-knob {
   position: absolute;
   top: 0;
-  height: 100%;
+  left: 0;
+  width: 100%;
   background: rgba(128, 128, 128, 0.28);
   box-shadow: 0 0 0 1px rgba(128, 128, 128, 0.18);
   border-radius: calc(var(--radius-sm) - 1px);
   z-index: 1;
-  transition: left 200ms ease, width 200ms ease;
+  transition: top 200ms ease, height 200ms ease;
 }
 
 .tab-panels {
@@ -1152,11 +1156,33 @@ a {
   .has-single-media .detail-media-wrap {
     max-width: calc(100vw - var(--landscape-side-width) - 40px);
   }
+
+  .view-switch {
+    top: 12px;
+    left: calc(var(--landscape-side-width) + 12px);
+    right: auto;
+    bottom: auto;
+  }
 }
 
 @media (max-width: 730px) {
   .mobile-copyright {
     display: inline-flex;
+  }
+
+  .view-switch {
+    top: 12px;
+    left: 12px;
+    right: auto;
+    bottom: auto;
+  }
+
+  .site-header {
+    left: calc(12px + var(--switch-w) + var(--btn-h));
+  }
+
+  body.is-switch-hidden .site-header {
+    left: 12px;
   }
 }
 
@@ -1170,23 +1196,6 @@ a {
   .panel[data-panel="contact"] {
     padding-left: 16px;
     padding-right: 16px;
-  }
-
-
-
-  .site-header {
-    left: 10px;
-    top: 10px;
-  }
-
-  .view-switch {
-    right: 10px;
-    bottom: 10px;
-  }
-
-  .view-switch.is-top {
-    top: 10px;
-    bottom: auto;
   }
 
   .tab-panels {
@@ -1207,6 +1216,26 @@ a {
 
   .project-dialog {
     border-radius: 12px;
+  }
+}
+
+/* ── Touch device: switch at the bottom center ── */
+@media (max-width: 640px) and (hover: none) and (pointer: coarse) {
+  .view-switch {
+    top: auto;
+    right: auto;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .site-header {
+    left: 10px;
+    top: 10px;
+  }
+
+  body.is-switch-hidden .site-header {
+    left: 10px;
   }
 }
 
