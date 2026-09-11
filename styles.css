@@ -55,9 +55,8 @@
   --panel-top: 74px;
   --panel-bottom: 28px;
   --landscape-side-width: clamp(240px, 24vw, 340px);
-  --switch-w: 44px;
-  --btn-h: 28px;
-  --switch-gap: 4px;
+  --switch-w: 52px; /* total rendered width of the view switch (2 × --btn-h + 2px border) */
+  --btn-h: 25px; /* same height as header tab buttons */
 
   /* ── Transitions ────────────────────── */
   --fade: 220ms ease;
@@ -159,9 +158,6 @@ body {
 .slider-toggle {
   position: relative;
   display: inline-flex;
-  flex-direction: column;
-  gap: var(--switch-gap);
-  width: var(--switch-w);
   font: inherit;
   font-size: var(--fs-button);
   letter-spacing: var(--ls-button);
@@ -172,30 +168,31 @@ body {
 .slider-option {
   position: relative;
   z-index: 2;
-  width: 100%;
+  width: var(--btn-h);
   height: var(--btn-h);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--color-text-button);
-  transition: color 200ms ease;
+  opacity: 0.45;
+  transition: color 200ms ease, opacity 200ms ease;
   white-space: nowrap;
 }
 
 .slider-option.is-active {
   color: var(--color-text-emphasis);
+  opacity: 1;
 }
 
 .slider-knob {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
+  height: 100%;
   background: rgba(128, 128, 128, 0.28);
   box-shadow: 0 0 0 1px rgba(128, 128, 128, 0.18);
   border-radius: calc(var(--radius-sm) - 1px);
   z-index: 1;
-  transition: top 200ms ease, height 200ms ease;
+  transition: left 200ms ease, width 200ms ease, top 200ms ease, height 200ms ease;
 }
 
 .tab-panels {
@@ -1096,8 +1093,8 @@ a {
     display: none !important;
   }
 
-  .copyright-header {
-    padding: 12px 2px 16px;
+  .info-side-panel .copyright-header {
+    padding: 1px 2px 16px; /* raise heading so it sits level with the view switch */
     border-bottom: 1px solid var(--color-ui-border);
   }
 
@@ -1178,7 +1175,7 @@ a {
   }
 
   .site-header {
-    left: calc(12px + var(--switch-w) + var(--btn-h));
+    left: calc(12px + var(--switch-w) + 8px);
   }
 
   body.is-switch-hidden .site-header {

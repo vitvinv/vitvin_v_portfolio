@@ -553,6 +553,8 @@ function updateSliderKnob(panelId) {
   if (activeOpt) {
     knob.style.left = activeOpt.offsetLeft + "px";
     knob.style.width = activeOpt.offsetWidth + "px";
+    knob.style.top = activeOpt.offsetTop + "px";
+    knob.style.height = activeOpt.offsetHeight + "px";
   }
 }
 
