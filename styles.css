@@ -328,6 +328,7 @@ body {
   justify-content: space-between;
   gap: 14px;
   color: var(--color-text-emphasis);
+  font-family: var(--font-mono);
   font-size: var(--meta-font-size, 10px);
   letter-spacing: var(--ls-meta);
   text-transform: uppercase;
@@ -809,15 +810,10 @@ a {
   display: flex;
   gap: 4px;
   z-index: 2;
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: var(--radius-sm);
-  padding: 3px;
 }
 
 .detail-media-inner .detail-vid-ctrl .detail-video-btn {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.35);
   border-color: rgba(255, 255, 255, 0.25);
 }
 
@@ -826,7 +822,7 @@ a {
 }
 
 .detail-media-inner .detail-vid-ctrl .detail-video-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.55);
 }
 
 /* Hide secondary buttons until video is played */
@@ -838,11 +834,6 @@ a {
 .detail-media-inner .detail-vid-ctrl.is-active .detail-vid-mute,
 .detail-media-inner .detail-vid-ctrl.is-active .detail-vid-fullscreen {
   display: inline-flex;
-}
-
-/* ── Video loading progress ──────────────── */
-.detail-media-inner .detail-vid-ctrl .detail-video-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
 }
 
 /* ── Fullscreen ─────────────────────────── */
