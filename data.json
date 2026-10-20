@@ -3,7 +3,6 @@
     {
       "id": "Letuelle-x-Yandex",
       "title": "Letuelle×Yandex",
-      "subtitle": "",
       "tags": [
         "AI",
         "Campaign",
@@ -39,7 +38,6 @@
         "type": "video",
         "src": "./projects/Letuelle×Yandex/1.mp4",
         "poster": "./projects/Letuelle×Yandex/1.jpg",
-        "previewVideo": "./projects/Letuelle×Yandex/1.mp4",
         "files": [
           {
             "type": "video",
@@ -65,7 +63,6 @@
     {
       "id": "Borjomi-Gives-Wings",
       "title": "Borjomi Gives Wings",
-      "subtitle": "",
       "tags": [
         "AI",
         "spec ad",
@@ -79,7 +76,6 @@
         "type": "video",
         "src": "./projects/Borjomi-Gives-Wings/borjomi_cow.mp4",
         "poster": "./projects/Borjomi-Gives-Wings/cover.jpg",
-        "previewVideo": "./projects/Borjomi-Gives-Wings/borjomi_cow.mp4",
         "files": [
           {
             "type": "video",
@@ -111,7 +107,6 @@
     {
       "id": "cards-katoka",
       "title": "car(d)s カドカ",
-      "subtitle": "",
       "tags": [
         "AI",
         "concept",
@@ -135,7 +130,6 @@
         "type": "image",
         "src": "./projects/car(d)s-カドカ/cover.jpg",
         "poster": "./projects/car(d)s-カドカ/cover.jpg",
-        "previewVideo": "",
         "files": [
           {
             "type": "image",
@@ -203,7 +197,6 @@
     {
       "id": "Nature-Cards",
       "title": "Nature Cards",
-      "subtitle": "",
       "tags": [
         "3D",
         "Drawing",
@@ -227,7 +220,6 @@
         "type": "image",
         "src": "./projects/Nature-Cards/cover.jpg",
         "poster": "./projects/Nature-Cards/cover.jpg",
-        "previewVideo": "",
         "files": [
           {
             "type": "image",
@@ -343,7 +335,6 @@
     {
       "id": "Samokat-x-Arive",
       "title": "Samokat×Arive",
-      "subtitle": "",
       "tags": [
         "AI",
         "Pitch",
@@ -367,7 +358,6 @@
         "type": "video",
         "src": "./projects/Samokat×Arive/arive.mp4",
         "poster": "./projects/Samokat×Arive/arive.jpg",
-        "previewVideo": "./projects/Samokat×Arive/arive.mp4",
         "files": [
           {
             "type": "video",
@@ -411,7 +401,6 @@
     {
       "id": "AR-stickers",
       "title": "AR stickers",
-      "subtitle": "",
       "tags": [
         "AR",
         "Prototype"
@@ -434,7 +423,6 @@
         "type": "video",
         "src": "./projects/AR-stickers/AR-demo.mp4",
         "poster": "./projects/AR-stickers/cover.jpg",
-        "previewVideo": "./projects/AR-stickers/AR-demo.mp4",
         "files": [
           {
             "type": "video",
@@ -454,7 +442,6 @@
     {
       "id": "Yandex.Afisha",
       "title": "Yandex.Afisha",
-      "subtitle": "",
       "tags": [
         "AI",
         "advertisement"
@@ -481,7 +468,6 @@
         "type": "video",
         "src": "./projects/Yandex.Afisha/1.mp4",
         "poster": "./projects/Yandex.Afisha/1.jpg",
-        "previewVideo": "./projects/Yandex.Afisha/1.mp4",
         "files": [
           {
             "type": "video",
@@ -525,7 +511,6 @@
     {
       "id": "AVAVAV",
       "title": "AVAVAV",
-      "subtitle": "",
       "tags": [
         "CGI",
         "Socials",
@@ -549,7 +534,6 @@
         "type": "video",
         "src": "./projects/AVAVAV/AVAVAV.mp4",
         "poster": "./projects/AVAVAV/AVAVAV.png",
-        "previewVideo": "./projects/AVAVAV/AVAVAV.mp4",
         "files": [
           {
             "type": "video",
@@ -563,7 +547,6 @@
     {
       "id": "Arny-Praht",
       "title": "Arny Praht",
-      "subtitle": "",
       "tags": [
         "CGI",
         "Socials",
@@ -587,7 +570,6 @@
         "type": "video",
         "src": "./projects/Arny-Praht/arnypraht.MP4",
         "poster": "./projects/Arny-Praht/arnypraht.jpg",
-        "previewVideo": "./projects/Arny-Praht/arnypraht.MP4",
         "files": [
           {
             "type": "video",
@@ -601,7 +583,6 @@
     {
       "id": "Sangria-Jewelry",
       "title": "Sangria Jewelry",
-      "subtitle": "",
       "tags": [
         "CGI",
         "socials",
@@ -625,7 +606,6 @@
         "type": "video",
         "src": "./projects/Sangria-Jewelry/1-cell.mp4",
         "poster": "./projects/Sangria-Jewelry/cover.jpg",
-        "previewVideo": "./projects/Sangria-Jewelry/1-cell.mp4",
         "files": [
           {
             "type": "video",
@@ -663,7 +643,6 @@
     {
       "id": "Ginger-Cotton",
       "title": "Ginger Cotton",
-      "subtitle": "",
       "tags": [
         "CGI",
         "Socials",
@@ -687,7 +666,6 @@
         "type": "video",
         "src": "./projects/Ginger-Cotton/1-ginger_cotton_final.mp4",
         "poster": "./projects/Ginger-Cotton/cover.jpg",
-        "previewVideo": "./projects/Ginger-Cotton/1-ginger_cotton_final.mp4",
         "files": [
           {
             "type": "video",
@@ -749,7 +727,6 @@
     {
       "id": "salaryman",
       "title": "salaryman",
-      "subtitle": "",
       "tags": [
         "CGI",
         "concept",
@@ -773,7 +750,6 @@
         "type": "video",
         "src": "./projects/salaryman/salaryman.mp4",
         "poster": "./projects/salaryman/salaryman.jpg",
-        "previewVideo": "./projects/salaryman/salaryman.mp4",
         "files": [
           {
             "type": "video",

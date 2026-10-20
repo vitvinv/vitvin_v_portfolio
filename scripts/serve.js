@@ -87,6 +87,7 @@ var MIME = {
   ".gif": "image/gif",
   ".mp4": "video/mp4",
   ".webm": "video/webm",
+  ".mov": "video/quicktime",
   ".ico": "image/x-icon",
 };
 

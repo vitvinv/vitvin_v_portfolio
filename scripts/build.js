@@ -102,13 +102,6 @@ var TRANSLIT = (function () {
   return map;
 })();
 
-function pathEscape(p) {
-  if (!p) return "";
-  var prefix = p.indexOf("./") === 0 ? "./" : "";
-  var rest = prefix ? p.slice(2) : p;
-  return prefix + rest.split("/").map(function (part) { return encodeURIComponent(part); }).join("/");
-}
-
 // ── Media detection ───────────────────────────────────
 
 function scanMedia(folderPath, captions) {
@@ -185,7 +178,6 @@ function buildProject(folderName) {
   return {
     id: sanitizeId(folderName),
     title: meta.title || folderTitle(folderName),
-    subtitle: meta.subtitle || "",
     tags: typeof meta.tags === "string"
       ? meta.tags.split(",").map(function (t) { return t.trim(); })
       : (meta.tags || []),
@@ -198,7 +190,6 @@ function buildProject(folderName) {
       type: type,
       src: src,
       poster: poster,
-      previewVideo: type === "video" ? src : "",
       files: (media.files || []).map(function (f) {
         return {
           type: f.type,

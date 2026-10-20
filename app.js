@@ -56,6 +56,18 @@ const PORTFOLIO_CONFIG = {
   detail: {
     mediaGap: 1,
   },
+  night: {
+    // ponytail: fallback origins only — if head.glb contains nodes named *pupil*,
+    // their live transforms are used instead; tune these only when pupils are absent.
+    eyeOffsets: [
+      { x: -0.18, y: 0.25, z: 0.22 },
+      { x: 0.18, y: 0.25, z: 0.22 },
+    ],
+    beamWidth: 0.14, // beam diameter at the pupils, fraction of head height
+    halfAngleDeg: 10, // divergence — how fast the beam widens past the eyes
+    eyeGlowStrength: 1, // emissive strength of the head's embedded glow texture at night
+    debug: false,
+  },
 };
 
 var LOADING = (function () {
@@ -137,6 +149,51 @@ var LOADING = (function () {
   };
 })();
 
+var NIGHT = (function () {
+  var KEY = "vv-night";
+  var root = document.documentElement;
+  var toggle = document.getElementById("night-toggle");
+  var on = false;
+  var listeners = [];
+
+  try {
+    on = root.getAttribute("data-night") === "on" || localStorage.getItem(KEY) === "1";
+  } catch (_) {}
+
+  function apply() {
+    root.setAttribute("data-night", on ? "on" : "off");
+    if (toggle) {
+      toggle.setAttribute("aria-pressed", on ? "true" : "false");
+    }
+  }
+
+  function flip() {
+    on = !on;
+    try {
+      localStorage.setItem(KEY, on ? "1" : "0");
+    } catch (_) {}
+    apply();
+    for (var i = 0; i < listeners.length; i++) {
+      listeners[i](on);
+    }
+  }
+
+  apply();
+  if (toggle) {
+    toggle.addEventListener("click", flip);
+  }
+
+  return {
+    isNight: function () {
+      return on;
+    },
+    subscribe: function (fn) {
+      listeners.push(fn);
+      fn(on);
+    },
+  };
+})();
+
 if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(function () {
     LOADING.fontsReady();
@@ -169,25 +226,6 @@ const galleryTags = [
   ["Visual", "Prototype"],
 ];
 
-let projects = gallerySources.map((source, index) => {
-  const id = `project-${index + 1}`;
-  const tags = galleryTags[index % galleryTags.length];
-  return {
-    id: id,
-    title: "loading\u2026",
-    subtitle: tags.join(" / "),
-    tags,
-    description: "",
-    link: "",
-    media: {
-      type: "image",
-      src: source,
-      poster: source,
-      previewVideo: "",
-    },
-  };
-});
-
 const tabs = Array.from(document.querySelectorAll(".tab"));
 const panels = Array.from(document.querySelectorAll(".panel"));
 const projectsPanel = panels.find((panel) => panel.dataset.panel === "projects");
@@ -205,7 +243,6 @@ const detailTitle = document.getElementById("detail-title");
 const detailIndex = document.getElementById("detail-index");
 const detailDescription = document.getElementById("detail-description");
 const detailTags = document.getElementById("detail-tags");
-const detailVideoControls = document.getElementById("detail-video-controls");
 const detailLinks = document.getElementById("detail-links");
 const detailRoles = document.getElementById("detail-roles");
 const detailScroll = document.querySelector(".detail-scroll");
@@ -285,14 +322,20 @@ function getFallbackProjects() {
     return {
       id: id,
       title: FALLBACK_TEXT,
-      subtitle: tags.join(" / "),
       tags: tags,
       description: FALLBACK_TEXT,
       link: "",
-      media: { type: "image", src: source, poster: source, previewVideo: "" },
+      media: { type: "image", src: source, poster: source },
     };
   });
 }
+
+// Placeholder list while data.json loads (single builder, one source of truth)
+var projects = getFallbackProjects().map(function (p) {
+  p.title = "loading\u2026";
+  p.description = "";
+  return p;
+});
 
 function getFallbackInfo() {
   return {
@@ -626,6 +669,8 @@ function renderProjects() {
     tilesMotionController.destroy();
     tilesMotionController = null;
   }
+
+  if (!projects.length) return;
 
   const cfg = PORTFOLIO_CONFIG.tiles;
   const viewWidth = window.innerWidth;
@@ -993,7 +1038,7 @@ function setupTilesMotion(container, tiles, onFocusChange) {
       }
     }
 
-    if (!state.layerDiagnosticsLogged && !hasActiveDeck && tiles.length > 2) {
+    if (PORTFOLIO_CONFIG.head.diagnostics && !state.layerDiagnosticsLogged && !hasActiveDeck && tiles.length > 2) {
       const layerSnapshot = tiles
         .map((_, index) => {
           const metric = state.metrics[index];
@@ -1272,7 +1317,6 @@ function showDetail(index, source, tileElement) {
 
     if (detailScroll) {
       detailScroll.classList.add("has-multi-media");
-      detailScroll.classList.remove("has-single-media");
       detailScroll.style.setProperty("--detail-media-gap", PORTFOLIO_CONFIG.detail.mediaGap + "px");
     }
 
@@ -1324,10 +1368,6 @@ function showDetail(index, source, tileElement) {
       }
 
       detailMedia.appendChild(wrap);
-    }
-
-    if (detailVideoControls) {
-      detailVideoControls.style.display = "none";
     }
 
     // Image lightbox: click any detail image to enlarge
@@ -1429,50 +1469,6 @@ function showDetail(index, source, tileElement) {
 
   fillDetailContent();
   showDetailPanel();
-}
-
-function bindVideoControls(video) {
-  const playBtn = document.getElementById("detail-video-play");
-  const playIcon = document.getElementById("detail-play-icon");
-  const pauseIcon = document.getElementById("detail-pause-icon");
-  const fullscreenBtn = document.getElementById("detail-video-fullscreen");
-
-  function showPlay() { playIcon.style.display = ""; pauseIcon.style.display = "none"; }
-  function showPause() { playIcon.style.display = "none"; pauseIcon.style.display = ""; }
-
-  if (playBtn) {
-    playBtn.onclick = () => {
-      if (video.paused) {
-        video.play();
-        showPause();
-      } else {
-        video.pause();
-        showPlay();
-      }
-    };
-  }
-
-  if (fullscreenBtn) {
-    fullscreenBtn.onclick = () => {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      } else if (video.requestFullscreen) {
-        video.requestFullscreen();
-      } else if (video.webkitRequestFullscreen) {
-        video.webkitRequestFullscreen();
-      }
-    };
-  }
-
-  video.onplay = () => showPause();
-  video.onpause = () => showPlay();
-  video.onended = () => showPlay();
-  video.onclick = () => {
-    if (video.paused) { video.play(); showPause(); }
-    else { video.pause(); showPlay(); }
-  };
-
-  showPlay();
 }
 
 function addPerVideoControls(inner, video) {
@@ -1764,6 +1760,100 @@ function setupHeadScene(stage) {
       });
 
       group.add(model);
+
+      // Beam origins, in priority order:
+      // 1) nodes named *pupil* inside head.glb,
+      // 2) separate marker exports models/pupil.L.glb / models/pupil.R.glb
+      //    (tiny spheres in the same raw scene space as head.glb),
+      // 3) fallback: PORTFOLIO_CONFIG.night.eyeOffsets.
+      // Markers are never rendered — they only carry positions.
+      // NOTE: circle/cylinder nodes are glasses/earrings — never hide them.
+      // The eye glow ships embedded in head.glb as an emissive texture; we only
+      // night-gate its intensity (glTF defaults the emissive factor to black).
+      var rawCenter = centered.beforeCenter;
+      var headScale = fitScale * cfg.scale;
+
+      var pupils = [];
+      model.traverse((child) => {
+        if (child.isMesh && child.material && child.material.emissiveMap) {
+          var em = child.material.emissiveMap;
+          // ponytail: Blender authors the glow as white RGB + alpha blob, but
+          // glTF emissiveMap ignores alpha — premultiply or the whole UV island
+          // glows as a rectangle. Runtime fix survives Blender re-exports.
+          if (em.image) {
+            var pc = document.createElement("canvas");
+            pc.width = em.image.width;
+            pc.height = em.image.height;
+            var pg = pc.getContext("2d");
+            pg.drawImage(em.image, 0, 0);
+            var pd = pg.getImageData(0, 0, pc.width, pc.height);
+            var pp = pd.data;
+            for (var pi = 0; pi < pp.length; pi += 4) {
+              var pa = pp[pi + 3] / 255;
+              pp[pi] *= pa;
+              pp[pi + 1] *= pa;
+              pp[pi + 2] *= pa;
+            }
+            pg.putImageData(pd, 0, 0);
+            var pt = new THREE.CanvasTexture(pc);
+            pt.flipY = em.flipY;
+            pt.colorSpace = em.colorSpace;
+            pt.wrapS = em.wrapS;
+            pt.wrapT = em.wrapT;
+            // nearest interpolation — the glow blob stays pixel-crisp like the PSX look
+            pt.magFilter = THREE.NearestFilter;
+            pt.minFilter = THREE.NearestFilter;
+            pt.generateMipmaps = false;
+            child.material.emissiveMap = pt;
+          }
+          glowMats.push(child.material);
+          child.material.emissive.set(0xffffff);
+          child.material.emissiveIntensity = NIGHT.isNight() ? nightCfg.eyeGlowStrength : 0;
+        }
+        if (/pupil/i.test(child.name)) {
+          child.visible = false;
+          pupils.push(child);
+        }
+      });
+      pupilNodes = pupils.length === 2 ? pupils : null;
+
+      if (!pupilNodes) {
+        var pupilGot = [];
+        ["./models/pupil.L.glb", "./models/pupil.R.glb"].forEach((file) => {
+          loader.load(
+            file,
+            (gltf) => {
+              var c = new THREE.Box3().setFromObject(gltf.scene).getCenter(new THREE.Vector3());
+              pupilGot.push(new THREE.Vector3(
+                headScale * c.x - rawCenter[0],
+                headScale * c.y - rawCenter[1],
+                headScale * c.z - rawCenter[2]
+              ));
+              if (pupilGot.length === 2) {
+                pupilGot.sort((a, b) => a.x - b.x);
+                dynamicEyeOffsets = pupilGot;
+              }
+            },
+            undefined,
+            () => {
+              if (PORTFOLIO_CONFIG.head.diagnostics) {
+                console.warn("[night] pupil marker failed to load:", file);
+              }
+            }
+          );
+        });
+      }
+
+      NIGHT.subscribe((on) => {
+        for (var i = 0; i < glowMats.length; i++) {
+          glowMats[i].emissiveIntensity = on ? nightCfg.eyeGlowStrength : 0;
+        }
+      });
+
+      if (PORTFOLIO_CONFIG.head.diagnostics) {
+        console.info("[night] pupil nodes:", pupilNodes ? pupils.map((p) => p.name) : "none — using eyeOffsets");
+      }
+
       renderer.compile(scene, camera);
 
       const detectedWidth = getObjectWidth(model);
@@ -1820,6 +1910,254 @@ function setupHeadScene(stage) {
 
   const pointer = { x: 0, y: 0 };
 
+  // ── Night mode eye beams ─────────────
+  const nightCfg = PORTFOLIO_CONFIG.night;
+  const nightVeil = document.getElementById("night-veil");
+  const veilCtx = nightVeil ? nightVeil.getContext("2d") : null;
+  const beamPointer = { x: 0, y: 0, has: false };
+  const beamV = new THREE.Vector3();
+  const beamV2 = new THREE.Vector3();
+  let lastPxPerUnit = 0;
+  let pupilNodes = null; // nodes named *pupil* inside head.glb override everything below
+  let dynamicEyeOffsets = null; // group-space origins from models/pupil.*.glb
+  const glowMats = []; // head.glb materials carrying the embedded emissive glow texture
+  let lastEyeViewport = null;
+  let debugDots = null;
+
+  if (nightCfg.debug) {
+    debugDots = [];
+    for (var di = 0; di < nightCfg.eyeOffsets.length; di++) {
+      var dot = document.createElement("div");
+      dot.style.cssText =
+        "position:fixed;left:0;top:0;width:4px;height:4px;margin:-2px 0 0 -2px;background:#f0f;z-index:10000;pointer-events:none;display:none;";
+      document.body.appendChild(dot);
+      debugDots.push(dot);
+    }
+  }
+
+  const trackBeamPointer = (clientX, clientY) => {
+    beamPointer.x = clientX;
+    beamPointer.y = clientY;
+    beamPointer.has = true;
+  };
+
+  const fallbackEyes = () => {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const sep = Math.min(w, h) * 0.06;
+    return [
+      { x: w / 2 - sep, y: h / 3 },
+      { x: w / 2 + sep, y: h / 3 },
+    ];
+  };
+
+  // Beam = a trapezoid punched out of the darkness: exits the pupil already
+  // beamWidth wide, diverges at halfAngleDeg, feathered with ctx.filter.
+  // Only ever drawn inside the baked sprite below — never per frame
+  // (ctx.filter is CPU-bound in Firefox).
+  const traceBeam = (ctx, ex, ey, angleDeg, wpx, reach) => {
+    const rad = (angleDeg * Math.PI) / 180;
+    const dx = Math.sin(rad);
+    const dy = -Math.cos(rad); // beam direction, CSS angles: 0 = up
+    const px = Math.cos(rad);
+    const py = Math.sin(rad);
+    const spread = Math.tan((nightCfg.halfAngleDeg * Math.PI) / 180);
+    const w0 = wpx / 2;
+    const w1 = w0 + reach * spread;
+    ctx.moveTo(ex + px * w0, ey + py * w0);
+    ctx.lineTo(ex + dx * reach + px * w1, ey + dy * reach + py * w1);
+    ctx.lineTo(ex + dx * reach - px * w1, ey + dy * reach - py * w1);
+    ctx.lineTo(ex - px * w0, ey - py * w0);
+    ctx.closePath();
+  };
+
+  // Halo + beam baked into one offscreen sprite: identical shapes and blur
+  // radii as the old per-frame code, rendered once per quantized beam width /
+  // reach, then drawImage'd twice per frame (a GPU-composited op — cheap in
+  // Firefox too). The pupil sits at (ox, oy); the beam runs along +x.
+  let beamSprite = null;
+  let beamSpriteKey = "";
+  const getBeamSprite = (wpx, reach) => {
+    const qw = Math.max(8, Math.round(wpx / 6) * 6);
+    const qr = Math.round(reach / 128) * 128;
+    const key = qw + "x" + qr;
+    if (beamSprite && beamSpriteKey === key) return beamSprite;
+    beamSpriteKey = key;
+
+    const blurH = Math.max(14, qw * 0.45); // halo feather
+    const blurB = Math.max(6, qw * 0.18);  // beam edge feather
+    const haloR = qw * 0.9;
+    const w1 = qw / 2 + qr * Math.tan((nightCfg.halfAngleDeg * Math.PI) / 180);
+    const ox = Math.ceil(blurB * 3 + blurH * 2);
+    const oy = Math.ceil(Math.max(w1 + blurB * 3, haloR + blurH * 3));
+
+    const c = document.createElement("canvas");
+    c.width = qr + ox * 2;
+    c.height = oy * 2;
+    const g = c.getContext("2d");
+    g.translate(ox, oy);
+    g.fillStyle = "#000";
+    g.filter = "blur(" + blurH.toFixed(1) + "px)";
+    const fade = g.createRadialGradient(0, 0, 0, 0, 0, haloR);
+    fade.addColorStop(0, "rgba(0, 0, 0, 1)");
+    fade.addColorStop(0.3, "rgba(0, 0, 0, 0.85)");
+    fade.addColorStop(0.65, "rgba(0, 0, 0, 0.3)");
+    fade.addColorStop(1, "rgba(0, 0, 0, 0)");
+    g.beginPath();
+    g.arc(0, 0, haloR, 0, Math.PI * 2);
+    g.fill();
+    g.filter = "blur(" + blurB.toFixed(1) + "px)";
+    g.beginPath();
+    traceBeam(g, 0, 0, 90, qw, qr);
+    g.fill();
+    g.filter = "none";
+    beamSprite = { c, ox, oy };
+    return beamSprite;
+  };
+
+  function updateNightBeams() {
+    if (!veilCtx || !NIGHT.isNight()) {
+      return;
+    }
+
+    let eyes = null;
+
+    if (isProjectsTabActive() && stage.clientWidth > 2 && stage.clientHeight > 2) {
+      const rect = stage.getBoundingClientRect();
+      group.updateMatrixWorld();
+      const offsets = pupilNodes ? null : dynamicEyeOffsets || nightCfg.eyeOffsets;
+      const count = pupilNodes ? pupilNodes.length : offsets.length;
+      const localEye = (i) => {
+        if (pupilNodes) {
+          return pupilNodes[i].getWorldPosition(beamV);
+        }
+        return beamV.copy(offsets[i]).applyMatrix4(group.matrixWorld);
+      };
+      const projected = [];
+      let ok = true;
+      for (let i = 0; i < count; i++) {
+        localEye(i).project(camera);
+        if (!Number.isFinite(beamV.x) || !Number.isFinite(beamV.y) || Math.abs(beamV.z) > 1) {
+          ok = false;
+          break;
+        }
+        projected.push({
+          x: rect.left + (beamV.x * 0.5 + 0.5) * rect.width,
+          y: rect.top + (-beamV.y * 0.5 + 0.5) * rect.height,
+        });
+      }
+      if (ok) {
+        eyes = projected;
+        lastEyeViewport = projected;
+
+        // px size of one head-height unit → beam width in px
+        beamV.set(0, 0, 0).applyMatrix4(group.matrixWorld).project(camera);
+        beamV2.set(0, 1, 0).applyMatrix4(group.matrixWorld).project(camera);
+        const ppu = Math.hypot(
+          (beamV2.x - beamV.x) * rect.width / 2,
+          (beamV2.y - beamV.y) * rect.height / 2
+        );
+        if (Number.isFinite(ppu) && ppu > 1) {
+          lastPxPerUnit = ppu;
+        }
+      }
+    }
+
+    if (!eyes) {
+      eyes = lastEyeViewport || fallbackEyes();
+    }
+    const wpx = nightCfg.beamWidth * (lastPxPerUnit || Math.min(window.innerWidth, window.innerHeight) * 0.5);
+
+    let angleDeg = 180;
+    if (beamPointer.has) {
+      const mx = (eyes[0].x + eyes[1].x) / 2;
+      const my = (eyes[0].y + eyes[1].y) / 2;
+      const dx = beamPointer.x - mx;
+      const dy = beamPointer.y - my;
+      if (Math.hypot(dx, dy) > 1) {
+        angleDeg = Math.atan2(dx, -dy) * (180 / Math.PI);
+      }
+    }
+
+    // Darkness everywhere, minus a soft halo per eye (keeps the glow visible)
+    // and minus the beam trapezoids. Faint warm wash under the black sells it.
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cw = Math.round(w * dpr);
+    const ch = Math.round(h * dpr);
+    if (nightVeil.width !== cw || nightVeil.height !== ch) {
+      nightVeil.width = cw;
+      nightVeil.height = ch;
+    }
+    const ctx = veilCtx;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, w, h);
+
+    // No head on screen (index list, about, contact, detail): no beams —
+    // two big diffused light pads following the cursor / finger instead.
+    // ponytail: separate effect, separate branch; shares only the black fill.
+    if (!isProjectsTabActive()) {
+      const lx = beamPointer.has ? beamPointer.x : w / 2;
+      const ly = beamPointer.has ? beamPointer.y : h * 0.5;
+      const r = Math.min(w, h) * 0.28;
+      const sep = r * 0.45;
+      ctx.globalCompositeOperation = "destination-out";
+      for (let i = 0; i < 2; i++) {
+        const gx = i === 0 ? lx - sep : lx + sep;
+        const g = ctx.createRadialGradient(gx, ly, 0, gx, ly, r);
+        g.addColorStop(0, "rgba(0, 0, 0, 1)");
+        g.addColorStop(0.45, "rgba(0, 0, 0, 0.8)");
+        g.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(gx, ly, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalCompositeOperation = "destination-over";
+      ctx.fillStyle = "rgba(255, 241, 209, 0.05)";
+      for (let i = 0; i < 2; i++) {
+        const gx = i === 0 ? lx - sep : lx + sep;
+        ctx.beginPath();
+        ctx.arc(gx, ly, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalCompositeOperation = "source-over";
+      return;
+    }
+
+    const reach = Math.hypot(w, h);
+    ctx.globalCompositeOperation = "destination-out";
+    const spr = getBeamSprite(wpx, reach);
+    const rot = ((angleDeg - 90) * Math.PI) / 180; // sprite beam runs along +x
+    for (let i = 0; i < eyes.length; i++) {
+      ctx.save();
+      ctx.translate(eyes[i].x, eyes[i].y);
+      ctx.rotate(rot);
+      ctx.drawImage(spr.c, -spr.ox, -spr.oy);
+      ctx.restore();
+    }
+    ctx.globalCompositeOperation = "destination-over";
+    ctx.fillStyle = "rgba(255, 241, 209, 0.05)";
+    for (let i = 0; i < eyes.length; i++) {
+      ctx.beginPath();
+      traceBeam(ctx, eyes[i].x, eyes[i].y, angleDeg, wpx, reach);
+      ctx.fill();
+    }
+    ctx.globalCompositeOperation = "source-over";
+
+    if (debugDots) {
+      for (let d = 0; d < debugDots.length; d++) {
+        debugDots[d].style.display = "block";
+        debugDots[d].style.left = eyes[d].x + "px";
+        debugDots[d].style.top = eyes[d].y + "px";
+      }
+    }
+  }
+  // ── end night beams ──────────────────
+
   const setPointerFromClient = (clientX, clientY) => {
     const rect = stage.getBoundingClientRect();
     const width = Math.max(rect.width, 1);
@@ -1831,6 +2169,8 @@ function setupHeadScene(stage) {
   };
 
   window.addEventListener("pointermove", (event) => {
+    trackBeamPointer(event.clientX, event.clientY);
+
     if (!isProjectsTabActive()) {
       return;
     }
@@ -1841,6 +2181,10 @@ function setupHeadScene(stage) {
   window.addEventListener(
     "touchmove",
     (event) => {
+      if (event.touches[0]) {
+        trackBeamPointer(event.touches[0].clientX, event.touches[0].clientY);
+      }
+
       if (!isProjectsTabActive()) {
         return;
       }
@@ -1855,6 +2199,7 @@ function setupHeadScene(stage) {
   window.addEventListener("blur", () => {
     pointer.x = 0;
     pointer.y = 0;
+    beamPointer.has = false;
   });
 
   const resize = (reason = "window-resize") => {
@@ -1916,7 +2261,10 @@ function setupHeadScene(stage) {
 
       targetModel.position.y = baseY + Math.sin(elapsed * cfg.bob.speed) * cfg.bob.amplitude;
 
-      renderer.render(scene, camera);
+      if (isProjectsTabActive()) {
+        renderer.render(scene, camera);
+      }
+      updateNightBeams();
       window.requestAnimationFrame(frame);
     };
 
