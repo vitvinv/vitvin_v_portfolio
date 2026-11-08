@@ -54,7 +54,7 @@
   --pad-x: 0px;
   --panel-top: 74px;
   --panel-bottom: 64px; /* clears the bottom dock */
-  --orbit-bottom: 10px; /* card row sits low, dock (z 24) paints over it */
+  --orbit-bottom: 30px; /* card row sits low; dock (z 24) only grazes the deepest dip */
   --landscape-side-width: clamp(240px, 24vw, 340px);
   --btn-h: 25px; /* same height as header tab buttons */
 
@@ -240,16 +240,13 @@ body {
   flex-shrink: 0;
 }
 
-[data-night="on"] .bottom-dock #night-toggle {
-  background: transparent;
-}
-
-/* Day mode (moon): white by default, darken on hover — same recipe as the name button */
-html:not([data-night="on"]) .bottom-dock #night-toggle {
+/* Toggle pill: identical in both modes — white by default, darken on hover,
+   dark icon (sun and moon behave the same on the white dock) */
+.bottom-dock #night-toggle {
   background: var(--color-ui-bg);
 }
 
-html:not([data-night="on"]) .bottom-dock #night-toggle:hover {
+.bottom-dock #night-toggle:hover {
   background: rgba(194, 194, 194, 0.85);
 }
 
@@ -1236,16 +1233,6 @@ a {
 
 #night-toggle .icon-moon {
   display: block;
-}
-
-[data-night="on"] #night-toggle {
-  background: rgba(38, 38, 38, 0.55);
-  border-color: rgba(255, 255, 255, 0.18);
-  color: #d0d0d0;
-}
-
-[data-night="on"] #night-toggle:hover {
-  background: rgba(64, 64, 64, 0.65);
 }
 
 [data-night="on"] #night-toggle .icon-sun {
