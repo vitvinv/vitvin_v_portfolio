@@ -51,8 +51,6 @@
     <header class="site-header">
       <nav class="tabs" aria-label="Main sections">
         <button class="tab is-active mobile-copyright" data-tab="projects" type="button">VALENTIN VITVINSKII &copy; 2026</button>
-        <button class="tab portrait-tab" data-tab="about" type="button">about</button>
-        <button class="tab portrait-tab" data-tab="contact" type="button">contact</button>
       </nav>
     </header>
 
@@ -121,23 +119,31 @@
       <div class="side-panel-bottom"></div>
     </aside>
 
-    <div class="view-switch" role="group" aria-label="Display mode">
-      <button class="slider-toggle" type="button" id="view-toggle">
-        <span class="slider-option" data-view="projects">
-          <svg role="img" aria-label="Overview" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M5 19H2V5H5V19ZM17 21H7V3H17V21ZM22 19H19V5H22V19Z"/></svg>
-        </span>
-        <span class="slider-option" data-view="index">
-          <svg role="img" aria-label="Index" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M8.00049 19.1498H21.0005V20.9998H8.00049V19.1498ZM8.00049 11.0748H21.0005V12.9248H8.00049V11.0748ZM8.00049 2.9998H21.0005V4.8498H8.00049V2.9998ZM4.25049 5.29981C3.50049 5.29981 2.87549 4.6748 2.87549 3.9248C2.87549 3.1748 3.50049 2.5498 4.25049 2.5498C5.00049 2.5498 5.62549 3.1748 5.62549 3.9248C5.62549 4.6748 5.00049 5.29981 4.25049 5.29981ZM4.25049 13.3748C3.50049 13.3748 2.87549 12.7498 2.87549 11.9998C2.87549 11.2498 3.50049 10.6248 4.25049 10.6248C5.00049 10.6248 5.62549 11.2498 5.62549 11.9998C5.62549 12.7498 5.00049 13.3748 4.25049 13.3748ZM4.25049 21.4248C3.50049 21.4248 2.87549 20.7998 2.87549 20.0498C2.87549 19.2998 3.50049 18.6748 4.25049 18.6748C5.00049 18.6748 5.62549 19.2998 5.62549 20.0498C5.62549 20.7998 5.00049 21.4248 4.25049 21.4248Z"/></svg>
-        </span>
-        <span class="slider-knob"></span>
+    <div class="bottom-dock" id="bottom-dock" role="group" aria-label="Site controls">
+      <div class="view-switch" role="group" aria-label="Display mode">
+        <button class="slider-toggle" type="button" id="view-toggle" aria-label="Switch between overview, index and about">
+          <span class="slider-option" data-view="projects">
+            <svg role="img" aria-label="Overview" width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M5 19H2V5H5V19ZM17 21H7V3H17V21ZM22 19H19V5H22V19Z"/></svg>
+            <span class="slider-label">Overview</span>
+          </span>
+          <span class="slider-option" data-view="index">
+            <svg role="img" aria-label="Index" width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M8.00049 19.1498H21.0005V20.9998H8.00049V19.1498ZM8.00049 11.0748H21.0005V12.9248H8.00049V11.0748ZM8.00049 2.9998H21.0005V4.8498H8.00049V2.9998ZM4.25049 5.29981C3.50049 5.29981 2.87549 4.6748 2.87549 3.9248C2.87549 3.1748 3.50049 2.5498 4.25049 2.5498C5.00049 2.5498 5.62549 3.1748 5.62549 3.9248C5.62549 4.6748 5.00049 5.29981 4.25049 5.29981ZM4.25049 13.3748C3.50049 13.3748 2.87549 12.7498 2.87549 11.9998C2.87549 11.2498 3.50049 10.6248 4.25049 10.6248C5.00049 10.6248 5.62549 11.2498 5.62549 11.9998C5.62549 12.7498 5.00049 13.3748 4.25049 13.3748ZM4.25049 21.4248C3.50049 21.4248 2.87549 20.7998 2.87549 20.0498C2.87549 19.2998 3.50049 18.6748 4.25049 18.6748C5.00049 18.6748 5.62549 19.2998 5.62549 20.0498C5.62549 20.7998 5.00049 21.4248 4.25049 21.4248Z"/></svg>
+            <span class="slider-label">Index</span>
+          </span>
+          <span class="slider-option" data-view="about">
+            <span class="slider-label">about</span>
+          </span>
+          <span class="slider-knob"></span>
+        </button>
+      </div>
+      <span class="dock-divider" aria-hidden="true"></span>
+      <button id="night-toggle" type="button" aria-pressed="false" aria-label="Night mode">
+        <svg class="icon-moon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M13.0005 22C7.40049 22 3.00049 17.6 3.00049 12C3.00049 6.4 7.40049 2 13.0005 2C15.8505 2 18.3255 3.175 20.0505 4.9C16.6255 5.325 13.7505 8.2 13.7505 12C13.7505 15.8 16.6255 18.675 20.0505 19.1C18.3255 20.825 15.8505 22 13.0005 22ZM13.0005 20.1C14.1005 20.1 15.1005 20 16.2755 19.6C13.4755 17.95 11.8005 15.25 11.8005 12C11.8005 8.75 13.5005 6.025 16.2505 4.4C15.1005 4 14.1005 3.9 13.0005 3.9C8.47549 3.9 4.95049 7.45 4.95049 12C4.95049 16.55 8.47549 20.1 13.0005 20.1Z"/></svg>
+        <svg class="icon-sun" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 16C9.75 16 8 14.25 8 12C8 9.75 9.75 8 12 8C14.25 8 16 9.75 16 12C16 14.25 14.25 16 12 16ZM5.6 19.75L4.25 18.4L7.075 15.575L8.425 16.925L5.6 19.75ZM2 12.95V11.05H6V12.95H2ZM11.025 22V18H12.975V22H11.025ZM7.075 8.425L4.25 5.6L5.6 4.25L8.425 7.075L7.075 8.425ZM18.4 19.75L15.575 16.925L16.925 15.575L19.75 18.4L18.4 19.75ZM11.025 6V2H12.975V6H11.025ZM18 12.95V11.05H22V12.95H18ZM16.925 8.425L15.575 7.075L18.4 4.25L19.75 5.6L16.925 8.425Z"/></svg>
       </button>
     </div>
 
     <canvas class="night-veil" id="night-veil" aria-hidden="true"></canvas>
-    <button id="night-toggle" type="button" aria-pressed="false" aria-label="Night mode">
-      <svg class="icon-moon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M13.0005 22C7.40049 22 3.00049 17.6 3.00049 12C3.00049 6.4 7.40049 2 13.0005 2C15.8505 2 18.3255 3.175 20.0505 4.9C16.6255 5.325 13.7505 8.2 13.7505 12C13.7505 15.8 16.6255 18.675 20.0505 19.1C18.3255 20.825 15.8505 22 13.0005 22ZM13.0005 20.1C14.1005 20.1 15.1005 20 16.2755 19.6C13.4755 17.95 11.8005 15.25 11.8005 12C11.8005 8.75 13.5005 6.025 16.2505 4.4C15.1005 4 14.1005 3.9 13.0005 3.9C8.47549 3.9 4.95049 7.45 4.95049 12C4.95049 16.55 8.47549 20.1 13.0005 20.1Z"/></svg>
-      <svg class="icon-sun" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 16C9.75 16 8 14.25 8 12C8 9.75 9.75 8 12 8C14.25 8 16 9.75 16 12C16 14.25 14.25 16 12 16ZM5.6 19.75L4.25 18.4L7.075 15.575L8.425 16.925L5.6 19.75ZM2 12.95V11.05H6V12.95H2ZM11.025 22V18H12.975V22H11.025ZM7.075 8.425L4.25 5.6L5.6 4.25L8.425 7.075L7.075 8.425ZM18.4 19.75L15.575 16.925L16.925 15.575L19.75 18.4L18.4 19.75ZM11.025 6V2H12.975V6H11.025ZM18 12.95V11.05H22V12.95H18ZM16.925 8.425L15.575 7.075L18.4 4.25L19.75 5.6L16.925 8.425Z"/></svg>
-    </button>
 
     <script type="importmap">
       {

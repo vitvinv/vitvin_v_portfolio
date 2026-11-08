@@ -25,11 +25,14 @@ const PORTFOLIO_CONFIG = {
   },
   tiles: {
     mediaScale: 1,
-    maxLaneHeightFactor: 0.62,
+    maxLaneHeightFactor: 0.8,
     minTileHeight: 130,
     maxTileHeight: 280,
-    alignmentMode: "middle",
-    randomOffsetY: 40,
+    alignmentMode: "lower",
+    randomOffsetY: 0,
+    archDip: 48,
+    archTiltDeg: 14, // lean-back inside per-card perspective → subtle wedge, top toward the viewer
+    archFanDeg: 14, // edge cards rotate toward the arch center (t² ramp); the card under the head stays upright
     fallbackWidth: 320,
     fallbackHeight: 220,
     gap: 14,
@@ -304,6 +307,8 @@ function syncMobileInfo() {
   if (aboutTarget) {
     aboutTarget.innerHTML = "";
     aboutBlocks.forEach((b) => aboutTarget.appendChild(b));
+    // the dock has a single "about" entry — contact info lives at the end of it
+    contactBlocks.forEach((b) => aboutTarget.appendChild(b.cloneNode(true)));
   }
 
   if (contactTarget) {
@@ -479,16 +484,6 @@ async function boot() {
 
   trackTileMediaLoads();
 
-  positionViewSwitch();
-  window.addEventListener("resize", function () {
-    if (!_switchRAF) {
-      _switchRAF = requestAnimationFrame(function () {
-        _switchRAF = null;
-        positionViewSwitch();
-      });
-    }
-  });
-
   document.querySelector(".copyright-link")?.addEventListener("click", (e) => {
     e.preventDefault();
     setActivePanel("projects");
@@ -519,6 +514,7 @@ function setupTabs() {
     tab.addEventListener("click", () => {
       const id = tab.dataset.tab;
 
+      // On desktop the side panel carries about/contact — tabs stay mobile-only
       if (orientationMedia.matches && (id === "about" || id === "contact")) {
         return;
       }
@@ -547,6 +543,9 @@ function setupViewSwitch() {
       const view = opt.dataset.view;
       if (view === "projects" || view === "index") {
         setActivePanel(view);
+      } else if (view === "about" && !orientationMedia.matches) {
+        // mobile only — desktop about lives in the side panel
+        setActivePanel("about");
       }
     });
   });
@@ -619,9 +618,9 @@ function setActivePanel(id) {
     tab.classList.toggle("is-active", isActive);
   });
 
-  const vs = document.querySelector(".view-switch");
+  const dock = document.getElementById("bottom-dock");
   const showVs = () => {
-    if (vs) vs.style.display = (id === "detail" || id === "about" || id === "contact") ? "none" : "";
+    if (dock) dock.style.display = id === "detail" ? "none" : "";
   };
 
   if (!oldPanel || oldPanel === newPanel) {
@@ -660,6 +659,22 @@ function updateHeadMeta(project) {
   headMetaTags.textContent = (project.tags || []).join(" / ");
 }
 
+// Fixed 3:4 portrait card geometry, shared by renderProjects (tile count) and
+// recalcMetrics (per-tile sizing) so the row density always matches the sizing.
+function computeCardMetrics(laneHeight) {
+  const cfg = PORTFOLIO_CONFIG.tiles;
+  const manualScale = cfg.mediaScale > 0 ? cfg.mediaScale : 1;
+  const height = Math.round(
+    Math.min(Math.max(laneHeight * cfg.maxLaneHeightFactor * manualScale, cfg.minTileHeight), cfg.maxTileHeight)
+  );
+  const width = Math.max(Math.round(height * (3 / 4)), 1);
+  const step = Math.max(
+    width - Math.max(1, Math.round(height * cfg.overlapFactor)) - Math.max(0, cfg.gap),
+    Math.round(width * 0.34)
+  );
+  return { width, height, step };
+}
+
 function renderProjects() {
   orbit.innerHTML = "";
   projectsList.innerHTML = "";
@@ -674,9 +689,16 @@ function renderProjects() {
 
   const cfg = PORTFOLIO_CONFIG.tiles;
   const viewWidth = window.innerWidth;
-  const avgCardW = 220;
-  const autoCount = Math.max(4, Math.ceil(viewWidth / avgCardW) + 5);
-  const tileCount = cfg.visibleCount > 0 ? cfg.visibleCount : autoCount;
+  // Count tiles from real card geometry: the chain of overlapping tiles must be
+  // longer than viewport + wrap margins, otherwise the wrap-around fold happens
+  // on-screen and the row shows gaps at the edges (recurring old bug).
+  const laneEstimate = orbit.getBoundingClientRect().height || window.innerHeight * 0.35;
+  const card = computeCardMetrics(laneEstimate);
+  const wrapMargin = Math.max(40, card.width * 0.25);
+  const spanNeeded = viewWidth + 2 * (card.width + wrapMargin);
+  const aestheticCount = Math.max(4, Math.ceil(viewWidth / 110) + 5);
+  const autoCount = Math.max(aestheticCount, Math.ceil(spanNeeded / Math.max(card.step, 1)));
+  const tileCount = cfg.visibleCount > 0 ? Math.max(cfg.visibleCount, Math.ceil(spanNeeded / Math.max(card.step, 1))) : autoCount;
   // Ensure tile count is a multiple of project count so every cycle
   // contains the full project set — no partial loops.
   const copies = Math.max(1, Math.ceil(tileCount / projects.length));
@@ -796,8 +818,6 @@ function setupTilesMotion(container, tiles, onFocusChange) {
     rafId: 0,
   };
 
-  const cleanupFns = [];
-
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
   const setHoveredIndex = (index) => {
@@ -808,50 +828,6 @@ function setupTilesMotion(container, tiles, onFocusChange) {
 
     const valid = Number.isInteger(index) && index >= 0 && index < tiles.length;
     state.hoveredIndex = valid ? index : -1;
-  };
-
-  const getMediaSize = (tile) => {
-    const media = tile.querySelector(".tile-media");
-
-    if (media instanceof HTMLImageElement && media.naturalWidth > 0 && media.naturalHeight > 0) {
-      return {
-        width: media.naturalWidth,
-        height: media.naturalHeight,
-      };
-    }
-
-    if (media instanceof HTMLVideoElement && media.videoWidth > 0 && media.videoHeight > 0) {
-      return {
-        width: media.videoWidth,
-        height: media.videoHeight,
-      };
-    }
-
-    return {
-      width: cfg.fallbackWidth,
-      height: cfg.fallbackHeight,
-    };
-  };
-
-  const bindMediaLoadRefresh = () => {
-    tiles.forEach((tile) => {
-      const media = tile.querySelector(".tile-media");
-      if (!media) {
-        return;
-      }
-
-      const handler = () => {
-        recalcMetrics();
-      };
-
-      if (media instanceof HTMLImageElement) {
-        media.addEventListener("load", handler);
-        cleanupFns.push(() => media.removeEventListener("load", handler));
-      } else if (media instanceof HTMLVideoElement) {
-        media.addEventListener("loadedmetadata", handler);
-        cleanupFns.push(() => media.removeEventListener("loadedmetadata", handler));
-      }
-    });
   };
 
   const computeTileX = (metric, viewportWidth, index, commit = true) => {
@@ -925,37 +901,21 @@ function setupTilesMotion(container, tiles, onFocusChange) {
 
   const recalcMetrics = () => {
     const laneHeight = container.getBoundingClientRect().height || window.innerHeight * 0.35;
-    const mediaSizes = tiles.map((tile) => getMediaSize(tile));
-    const manualScale = cfg.mediaScale > 0 ? cfg.mediaScale : 1;
-    const targetHeight = Math.round(
-      clamp(laneHeight * cfg.maxLaneHeightFactor * manualScale, cfg.minTileHeight, cfg.maxTileHeight)
-    );
-    const targetArea = Math.max(targetHeight * targetHeight, 1);
-    const overlapPx = Math.max(1, Math.round(targetHeight * cfg.overlapFactor));
-    const overlapBoost = Math.max(0, cfg.gap);
+    // Fixed 2:3 portrait cards — one height for the whole row, media cropped via
+    // object-fit: cover. No per-media aspect math.
+    const card = computeCardMetrics(laneHeight);
 
     let cursor = 0;
 
     tiles.forEach((tile, index) => {
-      const size = mediaSizes[index];
-      const aspect = size.height > 0 ? size.width / size.height : cfg.fallbackWidth / cfg.fallbackHeight;
-      const safeAspect = Number.isFinite(aspect) && aspect > 0.001 ? aspect : 1;
-      const rawWidth = Math.max(Math.round(Math.sqrt(targetArea * safeAspect)), 1);
-      const rawHeight = Math.max(Math.round(Math.sqrt(targetArea / safeAspect)), 1);
-      const viewportWidth = container.getBoundingClientRect().width || window.innerWidth || 1;
-      const maxWidth = Math.round(viewportWidth * 0.4);
-      const cappedWidth = Math.min(rawWidth, maxWidth);
-      const cappedHeight = cappedWidth < rawWidth ? Math.max(Math.round(cappedWidth / safeAspect), 1) : rawHeight;
-
-      state.metrics[index].width = cappedWidth;
-      state.metrics[index].height = cappedHeight;
+      state.metrics[index].width = card.width;
+      state.metrics[index].height = card.height;
       state.metrics[index].start = cursor;
 
-      tile.style.width = `${cappedWidth}px`;
-      tile.style.height = `${cappedHeight}px`;
+      tile.style.width = `${card.width}px`;
+      tile.style.height = `${card.height}px`;
 
-      const step = Math.max(cappedWidth - overlapPx - overlapBoost, Math.round(cappedWidth * 0.34));
-      cursor += step;
+      cursor += card.step;
     });
 
     state.trackLength = Math.max(cursor, 1);
@@ -1018,14 +978,37 @@ function setupTilesMotion(container, tiles, onFocusChange) {
       let scale = 1;
       let y = baseY;
 
-      if (emphasis > 0.001) {
-        scale = 1 + (cfg.activeScale - 1) * emphasis;
-        y = baseY - cfg.activeLift * emphasis;
+      // Arch: cards rise toward the center (the head) and dip at the edges.
+      // The same t drives the trapezoid tilt so dip and foreshortening align.
+      const halfSpan = Math.max(width * 0.5, 1);
+      const t = Math.min(Math.abs(cardCenterX - centerX) / halfSpan, 1);
+      if (cfg.archDip > 0) {
+        y += cfg.archDip * t * t;
       }
 
-      const xDepth = Math.max(1, Math.round((width - x) * 10));
+      if (emphasis > 0.001) {
+        scale = 1 + (cfg.activeScale - 1) * emphasis;
+        y -= cfg.activeLift * emphasis;
+      }
 
-      tile.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) scale(${scale.toFixed(3)})`;
+      // Voussoir wedge: each card is a stone of the arch. Per-card perspective
+      // + lean-back (top toward the viewer) makes a real trapezoid, and the fan
+      // rotation tilts cards toward the arch center — edges lean, center stays
+      // upright. Fan ramps with t² like the dip, so cards near the head stay
+      // nearly upright. Pivots at center bottom (standing-stone look).
+      const xDepth = Math.max(1, Math.round((width - x) * 10));
+      // ponytail: recedeZ is a small depth cue only — it is projected through
+      // the shared vanishing point, so larger values pull edge cards inward/up
+      // and shrink the row away from the viewport edges (the "row disappears
+      // at the edges" bug). Keep it under ~0.2·height.
+      let recedeZ = 0;
+      if (cfg.archTiltDeg > 0) {
+        recedeZ = metric.height * 0.17 * (0.4 + 0.6 * t * t);
+      }
+      const rotX = cfg.archTiltDeg > 0 ? -cfg.archTiltDeg : 0;
+      const fanDeg = Math.sign(cardCenterX - centerX) * t * t * cfg.archFanDeg;
+
+      tile.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, ${(-recedeZ).toFixed(2)}px) scale(${scale.toFixed(3)}) rotate(${fanDeg.toFixed(2)}deg) perspective(600px) rotateX(${rotX}deg)`;
       tile.style.clipPath = "none";
       tile.style.zIndex = `${xDepth}`;
     });
@@ -1178,7 +1161,6 @@ function setupTilesMotion(container, tiles, onFocusChange) {
   };
 
   recalcMetrics();
-  bindMediaLoadRefresh();
   renderPositions();
 
   container.addEventListener("wheel", onWheel, { passive: false });
@@ -1229,7 +1211,6 @@ function setupTilesMotion(container, tiles, onFocusChange) {
       window.removeEventListener("pointerup", endDrag);
       window.removeEventListener("pointercancel", endDrag);
       window.removeEventListener("resize", recalcMetrics);
-      cleanupFns.forEach((fn) => fn());
     },
   };
 }
@@ -1419,8 +1400,8 @@ function showDetail(index, source, tileElement) {
     void detailPanel.offsetWidth;
     detailPanel.classList.add("is-active");
     activePanelId = "detail";
-    const vs = document.querySelector(".view-switch");
-    if (vs) vs.style.display = "none";
+    const dock = document.getElementById("bottom-dock");
+    if (dock) dock.style.display = "none";
   }
 
   if (cfg.detailReveal && tileElement) {
@@ -2351,40 +2332,6 @@ function getObjectWidth(object) {
 
   const size = box.getSize(new THREE.Vector3());
   return Math.max(size.x, size.z, 0.001);
-}
-
-var _switchRAF = null;
-
-function positionViewSwitch() {
-  var vs = document.querySelector(".view-switch");
-  if (!vs) return;
-
-  // Find the rightmost visible tab
-  var tabs = document.querySelectorAll(".tab");
-  var lastTab = null;
-  for (var i = tabs.length - 1; i >= 0; i--) {
-    var rect = tabs[i].getBoundingClientRect();
-    if (rect.width > 0 && rect.height > 0) {
-      lastTab = tabs[i];
-      break;
-    }
-  }
-
-  // No visible tabs — safe to put switch at top
-  if (!lastTab) {
-    vs.classList.add("is-top");
-    return;
-  }
-
-  var tabRight = lastTab.getBoundingClientRect().right;
-  var switchWidth = vs.offsetWidth;
-  var gap = 16; // minimum gap between last tab and switch
-
-  if (window.innerWidth - tabRight - 12 >= switchWidth + gap) {
-    vs.classList.add("is-top");
-  } else {
-    vs.classList.remove("is-top");
-  }
 }
 
 function trackTileMediaLoads() {
