@@ -133,6 +133,16 @@ body {
   background: rgba(194, 194, 194, 0.85);
 }
 
+/* Name button stays a plain white pill in every state; only hover darkens */
+.tab.mobile-copyright.is-active {
+  color: var(--color-text-button);
+  background: var(--color-ui-bg);
+}
+
+.tab.mobile-copyright.is-active:hover {
+  background: rgba(194, 194, 194, 0.85);
+}
+
 .mobile-copyright {
   display: none;
 }
@@ -234,6 +244,15 @@ body {
   background: transparent;
 }
 
+/* Day mode (moon): white by default, darken on hover — same recipe as the name button */
+html:not([data-night="on"]) .bottom-dock #night-toggle {
+  background: var(--color-ui-bg);
+}
+
+html:not([data-night="on"]) .bottom-dock #night-toggle:hover {
+  background: rgba(194, 194, 194, 0.85);
+}
+
 .tab-panels {
   position: relative;
   z-index: 10;
@@ -264,7 +283,7 @@ body {
   position: relative;
   margin-top: calc(-1 * var(--panel-top));
   width: 100%;
-  height: calc(100dvh - var(--panel-bottom));
+  height: 100dvh; /* full viewport: dipping arch cards must not clip at the dock line */
   min-height: 320px;
   overflow: hidden;
 }
